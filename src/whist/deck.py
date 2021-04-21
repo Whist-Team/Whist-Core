@@ -8,6 +8,7 @@ from whist.card import Card, Suit, Rank
 @final
 class Deck:
     """An unordered collection of cards"""
+
     __cards: set[Card]
 
     def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> NoReturn:
