@@ -8,19 +8,14 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-        python-version: [ 3.9 ]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
@@ -33,16 +28,7 @@ jobs:
           pip install --upgrade -r requirements.txt
       - name: Lint with flake8
         run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --show-source --statistics
       - name: Lint with pylint
         run: |
           pylint src tests
-      - name: Test with pytest
-        run: |
-          pytest --cov=server --cov-report=xml
-      - name: Upload to codecoverage
-        uses: codecov/codecov-action@v1
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
