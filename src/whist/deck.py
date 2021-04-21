@@ -8,17 +8,32 @@ class Deck:
     __cards: set[Card]
 
     def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> NoReturn:
+        """
+        Constructor
+
+        :param args: multiple cards or one card iterable
+        """
         if len(args) == 1 and not isinstance(args[0], Card):
             self.__cards = {*args[0]}
         else:
             self.__cards = {*args}
 
     def add(self, card: Card) -> NoReturn:
+        """
+        Add a card to this deck.
+
+        :param card: card to add
+        """
         if card in self.__cards:
             raise KeyError
         self.__cards.add(card)
 
     def remove(self, card: Card) -> NoReturn:
+        """
+        Remove a card from this deck.
+
+        :param card: card to remove
+        """
         self.__cards.remove(card)
 
     def __contains__(self, item: Any) -> bool:
