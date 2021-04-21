@@ -163,7 +163,7 @@ class Rank(_OrderedEnum):
 @final
 @dataclass(frozen=True)
 class Card:
-    """A plying card"""
+    """A playing card"""
     suit: Suit
     rank: Rank
 
