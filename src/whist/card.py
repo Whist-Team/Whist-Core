@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from enum import Enum, unique
+from typing import final, NoReturn, Any
 
 
-class OrderedEnum(Enum):
-    _ordinal: int
+class _OrderedEnum(Enum):
+    __ordinal: int
 
-    def __new__(cls, *args):
+    def __new__(cls, *args) -> NoReturn:
         if len(args) == 1:
             value = args[0]
         else:
@@ -13,68 +14,70 @@ class OrderedEnum(Enum):
 
         obj = object.__new__(cls)
         obj._value_ = value
-        obj._ordinal = len(cls.__members__)
+        obj.__ordinal = len(cls.__members__)
         return obj
 
     @classmethod
-    def by_ordinal(cls, ordinal: int):
-        return cls[ordinal]
+    def by_ordinal(cls, ordinal: int) -> '_OrderedEnum':
+        return list(cls.__members__.values())[ordinal]
 
     @property
     def ordinal(self) -> int:
-        return self._ordinal
+        return self.__ordinal
 
-    def __ge__(self, other):
+    def __ge__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
             return self.ordinal >= other.ordinal
         return NotImplemented
 
-    def __gt__(self, other):
+    def __gt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
             return self.ordinal > other.ordinal
         return NotImplemented
 
-    def __le__(self, other):
+    def __le__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
             return self.ordinal <= other.ordinal
         return NotImplemented
 
-    def __lt__(self, other):
+    def __lt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
             return self.ordinal < other.ordinal
         return NotImplemented
 
 
 @unique
-class Suit(OrderedEnum):
+@final
+class Suit(_OrderedEnum):
     CLUBS = ('♣', 'clubs')
     DIAMONDS = ('♦', 'diamonds')
     HEARTS = ('♥', 'hearts')
     SPADES = ('♠', 'spades')
 
     @classmethod
-    def by_label(cls, label: str, search_short_labels: bool = False):
+    def by_label(cls, label: str, search_symbols: bool = False) -> 'Suit':
         for name, value in cls.__members__.items():
-            if value.label == label:
+            if label == value.label:
                 return value
-            elif search_short_labels and value.short_label == label:
+            if search_symbols and label == value.symbol:
                 return value
         raise KeyError
 
     @property
-    def short_label(self) -> str:
-        return self.value if type(self.value) is str else self.value[0]
+    def symbol(self) -> str:
+        return self.value[0]
 
     @property
     def label(self) -> str:
-        return self.value if type(self.value) is str else self.value[1]
+        return self.value[1]
 
     def __str__(self) -> str:
         return self.label
 
 
 @unique
-class Rank(OrderedEnum):
+@final
+class Rank(_OrderedEnum):
     NUM_2 = '2'
     NUM_3 = '3'
     NUM_4 = '4'
@@ -90,26 +93,27 @@ class Rank(OrderedEnum):
     A = ('A', 'ace')
 
     @classmethod
-    def by_label(cls, label: str, search_short_labels: bool = False):
+    def by_label(cls, label: str, search_short_labels: bool = False) -> 'Rank':
         for name, value in cls.__members__.items():
-            if value.label == label:
+            if label == value.label:
                 return value
-            elif search_short_labels and value.short_label == label:
+            if search_short_labels and label == value.short_label:
                 return value
         raise KeyError
 
     @property
     def short_label(self) -> str:
-        return self.value if type(self.value) is str else self.value[0]
+        return self.value if isinstance(self.value, str) else self.value[0]
 
     @property
     def label(self) -> str:
-        return self.value if type(self.value) is str else self.value[1]
+        return self.value if isinstance(self.value, str) else self.value[1]
 
     def __str__(self) -> str:
         return self.label
 
 
+@final
 @dataclass(frozen=True)
 class Card:
     suit: Suit
@@ -117,7 +121,7 @@ class Card:
 
     @property
     def short_name(self) -> str:
-        return f'{self.suit.short_label}{self.rank.short_label}'
+        return f'{self.suit.symbol}{self.rank.short_label}'
 
     @property
     def name(self) -> str:
