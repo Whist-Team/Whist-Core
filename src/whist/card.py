@@ -1,3 +1,5 @@
+"""Card related classes"""
+
 from dataclasses import dataclass
 from enum import Enum, unique
 from typing import final, NoReturn, Any
