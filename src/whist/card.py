@@ -4,8 +4,6 @@ from typing import final, NoReturn, Any
 
 
 class _OrderedEnum(Enum):
-    __ordinal: int
-
     def __new__(cls, *args) -> NoReturn:
         if len(args) == 1:
             value = args[0]
@@ -19,10 +17,21 @@ class _OrderedEnum(Enum):
 
     @classmethod
     def by_ordinal(cls, ordinal: int) -> '_OrderedEnum':
+        """
+        Get enum constant by ordinal.
+
+        :param ordinal: ordinal
+        :return: enum constant
+        """
         return list(cls.__members__.values())[ordinal]
 
     @property
     def ordinal(self) -> int:
+        """
+        Get the ordinal.
+
+        :return: ordinal
+        """
         return self.__ordinal
 
     def __ge__(self, other: Any) -> bool:
@@ -49,6 +58,8 @@ class _OrderedEnum(Enum):
 @unique
 @final
 class Suit(_OrderedEnum):
+    """Suits in a playing card deck"""
+
     CLUBS = ('♣', 'clubs')
     DIAMONDS = ('♦', 'diamonds')
     HEARTS = ('♥', 'hearts')
@@ -56,7 +67,14 @@ class Suit(_OrderedEnum):
 
     @classmethod
     def by_label(cls, label: str, search_symbols: bool = False) -> 'Suit':
-        for name, value in cls.__members__.items():
+        """
+        Get suit by label.
+
+        :param label: label
+        :param search_symbols: True if the suit symbols should be searched as well
+        :return: suit
+        """
+        for _, value in cls.__members__.items():
             if label == value.label:
                 return value
             if search_symbols and label == value.symbol:
@@ -65,6 +83,11 @@ class Suit(_OrderedEnum):
 
     @property
     def symbol(self) -> str:
+        """
+        Get the card symbol.
+
+        :return:
+        """
         return self.value[0]
 
     @property
@@ -78,6 +101,8 @@ class Suit(_OrderedEnum):
 @unique
 @final
 class Rank(_OrderedEnum):
+    """Ranks in a playing card deck"""
+
     NUM_2 = '2'
     NUM_3 = '3'
     NUM_4 = '4'
@@ -94,7 +119,7 @@ class Rank(_OrderedEnum):
 
     @classmethod
     def by_label(cls, label: str, search_short_labels: bool = False) -> 'Rank':
-        for name, value in cls.__members__.items():
+        for _, value in cls.__members__.items():
             if label == value.label:
                 return value
             if search_short_labels and label == value.short_label:
