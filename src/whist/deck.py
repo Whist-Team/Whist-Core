@@ -54,12 +54,12 @@ class Deck:
 
     def __eq__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
-            return self.__cards == other.__cards
+            return self.__cards == other.__cards  # pylint: disable=protected-access
         return NotImplemented
 
     def __ne__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
-            return self.__cards != other.__cards
+            return self.__cards != other.__cards  # pylint: disable=protected-access
         return NotImplemented
 
     def __hash__(self) -> int:
