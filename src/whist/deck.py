@@ -5,6 +5,7 @@ from whist.card import Card, Suit, Rank
 
 @final
 class Deck:
+    """An unordered collection of cards"""
     __cards: set[Card]
 
     def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> NoReturn:
@@ -66,8 +67,18 @@ class Deck:
 
     @staticmethod
     def empty():
+        """
+        Create an empty deck.
+
+        :return: empty deck
+        """
         return Deck()
 
     @staticmethod
     def full():
+        """
+        Create a full deck.
+
+        :return: full deck
+        """
         return Deck((Card(suit, rank) for suit in Suit for rank in Rank))

@@ -84,14 +84,19 @@ class Suit(_OrderedEnum):
     @property
     def symbol(self) -> str:
         """
-        Get the card symbol.
+        Get the suit symbol.
 
-        :return:
+        :return: suit symbol
         """
         return self.value[0]
 
     @property
     def label(self) -> str:
+        """
+        Get the suit label.
+
+        :return: suit label
+        """
         return self.value[1]
 
     def __str__(self) -> str:
@@ -119,6 +124,13 @@ class Rank(_OrderedEnum):
 
     @classmethod
     def by_label(cls, label: str, search_short_labels: bool = False) -> 'Rank':
+        """
+        Get rank by label.
+
+        :param label: rank
+        :param search_short_labels: True if the rank short labels should be searched as well
+        :return: label
+        """
         for _, value in cls.__members__.items():
             if label == value.label:
                 return value
@@ -128,10 +140,20 @@ class Rank(_OrderedEnum):
 
     @property
     def short_label(self) -> str:
+        """
+        Get the short version of the rank label.
+
+        :return: short version of rank label
+        """
         return self.value if isinstance(self.value, str) else self.value[0]
 
     @property
     def label(self) -> str:
+        """
+        Get the rank label.
+
+        :return: rank label
+        """
         return self.value if isinstance(self.value, str) else self.value[1]
 
     def __str__(self) -> str:
@@ -141,15 +163,26 @@ class Rank(_OrderedEnum):
 @final
 @dataclass(frozen=True)
 class Card:
+    """A plying card"""
     suit: Suit
     rank: Rank
 
     @property
     def short_name(self) -> str:
+        """
+        Get the short name of this card.
+
+        :return: short name
+        """
         return f'{self.suit.symbol}{self.rank.short_label}'
 
     @property
     def name(self) -> str:
+        """
+        Get the name of this card.
+
+        :return: name
+        """
         return f'{self.rank} of {self.suit}'
 
     def __str__(self) -> str:
