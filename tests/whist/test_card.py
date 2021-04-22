@@ -17,3 +17,7 @@ class CardTestCase(unittest.TestCase):
         c1 = Card(Suit.CLUBS, Rank.NUM_2)
         c2 = Card(Suit.CLUBS, Rank.NUM_2)
         self.assertEqual(c1, c2)
+
+    def test_short_name(self):
+        c1 = Card(Suit.HEARTS, Rank.A)
+        self.assertEqual('♥A', c1.short_name)
