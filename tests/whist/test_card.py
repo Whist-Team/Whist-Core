@@ -22,3 +22,6 @@ class CardTestCase(unittest.TestCase):
 
     def test_short_name(self):
         self.assertEqual('♥A', self.card.short_name)
+
+    def test_name(self):
+        self.assertEqual('ace of hearts', self.card.name)
