@@ -1,6 +1,6 @@
 import unittest
 
-from whist.card import Rank, Suit
+from whist.card import Suit
 
 
 class SuitTestCase(unittest.TestCase):
@@ -14,4 +14,4 @@ class SuitTestCase(unittest.TestCase):
 
     def test_by_label_wrong_key(self):
         with self.assertRaises(KeyError):
-            Rank.by_label('herz')
+            Suit.by_label('herz')
