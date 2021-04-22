@@ -20,7 +20,7 @@ setup(
         'Operating System :: OS Independent',
     ],
     keywords='game whist',
-    packages=find_packages(),
+    packages=find_packages(exclude=('tests*',)),
     python_requires='>=3.9',
     install_requires=[]
 )
