@@ -1,4 +1,4 @@
-from whist.card import Suit, Rank, Card
+from whist.core.card import Suit, Rank, Card
 
 
 def test_suit_order():
