@@ -14,7 +14,8 @@ class _OrderedEnum(Enum):
 
         obj = object.__new__(cls)
         obj._value_ = value
-        obj.__ordinal = len(cls.__members__)  # pylint: disable=protected-access
+        # pylint: disable=protected-access
+        obj.__ordinal = len(cls.__members__) 
         return obj
 
     @classmethod
@@ -90,7 +91,8 @@ class Suit(_OrderedEnum):
 
         :return: suit symbol
         """
-        return self.value[0]  # pylint: disable=unsubscriptable-object
+        # pylint: disable=unsubscriptable-object
+        return self.value[0]
 
     @property
     def label(self) -> str:
@@ -147,7 +149,8 @@ class Rank(_OrderedEnum):
 
         :return: short version of rank label
         """
-        return self.value if isinstance(self.value, str) else self.value[0]  # pylint: disable=unsubscriptable-object
+        # pylint: disable=unsubscriptable-object
+        return self.value if isinstance(self.value, str) else self.value[0]
 
     @property
     def label(self) -> str:
@@ -156,7 +159,8 @@ class Rank(_OrderedEnum):
 
         :return: rank label
         """
-        return self.value if isinstance(self.value, str) else self.value[1]  # pylint: disable=unsubscriptable-object
+        # pylint: disable=unsubscriptable-object
+        return self.value if isinstance(self.value, str) else self.value[1]
 
     def __str__(self) -> str:
         return self.label
