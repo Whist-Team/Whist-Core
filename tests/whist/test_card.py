@@ -4,6 +4,9 @@ from whist.card import Suit, Rank, Card
 
 
 class CardTestCase(unittest.TestCase):
+    def setUp(self) -> None:
+        self.card = Card(Suit.HEARTS, Rank.A)
+
     def test_suit_order(self):
         self.assertLess(Suit.CLUBS, Suit.DIAMONDS)
         self.assertLess(Suit.DIAMONDS, Suit.HEARTS)
@@ -14,10 +17,8 @@ class CardTestCase(unittest.TestCase):
                < Rank.NUM_8 < Rank.NUM_9 < Rank.NUM_10 < Rank.J < Rank.Q < Rank.K < Rank.A
 
     def test_card_equality(self):
-        c1 = Card(Suit.CLUBS, Rank.NUM_2)
-        c2 = Card(Suit.CLUBS, Rank.NUM_2)
-        self.assertEqual(c1, c2)
+        card = Card(Suit.HEARTS, Rank.A)
+        self.assertEqual(card, self.card)
 
     def test_short_name(self):
-        c1 = Card(Suit.HEARTS, Rank.A)
-        self.assertEqual('♥A', c1.short_name)
+        self.assertEqual('♥A', self.card.short_name)
