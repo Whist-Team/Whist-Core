@@ -25,3 +25,6 @@ class CardTestCase(unittest.TestCase):
 
     def test_name(self):
         self.assertEqual('ace of hearts', self.card.name)
+
+    def test_str(self):
+        self.assertEqual('ace of hearts', str(self.card))
