@@ -40,8 +40,8 @@ class Deck:
         """
         self.__cards.remove(card)
 
-    def __contains__(self, item: Any) -> bool:
-        return item in self.__cards
+    def __contains__(self, card: Card) -> bool:
+        return card in self.__cards
 
     def __len__(self):
         return len(self.__cards)
