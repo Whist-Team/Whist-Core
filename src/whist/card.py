@@ -101,7 +101,8 @@ class Suit(_OrderedEnum):
 
         :return: suit label
         """
-        return self.value[1]  # pylint: disable=unsubscriptable-object
+        # pylint: disable=unsubscriptable-object
+        return self.value[1]
 
     def __str__(self) -> str:
         return self.label
