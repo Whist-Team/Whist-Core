@@ -8,6 +8,10 @@ class SuitTestCase(unittest.TestCase):
         clubs = Suit.by_label('clubs')
         self.assertEqual(Suit.CLUBS, clubs)
 
+    def test_by_short_label(self):
+        clubs = Suit.by_label('♣', search_symbols=True)
+        self.assertEqual(Suit.CLUBS, clubs)
+
     def test_by_label_wrong_key(self):
         with self.assertRaises(KeyError):
             Rank.by_label('herz')
