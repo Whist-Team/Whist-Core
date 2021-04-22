@@ -4,7 +4,7 @@ from whist.core.card import Suit, Rank, Card
 
 
 class CardTestCase(unittest.TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         self.card = Card(Suit.HEARTS, Rank.A)
 
     def test_suit_order(self):
