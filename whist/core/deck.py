@@ -1,6 +1,6 @@
 """Collections of cards"""
 
-from typing import Iterable, final, Iterator, Any, NoReturn
+from typing import Iterable, final, Iterator, Any
 
 from whist.core.card import Card, Suit, Rank
 
@@ -11,7 +11,7 @@ class Deck:
 
     __cards: set[Card]
 
-    def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> NoReturn:
+    def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> None:
         """
         Constructor
 
@@ -22,7 +22,7 @@ class Deck:
         else:
             self.__cards = {*args}
 
-    def add(self, card: Card) -> NoReturn:
+    def add(self, card: Card) -> None:
         """
         Add a card to this deck.
 
@@ -32,7 +32,7 @@ class Deck:
             raise KeyError
         self.__cards.add(card)
 
-    def remove(self, card: Card) -> NoReturn:
+    def remove(self, card: Card) -> None:
         """
         Remove a card from this deck.
 
