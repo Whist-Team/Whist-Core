@@ -35,7 +35,6 @@ class DeckTestCase(unittest.TestCase):
 
     def test_iter(self):
         queen_diamonds = Card(Suit.DIAMONDS, Rank.Q)
-        cards = [self.spades_king, queen_diamonds]
+        cards = {self.spades_king, queen_diamonds}
         deck = Deck(cards)
-        for expected, card in zip(cards, deck):
-            self.assertEqual(expected, card)
+        self.assertSetEqual(cards, {card for card in deck})
