@@ -29,7 +29,7 @@ class Deck:
         :param card: card to add
         """
         if card in self.__cards:
-            raise KeyError
+            raise KeyError(f'{card} already in deck')
         self.__cards.add(card)
 
     def remove(self, card: Card) -> None:
