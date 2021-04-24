@@ -2,11 +2,11 @@
 
 from dataclasses import dataclass
 from enum import Enum, unique
-from typing import final, NoReturn, Any
+from typing import final, Any
 
 
 class _OrderedEnum(Enum):
-    def __new__(cls, *args) -> NoReturn:
+    def __new__(cls, *args) -> '_OrderedEnum':
         if len(args) == 1:
             value = args[0]
         else:
