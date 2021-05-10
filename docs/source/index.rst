@@ -9,9 +9,12 @@ Welcome to Whist-Core's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
 .. automodule:: whist.core
-
+   :members:
+.. automodule:: whist.core.card
+   :members:
+.. automodule:: whist.core.deck
+   :members:
 
 Indices and tables
 ==================
