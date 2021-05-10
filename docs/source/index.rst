@@ -10,6 +10,7 @@ Welcome to Whist-Core's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: whist.core
 
 
 Indices and tables
