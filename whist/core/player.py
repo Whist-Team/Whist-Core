@@ -12,8 +12,8 @@ class Player(User):
     level: int
 
     @staticmethod
-    def get_player(db: dict, username: str) -> Optional['Player']:
-        if username in db:
-            user: Player = db[username]
+    def get_player(database: dict, username: str) -> Optional['Player']:
+        if username in database:
+            user: Player = database[username]
             return Player(**user.dict())
         return None
