@@ -12,7 +12,7 @@ class Player(User):
     level: int
 
     @staticmethod
-    def get_player(db, username: str) -> Optional['Player']:
+    def get_player(db: dict, username: str) -> Optional['Player']:
         if username in db:
             user: Player = db[username]
             return Player(**user.dict())
