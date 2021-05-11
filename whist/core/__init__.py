@@ -1,3 +1,6 @@
+"""
+Retrieves envs for the whist core module.
+"""
 import os
 
 ALGORITHM = os.getenv('ALGORITHM', 'HS256')
