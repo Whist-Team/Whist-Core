@@ -1,11 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
-
-
-class User(BaseModel):
-    user_id: int
-    username: str
+from whist.core.user import User
 
 
 class Player(User):

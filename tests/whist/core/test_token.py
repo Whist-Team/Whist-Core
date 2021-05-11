@@ -5,7 +5,8 @@ from datetime import timedelta, datetime
 from jose import jwt
 
 from whist.core import SECRET_KEY, ALGORITHM
-from whist.core.player import Player, User
+from whist.core.player import Player
+from whist.core.user import User
 from whist.core.token import Token
 
 USERNAME = 'honk'
