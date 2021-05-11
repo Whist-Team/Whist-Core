@@ -6,8 +6,8 @@ from jose import jwt
 
 from whist.core import SECRET_KEY, ALGORITHM
 from whist.core.player import Player
-from whist.core.user import User
 from whist.core.token import Token
+from whist.core.user import User
 
 USERNAME = 'honk'
 
@@ -32,3 +32,8 @@ class TokenTestCase(unittest.TestCase):
         user = loop.run_until_complete(Token.get_user(self.db, self.token))
         loop.close()
         self.assertEqual(self.player, user)
+
+    def test_expired_token(self):
+        token = Token.create(self.payload, expires_delta=timedelta(minutes=-1))
+        with self.assertRaises(jwt.ExpiredSignatureError):
+            _ = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
