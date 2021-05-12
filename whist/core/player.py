@@ -22,6 +22,5 @@ class Player(User):
         :rtype: Player or None
         """
         if username in database:
-            user: Player = database[username]
-            return Player(**user.dict())
+            return database[username]
         return None
