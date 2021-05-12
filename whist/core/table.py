@@ -7,6 +7,15 @@ class Table(Session):
     min_player: int
     max_player: int
 
+    @property
+    def ready(self) -> bool:
+        """
+        Flag if the table is ready to start playing.
+        :return Ready or not
+        :rtype: boolean
+        """
+        return len(self.users) >= self.min_player
+
     def join(self, player: Player) -> None:
         """
         If a seat is available a player joins the table.
