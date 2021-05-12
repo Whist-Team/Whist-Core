@@ -21,7 +21,7 @@ class Table(Session):
         If a seat is available a player joins the table.
         :param player: who wants to join the table
         :type player: Player
-        :return: None
+        :return: None or raised an error if the table is already full.
         :rtype: None
         """
         if len(self.users) < self.max_player:
