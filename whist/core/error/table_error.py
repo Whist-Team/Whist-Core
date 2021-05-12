@@ -1,2 +1,7 @@
+"""Errors regarding table logic."""
+
+
 class TableFullError(Exception):
-    pass
+    """
+    Thrown if the table is already full.
+    """

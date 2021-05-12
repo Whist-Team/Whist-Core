@@ -1,9 +1,13 @@
+"""DAO of session."""
 from whist.core.error.table_error import TableFullError
 from whist.core.player import Player
 from whist.core.session import Session
 
 
 class Table(Session):
+    """
+    The game logics instance of a room to play Whist.
+    """
     min_player: int
     max_player: int
 
