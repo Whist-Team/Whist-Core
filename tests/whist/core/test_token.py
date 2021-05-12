@@ -1,6 +1,7 @@
 import asyncio
 from datetime import timedelta, datetime
 
+import pytest
 from jose import jwt
 
 from tests.whist.core.base_test_case import USERNAME, BaseTestCase
@@ -25,19 +26,17 @@ class TokenTestCase(BaseTestCase):
         loop.close()
         self.assertEqual(self.player, user)
 
-    def test_wrong_key(self):
+    @pytest.mark.asyncio
+    async def test_wrong_key(self):
         with self.assertRaises(KeyError):
             token = Token.create(dict(wrong=USERNAME))
-            loop = asyncio.get_event_loop()
-            _ = loop.run_until_complete(Token.get_user(self.db, token))
-            loop.close()
+            _ = await Token.get_user(self.db, token)
 
-    def test_no_username(self):
+    @pytest.mark.asyncio
+    async def test_no_username(self):
+        token = Token.create(dict(sub='abc'))
         with self.assertRaises(ValueError):
-            token = Token.create(dict(sub='abc'))
-            loop = asyncio.get_event_loop()
-            _ = loop.run_until_complete(Token.get_user(self.db, token))
-            loop.close()
+            _ = await Token.get_user(self.db, token)
 
     def test_expired_token(self):
         token = Token.create(self.payload, expires_delta=timedelta(minutes=-1))
