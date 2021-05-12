@@ -1,25 +1,17 @@
 import asyncio
-import unittest
 from datetime import timedelta, datetime
 
 from jose import jwt
 
+from tests.whist.core.base_test_case import USERNAME, BaseTestCase
 from whist.core import SECRET_KEY, ALGORITHM
-from whist.core.player import Player
 from whist.core.token import Token
-from whist.core.user import User
-
-USERNAME = 'honk'
 
 
-class TokenTestCase(unittest.TestCase):
+class TokenTestCase(BaseTestCase):
     def setUp(self) -> None:
+        super().setUp()
         self.payload = dict(sub=USERNAME)
-        user = User(user_id=1, username=USERNAME)
-        user_dict: dict = user.dict()
-        user_dict.update({'level': 1})
-        self.player = Player(**user_dict)
-        self.db = {USERNAME: self.player}
         self.token = Token.create(self.payload, expires_delta=timedelta(minutes=2))
 
     def test_create(self):
