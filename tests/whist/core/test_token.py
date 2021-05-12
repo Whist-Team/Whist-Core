@@ -25,6 +25,20 @@ class TokenTestCase(BaseTestCase):
         loop.close()
         self.assertEqual(self.player, user)
 
+    def test_wrong_key(self):
+        with self.assertRaises(KeyError):
+            token = Token.create(dict(wrong=USERNAME))
+            loop = asyncio.get_event_loop()
+            _ = loop.run_until_complete(Token.get_user(self.db, token))
+            loop.close()
+
+    def test_no_username(self):
+        with self.assertRaises(ValueError):
+            token = Token.create(dict(sub='abc'))
+            loop = asyncio.get_event_loop()
+            _ = loop.run_until_complete(Token.get_user(self.db, token))
+            loop.close()
+
     def test_expired_token(self):
         token = Token.create(self.payload, expires_delta=timedelta(minutes=-1))
         with self.assertRaises(jwt.ExpiredSignatureError):
