@@ -1,0 +1,2 @@
+class TableFullError(Exception):
+    pass
