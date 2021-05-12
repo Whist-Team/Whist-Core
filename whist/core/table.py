@@ -28,3 +28,13 @@ class Table(Session):
             self.users.append(player)
         else:
             raise TableFullError(f'Table with ID: {self.session_id} is already full.')
+
+    def leave(self, player: Player) -> None:
+        """
+        Remove a player from table.
+        :param player: The player to remove.
+        :type player: Player
+        :return: None
+        :rtype: None
+        """
+        self.users.remove(player)
