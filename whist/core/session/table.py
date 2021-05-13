@@ -63,9 +63,9 @@ class Table(Session):
         :rtype: None
         """
         team_size = self._users.team_size(team)
-        if team_size < self.team_size:
-            self._users.change_team(player, team)
-        raise TeamFullError(f'Team with id: {team} is already full.')
+        if team_size > self.team_size:
+            raise TeamFullError(f'Team with id: {team} is already full.')
+        self._users.change_team(player, team)
 
     def player_ready(self, player) -> None:
         """
