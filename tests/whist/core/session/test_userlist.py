@@ -60,3 +60,7 @@ class UserListTestCase(BaseTestCase):
         self.user_list.change_team(self.player, 1)
         self.user_list.change_team(player, 1)
         self.assertEqual(2, self.user_list.team_size(1))
+
+    def test_players(self):
+        self.user_list.append(self.player)
+        self.assertSetEqual({self.player}, set(self.user_list.players))

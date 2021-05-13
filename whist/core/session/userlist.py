@@ -17,6 +17,10 @@ class UserList:
         return len(self._users)
 
     @property
+    def players(self) -> list[Player]:
+        return list(self._users.keys())
+
+    @property
     def ready(self) -> bool:
         """
         Returns if all players are ready.
