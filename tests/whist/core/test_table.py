@@ -9,7 +9,14 @@ class TableTestCase(BaseTestCase):
 
     def test_ready(self):
         self.table.join(self.player)
+        self.table.player_ready(self.player)
         self.assertTrue(self.table.ready)
+
+    def test_not_ready(self):
+        self.table.join(self.player)
+        self.table.player_ready(self.player)
+        self.table.player_unready(self.player)
+        self.assertFalse(self.table.ready)
 
     def test_join(self):
         self.table.join(self.player)
