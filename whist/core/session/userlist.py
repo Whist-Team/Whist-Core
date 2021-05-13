@@ -1,6 +1,8 @@
 """
 Handles users joining and leaving a table.
 """
+from typing import Optional
+
 from whist.core.user.player import Player
 from whist.core.user.status import Status
 
@@ -26,6 +28,17 @@ class UserList:
             if not player_status.ready:
                 return False
         return True
+
+    def team(self, player: Player) -> Optional[int]:
+        """
+        Gets the id of the team for a player.
+        :param player: for which the id should be retrieved
+        :type player: Player
+        :return: Integer if player joined a team or None if not.
+        :rtype: int
+        """
+        status: Status = self._users.get(player)
+        return status.team
 
     def append(self, player: Player):
         """
