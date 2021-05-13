@@ -1,8 +1,8 @@
 """
 Handles users joining and leaving a table.
 """
-from core.user.status import Status
 from whist.core.user.player import Player
+from whist.core.user.status import Status
 
 
 class UserList:
