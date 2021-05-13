@@ -36,3 +36,4 @@ class TableTestCase(BaseTestCase):
         self.table.join_team(self.player, 1)
         with self.assertRaises(TeamFullError):
             self.table.join_team(player, 1)
+        self.table.leave(player)
