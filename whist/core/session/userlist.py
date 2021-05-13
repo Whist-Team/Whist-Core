@@ -1,6 +1,7 @@
 """
 Handles users joining and leaving a table.
 """
+from core.user.status import Status
 from whist.core.user.player import Player
 
 
@@ -33,7 +34,7 @@ class UserList:
         :return: None
         :rtype: None
         """
-        self._users.update({player: False})
+        self._users.update({player: Status()})
 
     def remove(self, player: Player):
         """
@@ -53,7 +54,8 @@ class UserList:
         :return: None
         :rtype: None
         """
-        self._users.update({player: True})
+        status: Status = self._users.get(player)
+        status.ready = True
 
     def player_unready(self, player: Player):
         """
@@ -63,4 +65,5 @@ class UserList:
         :return: None
         :rtype: None
         """
-        self._users.update({player: False})
+        status: Status = self._users.get(player)
+        status.ready = False
