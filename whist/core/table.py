@@ -52,7 +52,21 @@ class Table(Session):
         self._users.remove(player)
 
     def player_ready(self, player) -> None:
+        """
+        Player says they is ready.
+        :param player: player who is ready
+        :type player: Player
+        :return: None
+        :rtype: None
+        """
         self._users.player_ready(player)
 
     def player_unready(self, player) -> None:
+        """
+        Player says they is not ready.
+        :param player: player who is not ready
+        :type player: Player
+        :return: None
+        :rtype: None
+        """
         self._users.player_unready(player)
