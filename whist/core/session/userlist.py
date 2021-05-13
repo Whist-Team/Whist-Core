@@ -50,6 +50,16 @@ class UserList:
         """
         return len([status for status in self._users.values() if status.team == team])
 
+    def is_joined(self, player: Player) -> bool:
+        """
+        Checks if the player is already at the table.
+        :param player: to check
+        :type player: Player
+        :return: True if is member else false
+        :rtype: bool
+        """
+        return player in self._users.keys()
+
     def append(self, player: Player):
         """
         Adds a player to the list.
@@ -58,7 +68,8 @@ class UserList:
         :return: None
         :rtype: None
         """
-        self._users.update({player: Status()})
+        if not self.is_joined(player):
+            self._users.update({player: Status()})
 
     def remove(self, player: Player):
         """
@@ -104,5 +115,3 @@ class UserList:
         """
         status: Status = self._users.get(player)
         status.ready = False
-
-
