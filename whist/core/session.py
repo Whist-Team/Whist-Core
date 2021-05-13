@@ -9,7 +9,7 @@ class Session(BaseModel):
     User can join to play a game of Whist.
     """
     session_id: int
-    users: UserList = []
+    _users: UserList = UserList()
 
     # pylint: disable=too-few-public-methods
     class Config:
