@@ -20,9 +20,9 @@ class TableTestCase(BaseTestCase):
 
     def test_join(self):
         self.table.join(self.player)
-        self.assertEqual(1, len(self.table.users))
+        self.assertEqual(1, len(self.table))
 
     def test_leave(self):
         self.table.join(self.player)
         self.table.leave(self.player)
-        self.assertEqual(0, len(self.table.users))
+        self.assertEqual(0, len(self.table))
