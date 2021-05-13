@@ -1,5 +1,5 @@
 from tests.whist.core.base_test_case import BaseTestCase, USERNAME
-from whist.core.user import Player
+from core.user.player import Player
 
 
 class PlayerTestCase(BaseTestCase):
