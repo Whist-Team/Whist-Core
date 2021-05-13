@@ -1,5 +1,6 @@
 from tests.whist.core.base_test_case import BaseTestCase
 from whist.core.session.userlist import UserList
+from whist.core.user.player import Player
 
 
 class UserListTestCase(BaseTestCase):
@@ -37,3 +38,25 @@ class UserListTestCase(BaseTestCase):
         self.user_list.change_team(self.player, 2)
         self.user_list.change_team(self.player, 1)
         self.assertEqual(1, self.user_list.team(self.player))
+
+    def test_team_size(self):
+        self.user_list.append(self.player)
+        self.user_list.change_team(self.player, 1)
+        self.assertEqual(1, self.user_list.team_size(1))
+
+    def test_team_size_two_teams(self):
+        player = Player(user_id=2, username='hank', level=1)
+        self.user_list.append(self.player)
+        self.user_list.append(player)
+        self.user_list.change_team(self.player, 1)
+        self.user_list.change_team(player, 2)
+        self.assertEqual(1, self.user_list.team_size(1))
+        self.assertEqual(1, self.user_list.team_size(2))
+
+    def test_team_size_same_team(self):
+        player = Player(user_id=2, username='hank', level=1)
+        self.user_list.append(self.player)
+        self.user_list.append(player)
+        self.user_list.change_team(self.player, 1)
+        self.user_list.change_team(player, 1)
+        self.assertEqual(2, self.user_list.team_size(1))
