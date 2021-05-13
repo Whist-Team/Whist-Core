@@ -1,7 +1,13 @@
+"""
+Handles users joining and leaving a table.
+"""
 from whist.core.player import Player
 
 
 class UserList:
+    """
+    User handler for tables.
+    """
     _users: dict[Player] = {}
 
     def __len__(self):
