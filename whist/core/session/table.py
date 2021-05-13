@@ -1,7 +1,7 @@
 """DAO of session."""
-from whist.core.error.table_error import TableFullError
-from whist.core.user.player import Player
+from whist.core.error.table_error import TableFullError, TeamFullError
 from whist.core.session.session import Session
+from whist.core.user.player import Player
 
 
 class Table(Session):
@@ -10,6 +10,7 @@ class Table(Session):
     """
     min_player: int
     max_player: int
+    team_size: int = 2
 
     def __len__(self):
         """
@@ -50,6 +51,21 @@ class Table(Session):
         :rtype: None
         """
         self._users.remove(player)
+
+    def join_team(self, player: Player, team: int) -> None:
+        """
+        Player joins a team.
+        :param player: to join a team
+        :type player: Player
+        :param team: id of the new team
+        :type team: int
+        :return: None if successful or raises Error if team is full
+        :rtype: None
+        """
+        team_size = self._users.team_size(team)
+        if team_size < self.team_size:
+            self._users.change_team(player, team)
+        raise TeamFullError(f'Team with id: {team} is already full.')
 
     def player_ready(self, player) -> None:
         """
