@@ -11,5 +11,9 @@ class Session(BaseModel):
     session_id: int
     users: UserList = []
 
+    # pylint: disable=too-few-public-methods
     class Config:
+        """
+        Configuration class for pydantic.
+        """
         arbitrary_types_allowed = True
