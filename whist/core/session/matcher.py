@@ -5,6 +5,7 @@ import random
 
 from whist.core.session.userlist import UserList
 
+
 # pylint: disable=too-few-public-methods
 class RandomMatch:
     """

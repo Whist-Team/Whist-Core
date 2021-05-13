@@ -88,7 +88,8 @@ class UserList:
         :return: None
         :rtype: None
         """
-        self._users.pop(player)
+        if self.is_joined(player):
+            self._users.pop(player)
 
     def change_team(self, player: Player, team: int) -> None:
         """
