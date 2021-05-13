@@ -47,6 +47,19 @@ class UserList:
         """
         self._users.pop(player)
 
+    def change_team(self, player: Player, team: int) -> None:
+        """
+        Player changes teams.
+        :param player: to change teams
+        :type player: Player
+        :param team: id of the new team
+        :type team: int
+        :return: None
+        :rtype: None
+        """
+        status: Status = self._users.get(player)
+        status.team = team
+
     def player_ready(self, player: Player):
         """
         Player says they is ready.
