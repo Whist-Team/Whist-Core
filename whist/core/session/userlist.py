@@ -40,6 +40,16 @@ class UserList:
         status: Status = self._users.get(player)
         return status.team
 
+    def team_size(self, team: int) -> int:
+        """
+        Gets the size of the team.
+        :param team: ID of the team
+        :type team: int
+        :return: Amount of members
+        :rtype: int
+        """
+        return len([status for status in self._users.values() if status.team == team])
+
     def append(self, player: Player):
         """
         Adds a player to the list.
@@ -94,3 +104,5 @@ class UserList:
         """
         status: Status = self._users.get(player)
         status.ready = False
+
+
