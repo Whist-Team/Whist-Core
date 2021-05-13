@@ -5,8 +5,11 @@ import random
 
 from whist.core.session.userlist import UserList
 
-
+# pylint: disable=too-few-public-methods
 class RandomMatch:
+    """
+    Distributes the players randomly to teams.
+    """
     _num_teams: int
     _team_size: int
     _users: UserList
@@ -17,6 +20,11 @@ class RandomMatch:
         self._users = users
 
     def distribute(self) -> None:
+        """
+        For given parameter distributes the players to teams.
+        :return: None
+        :rtype: None
+        """
         players = self._users.players
         teams: list = list(range(0, self._team_size)) * 2 * self._num_teams
         for player in players:

@@ -18,6 +18,11 @@ class UserList:
 
     @property
     def players(self) -> list[Player]:
+        """
+        Returns all players at the table.
+        :return: players of the table
+        :rtype: list[Player]
+        """
         return list(self._users.keys())
 
     @property
