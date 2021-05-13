@@ -5,7 +5,7 @@ from jose import jwt
 from pydantic import BaseModel
 
 from whist.core import SECRET_KEY, ALGORITHM
-from core.user.player import Player
+from whist.core.user.player import Player
 
 
 class Token(BaseModel):
