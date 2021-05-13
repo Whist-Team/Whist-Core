@@ -62,8 +62,10 @@ class Table(Session):
         :return: None if successful or raises Error if team is full
         :rtype: None
         """
+        if not self._users.is_joined(player):
+            self.join(player)
         team_size = self._users.team_size(team)
-        if team_size > self.team_size:
+        if team_size >= self.team_size:
             raise TeamFullError(f'Team with id: {team} is already full.')
         self._users.change_team(player, team)
 
