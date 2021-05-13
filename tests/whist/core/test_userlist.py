@@ -26,4 +26,3 @@ class UserListTestCase(BaseTestCase):
         self.user_list.append(self.player)
         self.user_list.remove(self.player)
         self.assertEqual(0, len(self.user_list))
-
