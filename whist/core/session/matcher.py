@@ -27,7 +27,7 @@ class RandomMatch:
         :rtype: None
         """
         players = self._users.players
-        teams: list = list(range(0, self._team_size)) * 2 * self._num_teams
+        teams: list = list(range(0, self._team_size)) * self._num_teams
         for player in players:
             team_id = random.choice(teams)
             self._users.change_team(player, team_id)
