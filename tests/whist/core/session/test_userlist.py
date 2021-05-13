@@ -26,3 +26,14 @@ class UserListTestCase(BaseTestCase):
         self.user_list.append(self.player)
         self.user_list.remove(self.player)
         self.assertEqual(0, len(self.user_list))
+
+    def test_join_team(self):
+        self.user_list.append(self.player)
+        self.user_list.change_team(self.player, 1)
+        self.assertEqual(1, self.user_list.team(self.player))
+
+    def test_change_team(self):
+        self.user_list.append(self.player)
+        self.user_list.change_team(self.player, 2)
+        self.user_list.change_team(self.player, 1)
+        self.assertEqual(1, self.user_list.team(self.player))
