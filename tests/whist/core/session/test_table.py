@@ -1,5 +1,5 @@
 from tests.whist.core.base_test_case import BaseTestCase
-from whist.core.table import Table
+from whist.core.session.table import Table
 
 
 class TableTestCase(BaseTestCase):
