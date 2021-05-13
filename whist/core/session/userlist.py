@@ -21,8 +21,9 @@ class UserList:
         :return: Ready or not
         :rtype: boolean
         """
+        player_status: Status
         for player_status in self._users.values():
-            if not player_status:
+            if not player_status.ready:
                 return False
         return True
 
