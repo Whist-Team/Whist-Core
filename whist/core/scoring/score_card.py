@@ -16,4 +16,6 @@ class ScoreCard:
         return len([tick for tick in self.ticks if player in tick and opponent in tick])
 
     def score_against_opp(self, player: Player, opponent: Player) -> int:
-        pass
+        tick: Score
+        return len([tick for tick in self.ticks if player in tick and opponent in tick and tick[
+            player] > tick[opponent]])
