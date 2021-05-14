@@ -1,10 +1,15 @@
+from typing import Any
+
+from pydantic import BaseModel
+
 from whist.core.player import Player
 
 
-class Score:
+class Score(BaseModel):
     tick_score: dict = {}
 
-    def __init__(self, players: list[Player], scores: list[int]):
+    def __init__(self, players: list[Player], scores: list[int], **data: Any):
+        super().__init__(**data)
         self.add_score(players, scores)
 
     def __getitem__(self, item):

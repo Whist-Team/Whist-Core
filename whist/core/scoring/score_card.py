@@ -1,9 +1,11 @@
+from pydantic import BaseModel
+
 from whist.core.player import Player
 from whist.core.scoring.score import Score
 
 
-class ScoreCard:
-    ticks: list['Score'] = []
+class ScoreCard(BaseModel):
+    ticks: list[Score] = []
 
     def __len__(self):
         return len(self.ticks)
