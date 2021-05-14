@@ -8,7 +8,7 @@ class Player(User):
     """
     This is the server side class of an user.
     """
-    level: int
+    rating: int
 
     @staticmethod
     def get_player(database: dict, username: str) -> Optional['Player']:
