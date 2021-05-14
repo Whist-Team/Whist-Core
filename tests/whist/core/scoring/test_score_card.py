@@ -17,4 +17,17 @@ class ScoreCardTestCase(unittest.TestCase):
         self.assertEqual(1, len(self.score_card))
 
     def test_num_against_opp(self):
-        assert False
+        score = Score([self.player_a, self.player_b], [7, 6])
+        self.score_card.add_score(score)
+        self.score_card.add_score(score)
+        self.score_card.add_score(score)
+        self.assertEqual(3, self.score_card.num_against_opp(self.player_a, self.player_b))
+
+    def test_score_against_opp(self):
+        score = Score([self.player_a, self.player_b], [7, 6])
+        self.score_card.add_score(score)
+        self.score_card.add_score(score)
+        score = Score([self.player_a, self.player_b], [6, 7])
+        self.score_card.add_score(score)
+        self.assertEqual(2, self.score_card.score_against_opp(self.player_a, self.player_b))
+        self.assertEqual(1, self.score_card.score_against_opp(self.player_b, self.player_a))
