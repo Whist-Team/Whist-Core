@@ -37,7 +37,7 @@ class ScoreCard(BaseModel):
         :rtype: int
         """
         hand: Score
-        return len([hand for hand in self.hands if player in hand and opponent in hand])
+        return len([hand for hand in self.hands if hand.played_together(player, opponent)])
 
     def score_against_opp(self, player: Player, opponent: Player) -> int:
         """
@@ -50,5 +50,4 @@ class ScoreCard(BaseModel):
         :rtype: int
         """
         hand: Score
-        return len([hand for hand in self.hands if player in hand and opponent in hand and hand[
-            player] > hand[opponent]])
+        return len([hand for hand in self.hands if hand.won_against(player, opponent)])
