@@ -8,9 +8,6 @@ class UserListTestCase(BaseTestCase):
         super().setUp()
         self.user_list = UserList()
 
-    def tearDown(self) -> None:
-        self.user_list.remove(self.player)
-
     def test_ready(self):
         self.user_list.append(self.player)
         self.user_list.player_ready(self.player)
@@ -55,7 +52,6 @@ class UserListTestCase(BaseTestCase):
         self.user_list.change_team(player, 2)
         self.assertEqual(1, self.user_list.team_size(1))
         self.assertEqual(1, self.user_list.team_size(2))
-        self.user_list.remove(player)
 
     def test_team_size_same_team(self):
         player = Player(user_id=2, username='hank', level=1)

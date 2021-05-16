@@ -9,9 +9,6 @@ class TableTestCase(BaseTestCase):
         super().setUp()
         self.table = Table(session_id=1, min_player=1, max_player=4)
 
-    def tearDown(self) -> None:
-        self.table.leave(self.player)
-
     def test_ready(self):
         self.table.join(self.player)
         self.table.player_ready(self.player)
@@ -39,4 +36,3 @@ class TableTestCase(BaseTestCase):
         self.table.join_team(self.player, 1)
         with self.assertRaises(TeamFullError):
             self.table.join_team(player, 1)
-        self.table.leave(player)

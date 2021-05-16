@@ -2,10 +2,12 @@
 Data wrapper of player stati.
 """
 
-
 # Wrapper class
 # pylint: disable=too-few-public-methods
-class Status:
+from pydantic import BaseModel
+
+
+class Status(BaseModel):
     """
     Player status a table.
     """

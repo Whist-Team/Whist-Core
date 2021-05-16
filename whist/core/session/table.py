@@ -18,7 +18,7 @@ class Table(Session):
         :return: # player
         :rtype: int
         """
-        return len(self._users)
+        return len(self.users)
 
     @property
     def ready(self) -> bool:
@@ -27,7 +27,7 @@ class Table(Session):
         :return Ready or not
         :rtype: boolean
         """
-        return len(self._users) >= self.min_player and self._users.ready
+        return len(self.users) >= self.min_player and self.users.ready
 
     def join(self, player: Player) -> None:
         """
@@ -37,8 +37,8 @@ class Table(Session):
         :return: None or raised an error if the table is already full.
         :rtype: None
         """
-        if len(self._users) < self.max_player:
-            self._users.append(player)
+        if len(self.users) < self.max_player:
+            self.users.append(player)
         else:
             raise TableFullError(f'Table with ID: {self.session_id} is already full.')
 
@@ -50,7 +50,7 @@ class Table(Session):
         :return: None
         :rtype: None
         """
-        self._users.remove(player)
+        self.users.remove(player)
 
     def join_team(self, player: Player, team: int) -> None:
         """
@@ -62,12 +62,12 @@ class Table(Session):
         :return: None if successful or raises Error if team is full
         :rtype: None
         """
-        if not self._users.is_joined(player):
+        if not self.users.is_joined(player):
             self.join(player)
-        team_size = self._users.team_size(team)
+        team_size = self.users.team_size(team)
         if team_size >= self.team_size:
             raise TeamFullError(f'Team with id: {team} is already full.')
-        self._users.change_team(player, team)
+        self.users.change_team(player, team)
 
     def player_ready(self, player) -> None:
         """
@@ -77,7 +77,7 @@ class Table(Session):
         :return: None
         :rtype: None
         """
-        self._users.player_ready(player)
+        self.users.player_ready(player)
 
     def player_unready(self, player) -> None:
         """
@@ -87,4 +87,4 @@ class Table(Session):
         :return: None
         :rtype: None
         """
-        self._users.player_unready(player)
+        self.users.player_unready(player)

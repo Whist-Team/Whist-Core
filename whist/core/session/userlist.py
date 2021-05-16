@@ -1,20 +1,22 @@
 """
 Handles users joining and leaving a table.
 """
-from typing import Optional
+from typing import Optional, Dict
+
+from pydantic import BaseModel
 
 from whist.core.user.player import Player
 from whist.core.user.status import Status
 
 
-class UserList:
+class UserList(BaseModel):
     """
     User handler for tables.
     """
-    _users: dict[Player] = {}
+    users: Dict[Player, Status] = {}
 
     def __len__(self):
-        return len(self._users)
+        return len(self.users)
 
     @property
     def players(self) -> list[Player]:
@@ -23,7 +25,7 @@ class UserList:
         :return: players of the table
         :rtype: list[Player]
         """
-        return list(self._users.keys())
+        return list(self.users.keys())
 
     @property
     def ready(self) -> bool:
@@ -33,7 +35,7 @@ class UserList:
         :rtype: boolean
         """
         player_status: Status
-        for player_status in self._users.values():
+        for player_status in self.users.values():
             if not player_status.ready:
                 return False
         return True
@@ -46,7 +48,7 @@ class UserList:
         :return: Integer if player joined a team or None if not.
         :rtype: int
         """
-        status: Status = self._users.get(player)
+        status: Status = self.users.get(player)
         return status.team
 
     def team_size(self, team: int) -> int:
@@ -57,7 +59,7 @@ class UserList:
         :return: Amount of members
         :rtype: int
         """
-        return len([status for status in self._users.values() if status.team == team])
+        return len([status for status in self.users.values() if status.team == team])
 
     def is_joined(self, player: Player) -> bool:
         """
@@ -67,7 +69,7 @@ class UserList:
         :return: True if is member else false
         :rtype: bool
         """
-        return player in self._users.keys()
+        return player in self.users.keys()
 
     def append(self, player: Player):
         """
@@ -78,7 +80,7 @@ class UserList:
         :rtype: None
         """
         if not self.is_joined(player):
-            self._users.update({player: Status()})
+            self.users.update({player: Status()})
 
     def remove(self, player: Player):
         """
@@ -89,7 +91,7 @@ class UserList:
         :rtype: None
         """
         if self.is_joined(player):
-            self._users.pop(player)
+            self.users.pop(player)
 
     def change_team(self, player: Player, team: int) -> None:
         """
@@ -101,7 +103,7 @@ class UserList:
         :return: None
         :rtype: None
         """
-        status: Status = self._users.get(player)
+        status: Status = self.users.get(player)
         status.team = team
 
     def player_ready(self, player: Player):
@@ -112,7 +114,7 @@ class UserList:
         :return: None
         :rtype: None
         """
-        status: Status = self._users.get(player)
+        status: Status = self.users.get(player)
         status.ready = True
 
     def player_unready(self, player: Player):
@@ -123,5 +125,5 @@ class UserList:
         :return: None
         :rtype: None
         """
-        status: Status = self._users.get(player)
+        status: Status = self.users.get(player)
         status.ready = False

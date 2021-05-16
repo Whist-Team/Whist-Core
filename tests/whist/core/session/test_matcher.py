@@ -16,10 +16,6 @@ class MatchTestCase(unittest.TestCase):
         for player in self.players:
             self.user_list.append(player)
 
-    def tearDown(self) -> None:
-        for player in self.players:
-            self.user_list.remove(player)
-
     def test_distribute(self):
         matcher = RandomMatch(2, 2, self.user_list)
         matcher.distribute()
