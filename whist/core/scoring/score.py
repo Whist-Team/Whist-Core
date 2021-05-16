@@ -23,10 +23,6 @@ class Score(BaseModel):
     def __getitem__(self, item):
         return self.hand_score[item]
 
-    def __iter__(self):
-        for team in self.hand_score:
-            yield team
-
     def won(self, team: Team) -> bool:
         """
         Check if the team won that round.
