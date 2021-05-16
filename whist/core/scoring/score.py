@@ -27,5 +27,12 @@ class Score(BaseModel):
         for team in self.hand_score:
             yield team
 
-    def won_against(self, team: Team, opponent: Team):
-        return self.hand_score[team] > self.hand_score[opponent]
+    def won(self, team: Team) -> bool:
+        """
+        Check if the team won that round.
+        :param team: Team for which to check if has won.
+        :type team: Team
+        :return: True if won, else false
+        :rtype: bool
+        """
+        return self.hand_score[team] == max(self.hand_score.values())

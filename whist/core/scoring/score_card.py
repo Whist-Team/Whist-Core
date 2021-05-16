@@ -3,8 +3,8 @@ Scores over several hands.
 """
 from pydantic import BaseModel
 
-from whist.core.player import Player
 from whist.core.scoring.score import Score
+from whist.core.scoring.team import Team
 
 
 class ScoreCard(BaseModel):
@@ -26,28 +26,30 @@ class ScoreCard(BaseModel):
         """
         self.hands.append(score)
 
-    def num_against_opp(self, player: Player, opponent: Player) -> int:
+    def score(self, team: Team) -> int:
         """
-        Getter for how many hands have been played against one particular opponent.
-        :param player: for whom to look
-        :type player: Player
-        :param opponent: against the player played
-        :type opponent: Player
-        :return: Amount of hands played against one opponent.
+        Getter for how many hands have been won by a team.
+        :param team: for whom to look
+        :type team: Team
+        :return: Amount of hands won.
         :rtype: int
         """
         hand: Score
-        return len([hand for hand in self.hands if hand.played_together(player, opponent)])
+        return len([hand for hand in self.hands if hand.won(team)])
 
-    def score_against_opp(self, player: Player, opponent: Player) -> int:
+    def won(self, team):
         """
-        Getter for how many hands have been won against one particular opponent.
-        :param player: for whom to look
-        :type player: Player
-        :param opponent: against the player played
-        :type opponent: Player
-        :return: Amount of hands won against one opponent.
+        Check if the team won more hands.
+        :param team: Team for which to check.
+        :type team: Team
+        :return: 1 if the team won more hands. 0 if they lost as many as they won. -1 if the lost
+        more games than won.
         :rtype: int
         """
-        hand: Score
-        return len([hand for hand in self.hands if hand.won_against(player, opponent)])
+        score = self.score(team)
+        games = len(self.hands)
+        if score > games / 2:
+            return 1
+        elif score == games / 2:
+            return 0
+        return -1
