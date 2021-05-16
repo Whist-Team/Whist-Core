@@ -37,7 +37,7 @@ class ScoreCard(BaseModel):
         hand: Score
         return len([hand for hand in self.hands if hand.won(team)])
 
-    def won(self, team):
+    def won(self, team) -> int:
         """
         Check if the team won more hands.
         :param team: Team for which to check.
