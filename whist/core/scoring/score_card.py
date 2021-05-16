@@ -9,7 +9,7 @@ from whist.core.scoring.team import Team
 
 class ScoreCard(BaseModel):
     """
-    Collects the results of severals hands.
+    Collects the results of several hands.
     """
     hands: list[Score] = []
 
@@ -50,6 +50,6 @@ class ScoreCard(BaseModel):
         games = len(self.hands)
         if score > games / 2:
             return 1
-        elif score == games / 2:
+        if score == games / 2:
             return 0
         return -1
