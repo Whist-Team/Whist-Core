@@ -10,6 +10,12 @@ class Player(User):
     """
     level: int
 
+    def __str__(self):
+        return self.username
+
+    def __hash__(self):
+        return hash(self.username)
+
     @staticmethod
     def get_player(database: dict, username: str) -> Optional['Player']:
         """

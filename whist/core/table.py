@@ -11,6 +11,14 @@ class Table(Session):
     min_player: int
     max_player: int
 
+    def __len__(self):
+        """
+        The amount of players joined.
+        :return: # player
+        :rtype: int
+        """
+        return len(self._users)
+
     @property
     def ready(self) -> bool:
         """
@@ -18,7 +26,7 @@ class Table(Session):
         :return Ready or not
         :rtype: boolean
         """
-        return len(self.users) >= self.min_player
+        return len(self._users) >= self.min_player and self._users.ready
 
     def join(self, player: Player) -> None:
         """
@@ -28,8 +36,8 @@ class Table(Session):
         :return: None or raised an error if the table is already full.
         :rtype: None
         """
-        if len(self.users) < self.max_player:
-            self.users.append(player)
+        if len(self._users) < self.max_player:
+            self._users.append(player)
         else:
             raise TableFullError(f'Table with ID: {self.session_id} is already full.')
 
@@ -41,4 +49,24 @@ class Table(Session):
         :return: None
         :rtype: None
         """
-        self.users.remove(player)
+        self._users.remove(player)
+
+    def player_ready(self, player) -> None:
+        """
+        Player says they is ready.
+        :param player: player who is ready
+        :type player: Player
+        :return: None
+        :rtype: None
+        """
+        self._users.player_ready(player)
+
+    def player_unready(self, player) -> None:
+        """
+        Player says they is not ready.
+        :param player: player who is not ready
+        :type player: Player
+        :return: None
+        :rtype: None
+        """
+        self._users.player_unready(player)
