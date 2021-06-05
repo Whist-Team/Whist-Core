@@ -1,7 +1,7 @@
 """DAO of session."""
 from whist.core.error.table_error import TableFullError
-from whist.core.player import Player
-from whist.core.session import Session
+from whist.core.user.player import Player
+from whist.core.session.session import Session
 
 
 class Table(Session):

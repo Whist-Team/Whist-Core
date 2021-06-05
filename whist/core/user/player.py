@@ -1,7 +1,7 @@
 """DAO of user."""
 from typing import Optional
 
-from whist.core.user import User
+from whist.core.user.user import User
 
 
 class Player(User):

@@ -1,5 +1,5 @@
 from tests.whist.core.base_test_case import BaseTestCase
-from whist.core.userlist import UserList
+from whist.core.session.userlist import UserList
 
 
 class UserListTestCase(BaseTestCase):

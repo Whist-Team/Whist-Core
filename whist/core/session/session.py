@@ -1,7 +1,7 @@
 """DTO of a game room"""
 from pydantic import BaseModel
 
-from whist.core.userlist import UserList
+from whist.core.session.userlist import UserList
 
 
 class Session(BaseModel):

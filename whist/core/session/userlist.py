@@ -1,7 +1,7 @@
 """
 Handles users joining and leaving a table.
 """
-from whist.core.player import Player
+from whist.core.user.player import Player
 
 
 class UserList:
