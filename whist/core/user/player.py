@@ -22,12 +22,6 @@ class Player(User):
             return False
         return other.user_id == self.user_id
 
-    def __str__(self):
-        return self.username
-
-    def __hash__(self):
-        return hash(self.username)
-
     @staticmethod
     def get_player(database: dict, username: str) -> Optional['Player']:
         """
