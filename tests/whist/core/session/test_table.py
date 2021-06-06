@@ -37,7 +37,7 @@ class TableTestCase(BaseTestCase):
 
     def test_join_full_team(self):
         self.table.team_size = 1
-        player = Player(user_id=2, username='hank', level=1)
+        player = Player(user_id=2, username='hank', rating=1)
         self.table.join(self.player)
         self.table.join_team(self.player, 1)
         with self.assertRaises(TeamFullError):

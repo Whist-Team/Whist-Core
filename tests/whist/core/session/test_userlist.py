@@ -45,7 +45,7 @@ class UserListTestCase(BaseTestCase):
         self.assertEqual(1, self.user_list.team_size(1))
 
     def test_team_size_two_teams(self):
-        player = Player(user_id=2, username='hank', level=1)
+        player = Player(user_id=2, username='hank', rating=1)
         self.user_list.append(self.player)
         self.user_list.append(player)
         self.user_list.change_team(self.player, 1)
@@ -54,7 +54,7 @@ class UserListTestCase(BaseTestCase):
         self.assertEqual(1, self.user_list.team_size(2))
 
     def test_team_size_same_team(self):
-        player = Player(user_id=2, username='hank', level=1)
+        player = Player(user_id=2, username='hank', rating=1)
         self.user_list.append(self.player)
         self.user_list.append(player)
         self.user_list.change_team(self.player, 1)
