@@ -1,6 +1,6 @@
 import unittest
 
-from whist.core.player import Player
+from whist.core.user.player import Player
 
 USERNAME = 'honk'
 

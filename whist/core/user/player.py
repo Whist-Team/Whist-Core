@@ -1,7 +1,7 @@
 """DAO of user."""
 from typing import Optional
 
-from whist.core.user import User
+from whist.core.user.user import User
 
 
 class Player(User):
@@ -21,6 +21,12 @@ class Player(User):
         if not isinstance(other, Player):
             return False
         return other.user_id == self.user_id
+
+    def __str__(self):
+        return self.username
+
+    def __hash__(self):
+        return hash(self.username)
 
     @staticmethod
     def get_player(database: dict, username: str) -> Optional['Player']:
