@@ -1,7 +1,7 @@
 import unittest
 
-from whist.core.player import Player
 from whist.core.scoring.team import Team
+from whist.core.user.player import Player
 
 
 class ScoringBaseTestCase(unittest.TestCase):

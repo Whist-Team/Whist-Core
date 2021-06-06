@@ -1,7 +1,7 @@
 """DAO of team."""
 from pydantic import BaseModel
 
-from whist.core.player import Player
+from whist.core.user.player import Player
 
 
 class Team(BaseModel):

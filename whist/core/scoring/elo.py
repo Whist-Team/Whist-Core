@@ -1,9 +1,9 @@
 """
 Elo Rating Calculator
 """
-from whist.core.player import Player
 from whist.core.scoring.score_card import ScoreCard
 from whist.core.scoring.team import Team
+from whist.core.user.player import Player
 
 
 # pylint: disable=too-few-public-methods
