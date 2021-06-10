@@ -4,7 +4,7 @@ from whist.core.scoring.team import Team
 from whist.core.user.player import Player
 
 
-class ScoringBaseTestCase(unittest.TestCase):
+class TeamBaseTestCase(unittest.TestCase):
     def setUp(self) -> None:
         player_a = Player(user_id=2, username='a', rating=1600)
         player_b = Player(user_id=3, username='b', rating=1800)

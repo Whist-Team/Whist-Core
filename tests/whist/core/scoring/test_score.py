@@ -1,8 +1,8 @@
-from tests.whist.core.scoring.scoring_base_test_case import ScoringBaseTestCase
+from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.scoring.score import Score
 
 
-class ScoreTestCase(ScoringBaseTestCase):
+class ScoreTestCase(TeamBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.score = Score([self.team_a, self.team_b], [7, 6])

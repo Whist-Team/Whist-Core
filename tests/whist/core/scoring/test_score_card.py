@@ -1,9 +1,9 @@
-from tests.whist.core.scoring.scoring_base_test_case import ScoringBaseTestCase
+from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.scoring.score import Score
 from whist.core.scoring.score_card import ScoreCard
 
 
-class ScoreCardTestCase(ScoringBaseTestCase):
+class ScoreCardTestCase(TeamBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.score_card = ScoreCard()
