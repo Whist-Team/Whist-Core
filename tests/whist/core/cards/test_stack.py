@@ -18,3 +18,6 @@ class StackTestCase(unittest.TestCase):
 
     def test_winner_suit(self):
         self.assertEqual(self.ace_hearts, self.stack.winner_card(Suit.SPADES))
+
+    def test_winner_trump(self):
+        self.assertEqual(self.seven_club, self.stack.winner_card(Suit.CLUBS))
