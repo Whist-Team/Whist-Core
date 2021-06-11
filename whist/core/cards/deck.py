@@ -2,7 +2,7 @@
 
 from typing import Iterable, final, Iterator, Any
 
-from whist.core.card import Card, Suit, Rank
+from whist.core.cards.card import Card, Suit, Rank
 
 
 @final
