@@ -24,3 +24,9 @@ class StackTestCase(unittest.TestCase):
 
     def test_lem(self):
         self.assertEqual(4, len(self.stack))
+
+    def test_index(self):
+        for index, card in enumerate([self.king_hearts, self.seven_club, self.ten_diamond,
+                                      self.ace_hearts]):
+            turn = self.stack.get_turn(card)
+            self.assertEqual(index, turn, msg=f'Turn should be {index}, but was {turn}.')
