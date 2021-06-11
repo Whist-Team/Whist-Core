@@ -31,3 +31,7 @@ class StackTestCase(unittest.TestCase):
                                       self.ace_hearts]):
             turn = self.stack.get_turn(card)
             self.assertEqual(index, turn, msg=f'Turn should be {index}, but was {turn}.')
+
+    def test_double_add(self):
+        with self.assertRaises(KeyError):
+            self.stack.add(self.seven_club)
