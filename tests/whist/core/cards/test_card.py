@@ -1,6 +1,6 @@
 import unittest
 
-from whist.core.card import Suit, Rank, Card
+from whist.core.cards.card import Suit, Rank, Card
 
 
 class CardTestCase(unittest.TestCase):

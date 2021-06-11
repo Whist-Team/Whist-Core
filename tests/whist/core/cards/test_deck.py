@@ -1,7 +1,7 @@
 import unittest
 
-from whist.core.card import Card, Suit, Rank
-from whist.core.deck import Deck
+from whist.core.cards.card import Card, Suit, Rank
+from whist.core.cards.deck import Deck
 
 
 class DeckTestCase(unittest.TestCase):
