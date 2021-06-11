@@ -5,7 +5,9 @@ from whist.core.cards.card import Card, Suit
 
 class Stack:
     """An ordered collection of cards"""
-    __cards: list[Card] = []
+
+    def __init__(self):
+        self.__cards: list[Card] = []
 
     def __len__(self):
         return len(self.__cards)
