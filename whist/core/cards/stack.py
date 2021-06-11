@@ -6,6 +6,9 @@ class Stack:
     """An ordered collection of cards"""
     __cards: list[Card] = []
 
+    def __len__(self):
+        return len(self.__cards)
+
     def add(self, card: Card) -> None:
         """
         Put card on top of stack
