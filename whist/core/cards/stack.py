@@ -1,3 +1,4 @@
+"""Collection of cards"""
 from whist.core.cards.card import Card, Suit
 
 
