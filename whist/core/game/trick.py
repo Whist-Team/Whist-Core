@@ -30,7 +30,8 @@ class Trick:
     def winner(self) -> PlayerAtTable:
         """
         Player how won the trick.
-        :return: Player instance of the winner if the trick is done. Else raises TrickNotDoneWarning
+        :return: Player instance of the winner if the trick is done.
+        Else raises TrickNotDoneWarning
         :rtype: Player
         """
         if not self.done:
