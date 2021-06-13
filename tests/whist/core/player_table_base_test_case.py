@@ -4,10 +4,9 @@ from whist.core.game.player_at_table import PlayerAtTable
 
 
 class PlayerAtTableBaseTestCase(TeamBaseTestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
+    def setUp(self) -> None:
         super().setUpClass()
-        cls.play_order: list[PlayerAtTable] = [PlayerAtTable(cls.player_a, Hand.empty()),
-                                               PlayerAtTable(cls.player_c, Hand.empty()),
-                                               PlayerAtTable(cls.player_b, Hand.empty()),
-                                               PlayerAtTable(cls.player_d, Hand.empty())]
+        self.play_order: list[PlayerAtTable] = [PlayerAtTable(self.player_a, Hand.empty()),
+                                                PlayerAtTable(self.player_c, Hand.empty()),
+                                                PlayerAtTable(self.player_b, Hand.empty()),
+                                                PlayerAtTable(self.player_d, Hand.empty())]
