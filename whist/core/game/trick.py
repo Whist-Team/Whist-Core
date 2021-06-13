@@ -4,7 +4,7 @@ from whist.core.cards.stack import Stack
 from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
 from whist.core.game.legal_checker import LegalChecker
 from whist.core.game.player_at_table import PlayerAtTable
-from whist.core.game.warnings import TrickNotDoneWarning
+from whist.core.game.warnings import TrickNotDoneWarning, ServSuitFirstWarning
 from whist.core.user.player import Player
 
 
@@ -55,6 +55,7 @@ class Trick:
             raise TrickDoneError()
         if player != self._play_order[turn]:
             raise NotPlayersTurnError(player.player, self._play_order[turn].player)
-        LegalChecker.check_legal(player.hand, self._stack.lead)
+        if not LegalChecker.check_legal(player.hand, self._stack.lead):
+            raise ServSuitFirstWarning()
 
         self._stack.add(card)
