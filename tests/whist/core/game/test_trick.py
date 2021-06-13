@@ -8,6 +8,7 @@ from whist.core.game.warnings import TrickNotDoneWarning
 class TrickTestCase(PlayerAtTableBaseTestCase):
 
     def setUp(self) -> None:
+        super().setUp()
         self.trick = Trick(play_order=self.play_order, trump=Suit.CLUBS)
 
     def test_not_done(self):
