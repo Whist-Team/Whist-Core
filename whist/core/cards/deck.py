@@ -1,5 +1,5 @@
 """Collections of cards"""
-
+import random
 from typing import Iterable, final, Iterator, Any
 
 from whist.core.cards.card import Card, Suit, Rank
@@ -39,6 +39,16 @@ class Deck:
         :param card: card to remove
         """
         self.__cards.remove(card)
+
+    def pop_random(self) -> Card:
+        """
+        Removes one random card from deck.
+        :return: A card from deck.
+        :rtype: Card
+        """
+        card = random.sample(self.__cards, 1)[0]
+        self.remove(card)
+        return card
 
     def __contains__(self, card: Card) -> bool:
         return card in self.__cards
