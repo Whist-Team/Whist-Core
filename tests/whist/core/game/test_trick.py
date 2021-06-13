@@ -1,6 +1,8 @@
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.cards.card import Suit, Card, Rank
+from whist.core.cards.hand import Hand
 from whist.core.game.errors import TrickDoneError, NotPlayersTurnError
+from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.trick import Trick
 from whist.core.game.warnings import TrickNotDoneWarning
 
@@ -9,7 +11,10 @@ class TrickTestCase(TeamBaseTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.play_order = [cls.player_a, cls.player_c, cls.player_b, cls.player_d]
+        cls.play_order: list[PlayerAtTable] = [PlayerAtTable(cls.player_a, Hand.empty()),
+                                               PlayerAtTable(cls.player_c, Hand.empty()),
+                                               PlayerAtTable(cls.player_b, Hand.empty()),
+                                               PlayerAtTable(cls.player_d, Hand.empty())]
 
     def setUp(self) -> None:
         self.trick = Trick(play_order=self.play_order, trump=Suit.CLUBS)
@@ -40,7 +45,7 @@ class TrickTestCase(TeamBaseTestCase):
     def test_not_turn(self):
         ace_spades = Card(Suit.SPADES, Rank.A)
         with self.assertRaises(NotPlayersTurnError):
-            self.trick.play_card(self.player_b, ace_spades)
+            self.trick.play_card(self.play_order[1], ace_spades)
 
     def _play_four_cards(self):
         ace_heart = Card(Suit.HEARTS, Rank.A)
