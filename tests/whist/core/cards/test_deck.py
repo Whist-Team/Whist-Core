@@ -39,4 +39,8 @@ class DeckTestCase(unittest.TestCase):
         deck = Deck(cards)
         self.assertSetEqual(cards, {card for card in deck})
 
-
+    def test_pop_random(self):
+        full_deck = Deck.full()
+        popped_card = full_deck.pop_random()
+        self.assertNotIn(popped_card, full_deck)
+        self.assertIsInstance(popped_card, Card)
