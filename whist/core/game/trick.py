@@ -2,7 +2,8 @@
 from whist.core.cards.card import Card, Suit
 from whist.core.cards.stack import Stack
 from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
-from whist.core.game.warnings import TrickNotDoneWarning
+from whist.core.game.player_at_table import PlayerAtTable
+from whist.core.game.warnings import TrickNotDoneWarning, ServSuitFirstWarning
 from whist.core.user.player import Player
 
 
@@ -11,8 +12,8 @@ class Trick:
     One round of where every player plays one card.
     """
 
-    def __init__(self, play_order: list[Player], trump: Suit):
-        self._play_order = play_order
+    def __init__(self, play_order: list[PlayerAtTable], trump: Suit):
+        self._play_order: list[PlayerAtTable] = play_order
         self._stack: Stack = Stack()
         self._trump = trump
 
@@ -26,7 +27,7 @@ class Trick:
         return len(self._stack) == len(self._play_order)
 
     @property
-    def winner(self) -> Player:
+    def winner(self) -> PlayerAtTable:
         """
         Player how won the trick.
         :return: Player instance of the winner if the trick is done. Else raises TrickNotDoneWarning
@@ -37,7 +38,7 @@ class Trick:
         winner_card = self._stack.winner_card(self._trump)
         return self._play_order[self._stack.get_turn(winner_card)]
 
-    def play_card(self, player: Player, card: Card) -> None:
+    def play_card(self, player: PlayerAtTable, card: Card) -> None:
         """
         One player plays one card. Which is put on top of the stack.
         :param player: Player who wants to play a card.
@@ -52,5 +53,9 @@ class Trick:
         if turn == len(self._play_order):
             raise TrickDoneError()
         if player != self._play_order[turn]:
-            raise NotPlayersTurnError(player, self._play_order[turn])
+            raise NotPlayersTurnError(player.player, self._play_order[turn].player)
+        lead = self._stack.lead
+        if lead is not None and player.hand.contain_suit(lead.suit):
+            raise ServSuitFirstWarning()
+
         self._stack.add(card)
