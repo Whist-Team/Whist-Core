@@ -47,7 +47,8 @@ class Trick:
         :param card: Card which the player wants to play.
         :type card: Card
         :return: None if successful, else raises TrickDoneError if every player already played a
-        card. Or NotPlayersTurnError if a player attempts to play card although it is not they turn.
+        card.
+        Or NotPlayersTurnError if a player attempts to play card although it is not they turn.
         :rtype: None
         """
         turn = len(self._stack)
