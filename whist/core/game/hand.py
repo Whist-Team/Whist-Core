@@ -1,3 +1,4 @@
+"""Hand of whist"""
 import collections
 
 from whist.core.cards.card import Suit
@@ -8,12 +9,21 @@ from whist.core.game.warnings import TrickNotDoneWarning
 
 
 class Hand:
+    """
+    Hand of whist.
+    """
+
     def __init__(self, play_order: list[PlayerAtTable], trump: Suit):
         self._tricks: list[Trick] = []
         self._current_play_order: list[PlayerAtTable] = play_order
         self._trump = trump
 
     def deal(self) -> Trick:
+        """
+        Deals the hand and starts the first trick.
+        :return: the first trick
+        :rtype: Trick
+        """
         deck = Deck.full()
         trump = None
         while len(deck) > 0:
@@ -29,6 +39,11 @@ class Hand:
         return first_trick
 
     def next_trick(self) -> Trick:
+        """
+        Starts the next trick.
+        :return: the next trick
+        :rtype: Trick
+        """
         if not self._tricks[-1].done:
             raise TrickNotDoneWarning()
         self._winner_plays_first_card()

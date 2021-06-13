@@ -1,6 +1,9 @@
+"""Warnings during game phase."""
+
+
 class TrickNotDoneWarning(Warning):
-    pass
+    """The current trick is not done yet."""
 
 
 class ServSuitFirstWarning(Warning):
-    pass
+    """Player must serv the suit of the lead."""

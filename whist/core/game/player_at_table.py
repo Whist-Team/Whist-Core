@@ -1,8 +1,13 @@
+"""Player instance during the game phase."""
 from whist.core.cards.hand import Hand
 from whist.core.user.player import Player
 
 
 class PlayerAtTable:
+    """
+    Wraps the current hand and player instance.
+    """
+
     def __init__(self, player: Player, hand: Hand):
         self._player = player
         self._hand = hand

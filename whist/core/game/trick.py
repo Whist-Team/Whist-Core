@@ -5,7 +5,6 @@ from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
 from whist.core.game.legal_checker import LegalChecker
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.warnings import TrickNotDoneWarning, ServSuitFirstWarning
-from whist.core.user.player import Player
 
 
 class Trick:
