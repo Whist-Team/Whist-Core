@@ -1,3 +1,4 @@
+"""Hand held by player."""
 from typing import final, Iterable, Any, Iterator
 
 from whist.core.cards.card import Suit, Card
@@ -61,6 +62,11 @@ class Hand:
 
     @staticmethod
     def empty():
+        """
+        Creates a empty hand.
+        :return: empty hand
+        :rtype: Hand
+        """
         return Hand()
 
     def contain_suit(self, suit: Suit) -> bool:
