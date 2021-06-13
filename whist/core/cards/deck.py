@@ -5,7 +5,6 @@ from typing import Iterable, final, Iterator, Any
 from whist.core.cards.card import Card, Suit, Rank
 
 
-@final
 class Deck:
     """An unordered collection of cards"""
 
@@ -87,3 +86,20 @@ class Deck:
         :return: full deck
         """
         return Deck((Card(suit, rank) for suit in Suit for rank in Rank))
+
+
+@final
+class Hand(Deck):
+    """
+    Hand of player during a game.
+    """
+
+    def contain_suit(self, suit: Suit) -> bool:
+        """
+        Checks if a card of a suit is still in the hand.
+        :param suit: which should be checked
+        :type suit: Suit
+        :return: True if contains this suit else False
+        :rtype: bool
+        """
+        return any([card for card in self.__cards if card.suit == suit])
