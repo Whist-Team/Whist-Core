@@ -1,4 +1,4 @@
-from typing import final, Iterable
+from typing import final, Iterable, Any, Iterator
 
 from whist.core.cards.card import Suit, Card
 
@@ -19,6 +19,27 @@ class Hand:
             self.__cards = {*args[0]}
         else:
             self.__cards = {*args}
+
+    def __contains__(self, card: Card) -> bool:
+        return card in self.__cards
+
+    def __len__(self):
+        return len(self.__cards)
+
+    def __iter__(self) -> Iterator[Card]:
+        return iter(self.__cards)
+
+    def __str__(self) -> str:
+        return str(self.__cards)
+
+    def __repr__(self) -> str:
+        return f'Hand(cards={self.__cards!r})'
+
+    def __eq__(self, other: Any) -> bool:
+        if self.__class__ is other.__class__:
+            # pylint: disable=protected-access
+            return self.__cards == other.__cards
+        return NotImplemented
 
     def add(self, card: Card) -> None:
         """
