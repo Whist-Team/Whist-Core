@@ -9,9 +9,14 @@ class Game(BaseModel):
     """
     One Game of whist.
     """
-    teams: list[Team] = []
-    win_score: int = 3
-    score_card: ScoreCard = ScoreCard()
+
+    def __init__(self, teams=None):
+        super().__init__()
+        if teams is None:
+            teams = []
+        self.teams: list[Team] = teams
+        self.win_score: int = 3
+        self.score_card: ScoreCard = ScoreCard()
 
     @property
     def done(self):
