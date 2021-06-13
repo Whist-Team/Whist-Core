@@ -1,4 +1,5 @@
 """Collection of cards"""
+from typing import Optional
 
 from whist.core.cards.card import Card, Suit
 
@@ -11,6 +12,17 @@ class Stack:
 
     def __len__(self):
         return len(self.__cards)
+
+    @property
+    def lead(self) -> Optional[Card]:
+        """
+        Returns the first card played.
+        :return: The first card played if it exists. Else none.
+        :rtype: Card or None
+        """
+        if len(self.__cards) == 0:
+            return None
+        return self.__cards[0]
 
     def add(self, card: Card) -> None:
         """
