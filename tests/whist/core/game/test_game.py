@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.game import Game
@@ -16,6 +16,12 @@ class GameTestCase(TeamBaseTestCase):
 
     def test_second_hand(self):
         first_hand = self.game.next_hand()
-        with patch('whist.core.game.hand.Hand.done', return_value=True):
+        with patch('whist.core.game.hand.Hand.done', new_callable=PropertyMock(return_value=True)):
             second_hand = self.game.next_hand()
         self.assertNotEqual(first_hand, second_hand)
+
+    def test_hand_not_done(self):
+        first_hand = self.game.next_hand()
+        with patch('whist.core.game.hand.Hand.done', new_callable=PropertyMock(return_value=False)):
+            second_hand = self.game.next_hand()
+        self.assertEqual(first_hand, second_hand)
