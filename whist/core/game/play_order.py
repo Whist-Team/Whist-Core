@@ -13,6 +13,11 @@ class PlayOrder:
                 player_index = team_index + player_index * len(teams)
                 self._play_order[player_index] = PlayerAtTable(player, Hand())
 
+    def __eq__(self, other):
+        if not isinstance(other, PlayOrder):
+            return False
+        return self._play_order == other._play_order
+
     def next_order(self) -> 'PlayOrder':
         return PlayOrder._new_order(self)
 
