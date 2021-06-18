@@ -28,3 +28,6 @@ class ScoreCardTestCase(TeamBaseTestCase):
         score = Score([self.team_a, self.team_b], [6, 7])
         self.score_card.add_score(score)
         self.assertEqual(2, self.score_card.max)
+
+    def test_max_without_hand(self):
+        self.assertEqual(0, self.score_card.max)
