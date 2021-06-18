@@ -4,7 +4,15 @@ from whist.core.game.hand import Hand
 
 
 class GameTestCase(TeamBaseTestCase):
+    def setUp(self):
+        super().setUp()
+        self.game = Game([self.team_a, self.team_b])
+
     def test_first_hand(self):
-        game = Game([self.team_a, self.team_b])
-        current_hand = game.next_hand()
+        current_hand = self.game.next_hand()
         self.assertIsInstance(current_hand, Hand)
+
+    def test_second_hand(self):
+        first_hand = self.game.next_hand()
+        second_hand = self.game.next_hand()
+        self.assertNotEqual(first_hand, second_hand)
