@@ -1,3 +1,4 @@
+"""Ring buffer of players at the table."""
 from whist.core.cards.hand import Hand
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.team import Team
