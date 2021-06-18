@@ -12,10 +12,8 @@ class Game:
     One Game of whist.
     """
 
-    def __init__(self, teams=None):
+    def __init__(self, teams: list[Team]):
         super().__init__()
-        if teams is None:
-            teams = []
         self.teams: list[Team] = teams
         self.win_score: int = 3
         self.score_card: ScoreCard = ScoreCard()
