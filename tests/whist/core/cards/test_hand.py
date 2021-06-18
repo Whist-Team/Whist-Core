@@ -45,3 +45,13 @@ class HandTestCase(unittest.TestCase):
         cards = {self.spades_king, queen_diamonds}
         hand = Hand(cards)
         self.assertSetEqual(cards, {card for card in hand})
+
+    def test_contain_suit(self):
+        self.hand.add(self.spades_king)
+        self.assertTrue(self.hand.contain_suit(Suit.SPADES))
+
+    def test_not_contain_suit(self):
+        self.assertFalse(self.hand.contain_suit(Suit.SPADES))
+        self.assertFalse(self.hand.contain_suit(Suit.HEARTS))
+        self.assertFalse(self.hand.contain_suit(Suit.CLUBS))
+        self.assertFalse(self.hand.contain_suit(Suit.DIAMONDS))
