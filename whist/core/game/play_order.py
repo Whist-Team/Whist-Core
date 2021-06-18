@@ -19,9 +19,17 @@ class PlayOrder:
         return self._play_order == other._play_order
 
     def next_order(self) -> 'PlayOrder':
+        """
+        Create the order for the next hand.
+        :rtype: PlayOrder
+        """
         return PlayOrder._new_order(self)
 
     def next_player(self) -> PlayerAtTable:
+        """
+        Retrieves the next player who's turn it is.
+        :rtype: PlayOrder
+        """
         player: PlayerAtTable = self._play_order[self._next_player]
         self._next_player = (self._next_player + 1) % self._size
         return player
