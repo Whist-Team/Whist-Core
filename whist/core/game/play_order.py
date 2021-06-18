@@ -5,6 +5,10 @@ from whist.core.scoring.team import Team
 
 
 class PlayOrder:
+    """
+    Iterates over the players at the table.
+    """
+
     def __init__(self, teams: list[Team]):
         self._size = len(teams) * len(teams[0].players)
         self._next_player = 0
