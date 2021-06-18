@@ -1,0 +1,18 @@
+from tests.whist.core.team_base_test_case import TeamBaseTestCase
+from whist.core.game.play_order import PlayOrder
+
+
+class PlayOrderTestCase(TeamBaseTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.order = PlayOrder([self.team_a, self.team_b])
+
+    def test_next_order(self):
+        self.order.next_order()
+        self.assertEqual(self.team_b.players[0], self.order.next_player())
+
+    def test_next_player(self):
+        self.assertTrue(self.team_a.players[0], self.order.next_player())
+        self.assertTrue(self.team_b.players[0], self.order.next_player())
+        self.assertTrue(self.team_a.players[1], self.order.next_player())
+        self.assertTrue(self.team_b.players[1], self.order.next_player())
