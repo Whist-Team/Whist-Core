@@ -24,7 +24,7 @@ class ScoreCard(BaseModel):
         """
         score_by_team: dict[Team, int] = {}
         for hand in self.hands:
-            team = max(hand.hand_score.items(), key=lambda x: x[1])[0]
+            team = hand.winner
             if team in score_by_team:
                 score_by_team[team] += 1
             else:

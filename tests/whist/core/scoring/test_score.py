@@ -13,3 +13,6 @@ class ScoreTestCase(TeamBaseTestCase):
     def test_won(self):
         self.assertTrue(self.score.won(self.team_a))
         self.assertFalse(self.score.won(self.team_b))
+
+    def test_winner(self):
+        self.assertEqual(self.team_a, self.score.winner)
