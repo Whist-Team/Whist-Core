@@ -29,7 +29,7 @@ class ScoreCard(BaseModel):
                 score_by_team[team] += 1
             else:
                 score_by_team[team] = 1
-        return max(score_by_team.values())
+        return 0 if len(score_by_team) == 0 else max(score_by_team.values())
 
     def add_score(self, score: Score) -> None:
         """
