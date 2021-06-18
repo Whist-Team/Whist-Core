@@ -34,6 +34,7 @@ class PlayOrder:
         self._next_player = (self._next_player + 1) % self._size
         return player
 
+    # pylint: disable=protected-access
     @classmethod
     def _new_order(cls, old_order: 'PlayOrder'):
         instance = cls.__new__(cls)
