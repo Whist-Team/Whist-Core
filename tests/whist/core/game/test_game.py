@@ -22,6 +22,7 @@ class GameTestCase(TeamBaseTestCase):
 
     def test_hand_not_done(self):
         first_hand = self.game.next_hand()
-        with patch('whist.core.game.hand.Hand.done', new_callable=PropertyMock(return_value=False)):
+        with patch('whist.core.game.hand.Hand.done',
+                   new_callable=PropertyMock(return_value=False)):
             second_hand = self.game.next_hand()
         self.assertEqual(first_hand, second_hand)
