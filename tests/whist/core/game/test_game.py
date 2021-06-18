@@ -26,3 +26,11 @@ class GameTestCase(TeamBaseTestCase):
                    new_callable=PropertyMock(return_value=False)):
             second_hand = self.game.next_hand()
         self.assertEqual(first_hand, second_hand)
+
+    def test_done(self):
+        with patch('whist.core.scoring.score_card.ScoreCard.max',
+                   new_callable=PropertyMock(return_value=4)):
+            self.assertTrue(self.game.done)
+
+    def test_not_done(self):
+        self.assertFalse(self.game.done)
