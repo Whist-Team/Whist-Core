@@ -13,7 +13,11 @@ class Rubber(BaseModel):
     games: list[Game] = []
     teams: list[Team]
 
+    # pylint: disable=too-few-public-methods
     class Config:
+        """
+        Configuration class for base model to allow fields which are not pydantic models.
+        """
         arbitrary_types_allowed = True
 
     @property
