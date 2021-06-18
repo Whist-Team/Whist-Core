@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.game import Game
 from whist.core.game.hand import Hand
@@ -14,5 +16,6 @@ class GameTestCase(TeamBaseTestCase):
 
     def test_second_hand(self):
         first_hand = self.game.next_hand()
-        second_hand = self.game.next_hand()
+        with patch('whist.core.game.hand.Hand.done', return_value=True):
+            second_hand = self.game.next_hand()
         self.assertNotEqual(first_hand, second_hand)
