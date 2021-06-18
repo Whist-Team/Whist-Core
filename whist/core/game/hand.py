@@ -1,13 +1,11 @@
 """Hand of whist"""
 import collections
-from typing import Union
 
-from whist.core.cards import hand
 from whist.core.cards.deck import Deck
+from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.trick import Trick
 from whist.core.game.warnings import TrickNotDoneWarning
-from whist.core.user.player import Player
 
 
 class Hand:
@@ -15,13 +13,18 @@ class Hand:
     Hand of whist.
     """
 
-    def __init__(self, play_order: list[Union[Player, PlayerAtTable]]):
+    def __init__(self, play_order: PlayOrder):
         self._tricks: list[Trick] = []
-        for index, player in enumerate(play_order):
-            if isinstance(player, Player):
-                play_order[index] = PlayerAtTable(player, hand.Hand.empty())
-        self._current_play_order: list[PlayerAtTable] = play_order
+        self._current_play_order: PlayOrder = play_order
         self._trump = None
+
+    @property
+    def done(self):
+        return len(self._tricks) == 13 and self._tricks[-1]
+
+    @property
+    def next_play_order(self):
+        return self._current_play_order.next_order()
 
     def deal(self) -> Trick:
         """
