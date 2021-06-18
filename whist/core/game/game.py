@@ -2,6 +2,7 @@
 from typing import Optional
 
 from whist.core.game.hand import Hand
+from whist.core.game.play_order import PlayOrder
 from whist.core.scoring.score_card import ScoreCard
 from whist.core.scoring.team import Team
 
@@ -21,12 +22,16 @@ class Game:
         self._current_hand: Optional[Hand] = None
 
     def next_hand(self) -> Hand:
+        """
+        Checks if the current hand is done and if so will return the next hand. If not it will
+        return the current hand.
+        :rtype: Hand
+        """
         if self._current_hand is None:
-            play_order = [None] * 4
-            for team_index, team in enumerate(self.teams):
-                for player_index, player in enumerate(team.players):
-                    play_order[team_index + player_index * len(self.teams)] = player
-            self._current_hand = Hand(play_order)
+            self._current_hand = Hand(PlayOrder(self.teams))
+        elif self._current_hand.done:
+            next_order = self._current_hand.next_play_order
+            self._current_hand = Hand(next_order)
         return self._current_hand
 
     @property
