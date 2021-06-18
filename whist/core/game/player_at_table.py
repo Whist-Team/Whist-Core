@@ -17,6 +17,9 @@ class PlayerAtTable:
             return False
         return self._player == other._player
 
+    def __repr__(self):
+        return f'PlayerAtTable: {self._player}'
+
     @property
     def player(self):
         """
