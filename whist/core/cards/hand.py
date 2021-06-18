@@ -79,4 +79,4 @@ class Hand:
         """
         if len(self.__cards) == 0:
             return False
-        return any([card for card in self.__cards if card.suit == suit])
+        return any((card for card in self.__cards if card.suit == suit))
