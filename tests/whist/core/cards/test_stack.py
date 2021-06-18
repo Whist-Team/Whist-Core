@@ -35,3 +35,7 @@ class StackTestCase(unittest.TestCase):
     def test_double_add(self):
         with self.assertRaises(KeyError):
             self.stack.add(self.seven_club)
+
+    def test_turn_card_not_in(self):
+        with self.assertRaises(KeyError):
+            self.stack.get_turn(Card(Suit.CLUBS, Rank.NUM_8))
