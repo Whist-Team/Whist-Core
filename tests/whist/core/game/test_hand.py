@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 from tests.whist.core.player_table_base_test_case import PlayerAtTableBaseTestCase
-from whist.core.cards.card import Suit
 from whist.core.game.hand import Hand
 from whist.core.game.trick import Trick
 from whist.core.game.warnings import TrickNotDoneWarning
@@ -10,7 +9,7 @@ from whist.core.game.warnings import TrickNotDoneWarning
 class HandTestCase(PlayerAtTableBaseTestCase):
     def setUp(self):
         super().setUp()
-        self.hand = Hand(self.play_order, Suit.HEARTS)
+        self.hand = Hand(self.play_order)
 
     def test_first_trick(self):
         first_trick = self.hand.deal()
