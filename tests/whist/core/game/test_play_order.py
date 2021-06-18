@@ -8,8 +8,8 @@ class PlayOrderTestCase(TeamBaseTestCase):
         self.order = PlayOrder([self.team_a, self.team_b])
 
     def test_next_order(self):
-        self.order.next_order()
-        self.assertEqual(self.team_b.players[0], self.order.next_player().player)
+        next_order: PlayOrder = self.order.next_order()
+        self.assertEqual(self.team_b.players[0], next_order.next_player().player)
 
     def test_next_player(self):
         self.assertTrue(self.team_a.players[0], self.order.next_player().player)

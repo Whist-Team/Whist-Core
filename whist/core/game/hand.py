@@ -19,11 +19,20 @@ class Hand:
         self._trump = None
 
     @property
-    def done(self):
+    def done(self) -> bool:
+        """
+        Check if the hand is done.
+        :return: True if the hand is done, else False
+        :rtype: bool
+        """
         return len(self._tricks) == 13 and self._tricks[-1]
 
     @property
-    def next_play_order(self):
+    def next_play_order(self) -> PlayOrder:
+        """
+        Returns the next order of player for next hand.
+        :rtype: PlayOrder
+        """
         return self._current_play_order.next_order()
 
     def deal(self) -> Trick:
