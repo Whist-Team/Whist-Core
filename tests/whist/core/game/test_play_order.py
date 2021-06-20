@@ -14,7 +14,7 @@ class PlayOrderTestCase(TeamBaseTestCase):
     def test_next_order_immutable(self):
         next_order: PlayOrder = self.order.next_order()
         second_next_order: PlayOrder = self.order.next_order()
-        self.assertEquals(next_order, second_next_order)
+        self.assertEqual(next_order, second_next_order)
 
     def test_next_player(self):
         self.assertTrue(self.team_a.players[0], self.order.next_player().player)
