@@ -46,7 +46,7 @@ class Deck:
         :return: A card from deck.
         :rtype: Card
         """
-        card = random.sample(self.__cards, 1)[0]
+        card = random.choice(list(self.__cards))
         self.remove(card)
         return card
 
