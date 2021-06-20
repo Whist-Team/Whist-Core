@@ -1,9 +1,9 @@
-from tests.whist.core.scoring.scoring_base_test_case import ScoringBaseTestCase
+from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.scoring.score import Score
 from whist.core.scoring.score_card import ScoreCard
 
 
-class ScoreCardTestCase(ScoringBaseTestCase):
+class ScoreCardTestCase(TeamBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.score_card = ScoreCard()
@@ -19,3 +19,15 @@ class ScoreCardTestCase(ScoringBaseTestCase):
         score = Score([self.team_a, self.team_b], [6, 7])
         self.score_card.add_score(score)
         self.assertEqual(0, self.score_card.won(self.team_a))
+
+    def test_max(self):
+        score = Score([self.team_a, self.team_b], [7, 6])
+        self.score_card.add_score(score)
+        score = Score([self.team_a, self.team_b], [6, 7])
+        self.score_card.add_score(score)
+        score = Score([self.team_a, self.team_b], [6, 7])
+        self.score_card.add_score(score)
+        self.assertEqual(2, self.score_card.max)
+
+    def test_max_without_hand(self):
+        self.assertEqual(0, self.score_card.max)

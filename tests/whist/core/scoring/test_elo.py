@@ -1,10 +1,10 @@
-from tests.whist.core.scoring.scoring_base_test_case import ScoringBaseTestCase
+from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.scoring.elo import EloRater
 from whist.core.scoring.score import Score
 from whist.core.scoring.score_card import ScoreCard
 
 
-class EloRaterTestCase(ScoringBaseTestCase):
+class EloRaterTestCase(TeamBaseTestCase):
 
     def test_rate_one_game(self):
         score_card = ScoreCard()

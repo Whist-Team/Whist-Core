@@ -16,6 +16,21 @@ class ScoreCard(BaseModel):
     def __len__(self):
         return len(self.hands)
 
+    @property
+    def max(self) -> int:
+        """
+        Returns the highest amount of hands won by either team.
+        :rtype: int
+        """
+        score_by_team: dict[Team, int] = {}
+        for hand in self.hands:
+            team = hand.winner
+            if team in score_by_team:
+                score_by_team[team] += 1
+            else:
+                score_by_team[team] = 1
+        return 0 if len(score_by_team) == 0 else max(score_by_team.values())
+
     def add_score(self, score: Score) -> None:
         """
         Add the score of one hand.

@@ -23,6 +23,14 @@ class Score(BaseModel):
     def __getitem__(self, item):
         return self.hand_score[item]
 
+    @property
+    def winner(self) -> Team:
+        """
+        Returns the winner team.
+        :rtype: Team
+        """
+        return max(self.hand_score.items(), key=lambda x: x[1])[0]
+
     def won(self, team: Team) -> bool:
         """
         Check if the team won that round.

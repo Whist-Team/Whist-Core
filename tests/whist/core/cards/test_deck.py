@@ -1,7 +1,7 @@
 import unittest
 
-from whist.core.card import Card, Suit, Rank
-from whist.core.deck import Deck
+from whist.core.cards.card import Card, Suit, Rank
+from whist.core.cards.deck import Deck
 
 
 class DeckTestCase(unittest.TestCase):
@@ -38,3 +38,9 @@ class DeckTestCase(unittest.TestCase):
         cards = {self.spades_king, queen_diamonds}
         deck = Deck(cards)
         self.assertSetEqual(cards, {card for card in deck})
+
+    def test_pop_random(self):
+        full_deck = Deck.full()
+        popped_card = full_deck.pop_random()
+        self.assertNotIn(popped_card, full_deck)
+        self.assertIsInstance(popped_card, Card)
