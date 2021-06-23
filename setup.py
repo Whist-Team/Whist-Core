@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='whist-core',
-    version='0.1.0rc1',
+    version='0.1.0rc2',
     author='Whist Team',
     description='Game implementation of Whist.',
     long_description=long_description,
@@ -22,6 +22,7 @@ setup(
     ],
     keywords='game whist',
     packages=find_packages(exclude=('tests*',)),
+    namespace_package=['whist'],
     python_requires='>=3.9',
     install_requires=[]
 )
