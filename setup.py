@@ -22,6 +22,7 @@ setup(
     ],
     keywords='game whist',
     packages=find_packages(exclude=('tests*',)),
+    namespace_package=['whist'],
     python_requires='>=3.9',
     install_requires=[]
 )
