@@ -1,5 +1,5 @@
 from tests.whist.core.base_test_case import BaseTestCase
-from whist.core.error.table_error import TeamFullError
+from whist.core.error.table_error import TeamFullError, TableFullError
 from whist.core.session.table import Table
 from whist.core.user.player import Player
 
@@ -42,3 +42,11 @@ class TableTestCase(BaseTestCase):
         self.table.join_team(self.player, 1)
         with self.assertRaises(TeamFullError):
             self.table.join_team(player, 1)
+
+    def test_join_full_table(self):
+        self.table.max_player = 1
+        player = Player(user_id=2, username='hank', rating=1)
+        self.table.join(self.player)
+        self.table.join_team(self.player, 1)
+        with self.assertRaises(TableFullError):
+            self.table.join(player)
