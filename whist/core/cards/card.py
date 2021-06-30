@@ -14,7 +14,7 @@ class _OrderedEnum(Enum):
 
         obj = object.__new__(cls)
         obj._value_ = value
-        # pylint: disable=protected-access
+        # pylint: disable=protected-access, unused-private-member
         obj.__ordinal = len(cls.__members__)
         return obj
 
