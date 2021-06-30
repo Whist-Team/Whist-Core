@@ -9,8 +9,6 @@ from whist.core.cards.card import Card, Suit, Rank
 class Deck:
     """An unordered collection of cards"""
 
-    __cards: set[Card]
-
     def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> None:
         """
         Constructor
