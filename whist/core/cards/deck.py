@@ -9,14 +9,13 @@ from whist.core.cards.card import Card, Suit, Rank
 class Deck:
     """An unordered collection of cards"""
 
-    __cards: set[Card]
-
     def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> None:
         """
         Constructor
 
         :param args: multiple cards or one card iterable
         """
+        self.__cards: set[Card]
         if len(args) == 1 and not isinstance(args[0], Card):
             self.__cards = {*args[0]}
         else:
