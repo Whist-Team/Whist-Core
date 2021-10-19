@@ -22,7 +22,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         # deliberately ignore illegal moves
         with patch('whist.core.game.legal_checker.LegalChecker.check_legal', return_value=True):
             for player in self.play_order:
-                card = player.hand._Hand__cards.pop()
+                card = player.hand._cards.pop()
                 first_trick.play_card(player, card)
         next_trick = self.hand.next_trick()
         for player in self.play_order:
