@@ -18,7 +18,7 @@ class Hand(CardContainer):
         :param card: card to add
         """
         if card in self._cards:
-            raise KeyError(f'{card} already in deck')
+            raise KeyError(f'{card} already in hand')
         self._cards.add(card)
 
     @staticmethod
