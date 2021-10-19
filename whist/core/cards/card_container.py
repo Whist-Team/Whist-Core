@@ -43,7 +43,7 @@ class CardContainer:
 
     def remove(self, card: Card) -> None:
         """
-        Remove a card from this deck.
+        Remove a card from this container.
 
         :param card: card to remove
         """
