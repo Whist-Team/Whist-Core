@@ -6,7 +6,7 @@ from whist.core.cards.card import Card
 
 class CardContainer:
     """
-    Super class for all class containing cards.
+    Super class for all class containing unordered cards.
     """
 
     def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> None:
