@@ -33,7 +33,7 @@ class CardContainer:
         return str(self._cards)
 
     def __repr__(self) -> str:
-        return f'Hand(cards={self._cards!r})'
+        return f'CardContainer(cards={self._cards!r})'
 
     def __eq__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
