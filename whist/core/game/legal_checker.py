@@ -21,4 +21,4 @@ class LegalChecker:
         :rtype: bool
         """
         first_card_played = lead is not None
-        return not (first_card_played and hand.contain_suit(lead.suit))
+        return not (first_card_played and hand.contains_suit(lead.suit))
