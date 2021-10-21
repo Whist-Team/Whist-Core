@@ -19,7 +19,7 @@ class Hand(CardContainer):
         """
         return Hand()
 
-    def contain_suit(self, suit: Suit) -> bool:
+    def contains_suit(self, suit: Suit) -> bool:
         """
         Checks if a card of a suit is still in the hand.
         :param suit: which should be checked

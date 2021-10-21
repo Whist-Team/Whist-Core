@@ -12,12 +12,12 @@ class HandTestCase(unittest.TestCase):
     def contains_suit(self):
         hand = Hand()
         hand.add(Card(Suit.HEARTS, Rank.NUM_8))
-        self.assertTrue(hand.contain_suit(Suit.HEARTS))
+        self.assertTrue(hand.contains_suit(Suit.HEARTS))
 
     def contains_not_suit(self):
         hand = Hand()
         hand.add(Card(Suit.CLUBS, Rank.NUM_8))
-        self.assertTrue(hand.contain_suit(Suit.HEARTS))
+        self.assertTrue(hand.contains_suit(Suit.HEARTS))
 
     def test_empty(self):
         self.assertEqual(Hand(), Hand.empty())
@@ -48,10 +48,10 @@ class HandTestCase(unittest.TestCase):
 
     def test_contain_suit(self):
         self.hand.add(self.spades_king)
-        self.assertTrue(self.hand.contain_suit(Suit.SPADES))
+        self.assertTrue(self.hand.contains_suit(Suit.SPADES))
 
     def test_not_contain_suit(self):
-        self.assertFalse(self.hand.contain_suit(Suit.SPADES))
-        self.assertFalse(self.hand.contain_suit(Suit.HEARTS))
-        self.assertFalse(self.hand.contain_suit(Suit.CLUBS))
-        self.assertFalse(self.hand.contain_suit(Suit.DIAMONDS))
+        self.assertFalse(self.hand.contains_suit(Suit.SPADES))
+        self.assertFalse(self.hand.contains_suit(Suit.HEARTS))
+        self.assertFalse(self.hand.contains_suit(Suit.CLUBS))
+        self.assertFalse(self.hand.contains_suit(Suit.DIAMONDS))
