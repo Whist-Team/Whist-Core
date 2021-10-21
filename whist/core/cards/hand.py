@@ -10,17 +10,6 @@ class Hand(CardContainer):
     """
     Hand of player during a game.
     """
-
-    def add(self, card: Card) -> None:
-        """
-        Add a card to this deck.
-
-        :param card: card to add
-        """
-        if card in self._cards:
-            raise KeyError(f'{card} already in hand')
-        self._cards.add(card)
-
     @staticmethod
     def empty():
         """
