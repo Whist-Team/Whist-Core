@@ -48,3 +48,13 @@ class CardContainer:
         :param card: card to remove
         """
         self._cards.remove(card)
+
+    def add(self, card: Card) -> None:
+        """
+        Add a card to this container.
+
+        :param card: card to add
+        """
+        if card in self._cards:
+            raise KeyError(f'{card} already in set')
+        self._cards.add(card)

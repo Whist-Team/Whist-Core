@@ -1,7 +1,7 @@
 """Hand held by player."""
 from typing import final
 
-from whist.core.cards.card import Suit, Card
+from whist.core.cards.card import Suit
 from whist.core.cards.card_container import CardContainer
 
 

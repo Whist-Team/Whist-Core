@@ -10,16 +10,6 @@ from whist.core.cards.card_container import CardContainer
 class Deck(CardContainer):
     """An unordered collection of cards"""
 
-    def add(self, card: Card) -> None:
-        """
-        Add a card to this deck.
-
-        :param card: card to add
-        """
-        if card in self._cards:
-            raise KeyError(f'{card} already in deck')
-        self._cards.add(card)
-
     def pop_random(self) -> Card:
         """
         Removes one random card from deck.
