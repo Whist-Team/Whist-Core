@@ -20,7 +20,7 @@ class Player(User):
     def __eq__(self, other):
         if not isinstance(other, Player):
             return False
-        return other.user_id == self.user_id
+        return other.username == self.username
 
     @staticmethod
     def get_player(database: dict, username: str) -> Optional['Player']:
