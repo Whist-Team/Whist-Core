@@ -8,5 +8,5 @@ class Session(BaseModel):
     """
     User can join to play a game of Whist.
     """
-    session_id: int
+    name: str
     users: UserList = UserList()

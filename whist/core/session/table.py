@@ -40,7 +40,7 @@ class Table(Session):
         if len(self.users) < self.max_player:
             self.users.append(player)
         else:
-            raise TableFullError(f'Table with ID: {self.session_id} is already full.')
+            raise TableFullError(f'Table with name: {self.name} is already full.')
 
     def leave(self, player: Player) -> None:
         """
