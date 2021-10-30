@@ -7,7 +7,7 @@ from whist.core.user.player import Player
 class TableTestCase(BaseTestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.table = Table(session_id=1, min_player=1, max_player=4)
+        self.table = Table(name='test table', min_player=1, max_player=4)
 
     def test_ready(self):
         self.table.join(self.player)
@@ -21,7 +21,7 @@ class TableTestCase(BaseTestCase):
         self.assertFalse(self.table.ready)
 
     def test_not_ready_min_player(self):
-        table = Table(session_id=1, min_player=2, max_player=4)
+        table = Table(name='test table', min_player=2, max_player=4)
         table.join(self.player)
         table.player_ready(self.player)
         self.assertFalse(table.ready)

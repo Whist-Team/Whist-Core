@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='whist-core',
-    version='0.1.0rc3',
+    version='0.1.0rc4',
     author='Whist Team',
     description='Game implementation of Whist.',
     long_description=long_description,
