@@ -137,9 +137,6 @@ class UserList(BaseModel):
         status: Status = self._get_status(player)
         status.ready = False
 
-    def _get_player(self, player) -> Player:
-        return self._get_entry(player).player
-
     def _get_status(self, player) -> Status:
         return self._get_entry(player).status
 
