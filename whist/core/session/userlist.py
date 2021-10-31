@@ -77,7 +77,7 @@ class UserList(BaseModel):
         :return: True if is member else false
         :rtype: bool
         """
-        return player.username in self.users.keys()
+        return player.username in self.users
 
     def append(self, player: Player):
         """
