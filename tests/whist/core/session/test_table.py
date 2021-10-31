@@ -50,3 +50,9 @@ class TableTestCase(BaseTestCase):
         self.table.join_team(self.player, 1)
         with self.assertRaises(TableFullError):
             self.table.join(player)
+
+    def test_conversion(self):
+        self.table.join(self.player)
+        table_dict = self.table.dict()
+        table = Table(**table_dict)
+        self.assertEqual(self.table, table)
