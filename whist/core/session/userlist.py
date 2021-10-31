@@ -1,7 +1,7 @@
 """
 Handles users joining and leaving a table.
 """
-from typing import Optional, List
+from typing import Optional, Dict
 
 from pydantic import BaseModel
 
@@ -21,7 +21,7 @@ class UserList(BaseModel):
     """
     User handler for tables.
     """
-    users: List[UserListEntry] = []
+    users: Dict[str, UserListEntry] = {}
 
     def __len__(self):
         return len(self.users)
@@ -33,7 +33,7 @@ class UserList(BaseModel):
         :return: players of the table
         :rtype: list[Player]
         """
-        users = [user.player for user in self.users]
+        users = [user.player for user in self.users.values()]
         return users
 
     @property
@@ -43,7 +43,7 @@ class UserList(BaseModel):
         :return: Ready or not
         :rtype: boolean
         """
-        for player in self.users:
+        for player in self.users.values():
             if not player.status.ready:
                 return False
         return True
@@ -67,7 +67,7 @@ class UserList(BaseModel):
         :return: Amount of members
         :rtype: int
         """
-        return len([entry for entry in self.users if entry.status.team == team])
+        return len([entry for entry in self.users.values() if entry.status.team == team])
 
     def is_joined(self, player: Player) -> bool:
         """
@@ -77,7 +77,7 @@ class UserList(BaseModel):
         :return: True if is member else false
         :rtype: bool
         """
-        return player in self.players
+        return player.username in self.users.keys()
 
     def append(self, player: Player):
         """
@@ -88,7 +88,7 @@ class UserList(BaseModel):
         :rtype: None
         """
         if not self.is_joined(player):
-            self.users.append(UserListEntry(player=player, status=Status()))
+            self.users.update({player.username: UserListEntry(player=player, status=Status())})
 
     def remove(self, player: Player):
         """
@@ -99,8 +99,7 @@ class UserList(BaseModel):
         :rtype: None
         """
         if self.is_joined(player):
-            entry = self._get_entry(player)
-            self.users.remove(entry)
+            self.users.pop(player.username)
 
     def change_team(self, player: Player, team: int) -> None:
         """
@@ -140,5 +139,5 @@ class UserList(BaseModel):
     def _get_status(self, player) -> Status:
         return self._get_entry(player).status
 
-    def _get_entry(self, player):
-        return [entry for entry in self.users if entry.player.username == player.username][0]
+    def _get_entry(self, player) -> UserListEntry:
+        return self.users[player.username]
