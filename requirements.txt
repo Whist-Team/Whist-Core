@@ -1,5 +1,5 @@
 pip==21.3.1
-setuptools==59.1.1
+setuptools==59.2.0
 wheel==0.37.0
 twine==3.6.0
 flake8==4.0.1
