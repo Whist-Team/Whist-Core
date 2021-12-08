@@ -12,5 +12,5 @@ formats:
 python:
  version: 3.9
  install:
- - requirements: requirements.txt
+ - requirements: requirements/requirements.txt
  - requirements: docs/source/requirements.txt
