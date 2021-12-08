@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
     
 with open('requirements/requirements.txt') as f:
     requirements = f.readlines()
-    
+
 setup(
     name='whist-core',
     version='0.1.0rc5',
