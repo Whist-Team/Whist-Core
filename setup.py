@@ -3,6 +3,9 @@ from setuptools import setup, find_packages
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
+with open('requirements/requirements.txt') as f:
+    requirements = f.readlines()
+
 setup(
     name='whist-core',
     version='0.1.0rc5',
@@ -25,5 +28,12 @@ setup(
     packages=find_packages(exclude=('tests*',)),
     namespace_package=['whist'],
     python_requires='>=3.9',
-    install_requires=[]
+    install_requires=requirements,
+    extras_require={
+        "testing": [
+            "pytest==6.2.5",
+            "pytest-cov==3.0.0",
+            "pytest-asyncio==0.16.0"
+        ]
+    },
 )
