@@ -56,3 +56,7 @@ class TableTestCase(BaseTestCase):
         table_dict = self.table.dict()
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
+
+    def test_start(self):
+        self.table.start()
+        self.assertTrue(self.table.started)
