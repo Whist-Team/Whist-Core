@@ -30,6 +30,10 @@ class TableTestCase(BaseTestCase):
         with self.assertRaises(PlayerNotJoinedError):
             self.table.player_ready(self.player)
 
+    def test_unready_player_not_joined(self):
+        with self.assertRaises(PlayerNotJoinedError):
+            self.table.player_unready(self.player)
+
     def test_join(self):
         self.table.join(self.player)
         self.assertEqual(1, len(self.table))
