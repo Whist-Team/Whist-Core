@@ -5,6 +5,7 @@ from typing import Optional, Dict
 
 from pydantic import BaseModel
 
+from whist.core.error.table_error import PlayerNotJoinedError
 from whist.core.user.player import Player
 from whist.core.user.status import Status
 
@@ -122,6 +123,8 @@ class UserList(BaseModel):
         :return: None
         :rtype: None
         """
+        if not self.is_joined(player):
+            raise PlayerNotJoinedError()
         status: Status = self._get_status(player)
         status.ready = True
 
