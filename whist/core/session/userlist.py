@@ -118,9 +118,9 @@ class UserList(BaseModel):
     def player_ready(self, player: Player):
         """
         Player says they is ready.
-        :param player: player who is ready
+        :param player: player who is ready, must be joined
         :type player: Player
-        :return: None
+        :return: Raised PlayerNotJoinedError if the player has not yet joined.
         :rtype: None
         """
         if not self.is_joined(player):
