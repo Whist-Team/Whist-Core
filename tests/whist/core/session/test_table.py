@@ -62,3 +62,8 @@ class TableTestCase(BaseTestCase):
         self.table.player_ready(self.player)
         self.table.start()
         self.assertTrue(self.table.started)
+
+    def test_not_ready_start(self):
+        self.table.join(self.player)
+        self.table.start()
+        self.assertFalse(self.table.started)
