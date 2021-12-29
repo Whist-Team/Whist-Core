@@ -1,4 +1,5 @@
 """DAO of session."""
+from pydantic import PrivateAttr
 from whist.core.error.table_error import TableFullError, TeamFullError
 from whist.core.session.session import Session
 from whist.core.user.player import Player
@@ -11,6 +12,7 @@ class Table(Session):
     min_player: int
     max_player: int
     team_size: int = 2
+    _started: bool = PrivateAttr(default=False)
 
     def __len__(self):
         """
@@ -28,6 +30,21 @@ class Table(Session):
         :rtype: boolean
         """
         return len(self.users) >= self.min_player and self.users.ready
+
+    @property
+    def started(self):
+        """
+        Flag if the current table has been started.
+        :return: True if it has been started else False.
+        """
+        return self._started
+
+    def start(self) -> None:
+        """
+        Starts the table, but will check if every player is ready first.
+        """
+        if self.ready:
+            self._started = True
 
     def join(self, player: Player) -> None:
         """
