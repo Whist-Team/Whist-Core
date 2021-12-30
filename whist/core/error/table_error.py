@@ -19,6 +19,13 @@ class TableNotReadyError(Exception):
     """
 
 
+class TableNotStartedError(Exception):
+    """
+    Is raised when a table is expected to have started, but it wasn't. Similar to
+    TableNotReadyError.
+    """
+
+
 class PlayerNotJoinedError(Exception):
     """
     Raised if a player has not yet joined the table.
