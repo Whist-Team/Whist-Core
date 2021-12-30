@@ -1,5 +1,5 @@
 from tests.whist.core.base_test_case import BaseTestCase
-from whist.core.error.table_error import TeamFullError, TableFullError
+from whist.core.error.table_error import TeamFullError, TableFullError, TableNotReadyError
 from whist.core.session.table import Table
 from whist.core.user.player import Player
 
@@ -65,5 +65,6 @@ class TableTestCase(BaseTestCase):
 
     def test_not_ready_start(self):
         self.table.join(self.player)
-        self.table.start()
+        with self.assertRaises(TableNotReadyError):
+            self.table.start()
         self.assertFalse(self.table.started)
