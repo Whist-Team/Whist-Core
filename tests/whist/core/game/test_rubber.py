@@ -27,8 +27,9 @@ class RubberTestCase(TeamBaseTestCase):
         for player in players:
             user_list.append(player)
         rubber = Rubber.create_random(user_list, 2, 2)
+
         self.assertEqual(2, len(rubber.teams))
-        self.assertIn(self.player_a, rubber.teams[0].players)
-        self.assertIn(self.player_b, rubber.teams[0].players)
-        self.assertIn(self.player_c, rubber.teams[1].players)
-        self.assertIn(self.player_d, rubber.teams[1].players)
+        self.assertEqual(2, len(rubber.teams[0].players))
+        self.assertEqual(2, len(rubber.teams[1].players))
+        self.assertNotIn(rubber.teams[0].players[0], rubber.teams[1].players)
+        self.assertNotIn(rubber.teams[0].players[1], rubber.teams[1].players)
