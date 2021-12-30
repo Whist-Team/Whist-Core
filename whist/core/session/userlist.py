@@ -58,7 +58,7 @@ class UserList(BaseModel):
         """
         player_by_team: list[list[Player]] = [[entry.player for entry in list(grp)]
                                               for k, grp in groupby(
-                self.users.values(),
+                list(sorted(self.users.values(), key=lambda x: x.status.team)),
                 lambda x: x.status.team)]
         teams: list[Team] = [Team(players=players) for players in player_by_team]
         return teams
