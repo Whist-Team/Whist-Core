@@ -19,3 +19,9 @@ class RubberTestCase(TeamBaseTestCase):
             _ = self.rubber.next_game()
             _ = self.rubber.next_game()
         self.assertTrue(self.rubber.done)
+
+    def test_create_random(self):
+        rubber = Rubber.create_random()
+        self.assertEqual(2, len(rubber.teams))
+        self.assertEqual(2, len(rubber.teams[0]))
+        self.assertEqual(2, len(rubber.teams[1]))
