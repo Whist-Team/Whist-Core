@@ -2,6 +2,7 @@ from unittest.mock import patch, PropertyMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.rubber import Rubber
+from whist.core.session.userlist import UserList
 
 
 class RubberTestCase(TeamBaseTestCase):
@@ -21,7 +22,13 @@ class RubberTestCase(TeamBaseTestCase):
         self.assertTrue(self.rubber.done)
 
     def test_create_random(self):
-        rubber = Rubber.create_random()
+        players = [self.player_a, self.player_b, self.player_c, self.player_d]
+        user_list = UserList()
+        for player in players:
+            user_list.append(player)
+        rubber = Rubber.create_random(user_list, 2, 2)
         self.assertEqual(2, len(rubber.teams))
-        self.assertEqual(2, len(rubber.teams[0]))
-        self.assertEqual(2, len(rubber.teams[1]))
+        self.assertIn(self.player_a, rubber.teams[0].players)
+        self.assertIn(self.player_b, rubber.teams[0].players)
+        self.assertIn(self.player_c, rubber.teams[1].players)
+        self.assertIn(self.player_d, rubber.teams[1].players)
