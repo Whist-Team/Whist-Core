@@ -1,6 +1,6 @@
 from tests.whist.core.base_test_case import BaseTestCase
 from whist.core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
-    TableNotStartedError
+    TableNotStartedError, PlayerNotJoinedError
 from whist.core.game.rubber import Rubber
 from whist.core.session.table import Table
 from whist.core.user.player import Player
@@ -27,6 +27,14 @@ class TableTestCase(BaseTestCase):
         table.join(self.player)
         table.player_ready(self.player)
         self.assertFalse(table.ready)
+
+    def test_ready_player_not_joined(self):
+        with self.assertRaises(PlayerNotJoinedError):
+            self.table.player_ready(self.player)
+
+    def test_unready_player_not_joined(self):
+        with self.assertRaises(PlayerNotJoinedError):
+            self.table.player_unready(self.player)
 
     def test_join(self):
         self.table.join(self.player)
