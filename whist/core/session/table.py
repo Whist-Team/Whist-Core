@@ -1,6 +1,7 @@
 """DAO of session."""
 from pydantic import PrivateAttr
-from whist.core.error.table_error import TableFullError, TeamFullError
+
+from whist.core.error.table_error import TableFullError, TeamFullError, TableNotReadyError
 from whist.core.session.session import Session
 from whist.core.user.player import Player
 
@@ -43,8 +44,9 @@ class Table(Session):
         """
         Starts the table, but will check if every player is ready first.
         """
-        if self.ready:
-            self._started = True
+        if not self.ready:
+            raise TableNotReadyError()
+        self._started = True
 
     def join(self, player: Player) -> None:
         """
