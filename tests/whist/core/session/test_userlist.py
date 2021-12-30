@@ -64,3 +64,14 @@ class UserListTestCase(BaseTestCase):
     def test_players(self):
         self.user_list.append(self.player)
         self.assertSetEqual({self.player}, set(self.user_list.players))
+
+    def test_teams(self):
+        self.user_list.append(self.player)
+        self.user_list.change_team(self.player, 1)
+        other_player = Player(user_id=1, username='miles', rating=1)
+        self.user_list.append(other_player)
+        self.user_list.change_team(other_player, 2)
+
+        teams = self.user_list.teams
+        self.assertIn(self.player, teams[0].players)
+        self.assertIn(other_player, teams[1].players)
