@@ -49,7 +49,7 @@ class Table(Session):
         Returns the current rubber
         :return: the latest rubber entry
         """
-        if self.started:
+        if not self.started:
             raise TableNotStartedError()
         return self._rubbers[-1]
 
