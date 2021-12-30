@@ -11,3 +11,9 @@ class TeamFullError(Exception):
     """
     Thrown if the team is already full.
     """
+
+
+class TableNotReadyError(Exception):
+    """
+    Is raised when a table requires all player to be ready, but at least one is not.
+    """
