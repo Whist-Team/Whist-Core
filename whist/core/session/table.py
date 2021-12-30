@@ -1,7 +1,4 @@
 """DAO of session."""
-from typing import List
-
-from pydantic import PrivateAttr
 
 from whist.core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError
@@ -17,8 +14,16 @@ class Table(Session):
     min_player: int
     max_player: int
     team_size: int = 2
-    _started: bool = PrivateAttr(default=False)
-    _rubbers: List[Rubber] = PrivateAttr(default=[])
+    _started: bool = False
+    _rubbers: list[Rubber] = []
+
+    # pylint: disable=too-few-public-methods
+    class Config:
+        """
+        Configures the table class to allow private field. PrivateAttr cannot be used here as
+        pylint does not detect the correct types in python 3.10.
+        """
+        underscore_attrs_are_private = True
 
     def __len__(self):
         """
