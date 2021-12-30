@@ -6,6 +6,7 @@ from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.trick import Trick
 from whist.core.game.warnings import TrickNotDoneWarning
+from whist.core.user.player import Player
 
 
 class Hand:
@@ -66,6 +67,9 @@ class Hand:
         next_trick = Trick(self._current_play_order, trump=self._trump)
         self._tricks.append(next_trick)
         return next_trick
+
+    def get_player(self, player: Player) -> PlayerAtTable:
+        return self._current_play_order.get_player(player)
 
     def _winner_plays_first_card(self):
         winner: PlayerAtTable = self._tricks[-1].winner

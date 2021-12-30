@@ -2,6 +2,7 @@
 from whist.core.cards.hand import Hand
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.team import Team
+from whist.core.user.player import Player
 
 
 class PlayOrder:
@@ -38,6 +39,10 @@ class PlayOrder:
         player: PlayerAtTable = self._play_order[self._next_player]
         self._next_player = (self._next_player + 1) % self._size
         return player
+
+    def get_player(self, player: Player) -> PlayerAtTable:
+        return [table_player for table_player in self._play_order
+                if table_player.player == player][0]
 
     # pylint: disable=protected-access
     @classmethod
