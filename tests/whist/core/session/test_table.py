@@ -1,5 +1,6 @@
 from tests.whist.core.base_test_case import BaseTestCase
-from whist.core.error.table_error import TeamFullError, TableFullError, TableNotReadyError
+from whist.core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
+    TableNotStartedError
 from whist.core.game.rubber import Rubber
 from whist.core.session.table import Table
 from whist.core.user.player import Player
@@ -70,3 +71,7 @@ class TableTestCase(BaseTestCase):
         with self.assertRaises(TableNotReadyError):
             self.table.start()
         self.assertFalse(self.table.started)
+
+    def test_rubber_without_start(self):
+        with self.assertRaises(TableNotStartedError):
+            _ = self.table.current_rubber
