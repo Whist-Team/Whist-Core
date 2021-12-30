@@ -1,4 +1,6 @@
 """DAO of session."""
+from typing import List
+
 from pydantic import PrivateAttr
 
 from whist.core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
@@ -16,7 +18,7 @@ class Table(Session):
     max_player: int
     team_size: int = 2
     _started: bool = PrivateAttr(default=False)
-    _rubbers: list[Rubber] = PrivateAttr(default=[])
+    _rubbers: List[Rubber] = PrivateAttr(default=[])
 
     def __len__(self):
         """
