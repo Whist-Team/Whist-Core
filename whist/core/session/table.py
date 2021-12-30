@@ -16,7 +16,7 @@ class Table(Session):
     max_player: int
     team_size: int = 2
     _started: bool = PrivateAttr(default=False)
-    _rubbers: list[Rubber] = PrivateAttr([])
+    _rubbers: list[Rubber] = PrivateAttr(default=[])
 
     def __len__(self):
         """
