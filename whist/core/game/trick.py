@@ -27,6 +27,13 @@ class Trick:
         return len(self._stack) == len(self._play_order)
 
     @property
+    def stack(self) -> Stack:
+        """
+        Retrieves the current stack.
+        """
+        return self._stack
+
+    @property
     def winner(self) -> PlayerAtTable:
         """
         Player how won the trick.
