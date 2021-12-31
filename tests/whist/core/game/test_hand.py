@@ -13,7 +13,10 @@ class HandTestCase(PlayerAtTableBaseTestCase):
 
     def test_first_trick(self):
         first_trick = self.hand.deal()
-        for player in self.play_order:
+        i = 0
+        while i < len(self.player_order):
+            i += 1
+            player = self.play_order.next_player()
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(first_trick, Trick)
 
@@ -21,11 +24,15 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         first_trick = self.hand.deal()
         # deliberately ignore illegal moves
         with patch('whist.core.game.legal_checker.LegalChecker.check_legal', return_value=True):
-            for player in self.play_order:
+            while not first_trick.done:
+                player = self.play_order.next_player()
                 card = player.hand._cards.pop()
                 first_trick.play_card(player, card)
         next_trick = self.hand.next_trick()
-        for player in self.play_order:
+        i = 0
+        while i < len(self.player_order):
+            i += 1
+            player = self.play_order.next_player()
             self.assertEqual(12, len(player.hand))
         self.assertNotEqual(first_trick, next_trick)
 

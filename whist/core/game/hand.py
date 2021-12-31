@@ -1,5 +1,4 @@
 """Hand of whist"""
-import collections
 
 from whist.core.cards.deck import Deck
 from whist.core.game.play_order import PlayOrder
@@ -44,14 +43,14 @@ class Hand:
         """
         deck = Deck.full()
         while len(deck) > 0:
-            for player in self._current_play_order:
-                card = deck.pop_random()
-                if len(deck) == 1:
-                    self._trump = card.suit
-                player.hand.add(card)
+            player = self._current_play_order.next_player()
+            card = deck.pop_random()
+            if len(deck) == 1:
+                self._trump = card.suit
+            player.hand.add(card)
         if self._trump is None:
             raise ValueError
-        first_trick = Trick(self._current_play_order, self._trump)
+        first_trick = Trick(list(self._current_play_order), self._trump)
         self._tricks.append(first_trick)
         return first_trick
 
@@ -64,7 +63,7 @@ class Hand:
         if not self._tricks[-1].done:
             raise TrickNotDoneWarning()
         self._winner_plays_first_card()
-        next_trick = Trick(self._current_play_order, trump=self._trump)
+        next_trick = Trick(list(self._current_play_order), trump=self._trump)
         self._tricks.append(next_trick)
         return next_trick
 
