@@ -73,7 +73,4 @@ class Hand:
 
     def _winner_plays_first_card(self):
         winner: PlayerAtTable = self._tricks[-1].winner
-        deque = collections.deque(self._current_play_order)
-        rotation: int = self._current_play_order.index(winner)
-        deque.rotate(rotation)
-        self._current_play_order = list(deque)
+        self._current_play_order.rotate(winner)

@@ -27,6 +27,16 @@ class PlayOrder:
             return False
         return self._play_order == other._play_order
 
+    def rotate(self, player: PlayerAtTable) -> None:
+        """
+        Rotates the play order, so the player will be next player.
+        :param player: who should be at beginning of the play order
+        :return: None
+        """
+        order = list(self)
+        rotation: int = order.index(player)
+        self._next_player = rotation
+
     def next_order(self) -> 'PlayOrder':
         """
         Create the order for the next hand.
