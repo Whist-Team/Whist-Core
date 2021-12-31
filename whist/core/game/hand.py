@@ -69,6 +69,11 @@ class Hand:
         return next_trick
 
     def get_player(self, player: Player) -> PlayerAtTable:
+        """
+        Retrieves the PlayerAtTable for the player given.
+        :param player: who needs it's counterpart at the table
+        :return: the player at table
+        """
         return self._current_play_order.get_player(player)
 
     def _winner_plays_first_card(self):

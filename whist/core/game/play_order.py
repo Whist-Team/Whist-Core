@@ -54,6 +54,11 @@ class PlayOrder:
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
+        """
+        Retrieves the PlayerAtTable for the player given.
+        :param player: who needs it's counterpart at the table
+        :return: the player at table
+        """
         return [table_player for table_player in self._play_order
                 if table_player.player == player][0]
 
