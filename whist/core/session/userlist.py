@@ -1,10 +1,13 @@
 """
 Handles users joining and leaving a table.
 """
+from itertools import groupby
 from typing import Optional, Dict
 
 from pydantic import BaseModel
 
+from whist.core.error.table_error import PlayerNotJoinedError
+from whist.core.scoring.team import Team
 from whist.core.user.player import Player
 from whist.core.user.status import Status
 
@@ -47,6 +50,19 @@ class UserList(BaseModel):
             if not player.status.ready:
                 return False
         return True
+
+    @property
+    def teams(self) -> list[Team]:
+        """
+        Returns the teams.
+        :return: list of teams
+        """
+        player_by_team: list[list[Player]] = [[entry.player for entry in list(grp)]
+                                              for k, grp in groupby(
+                list(sorted(self.users.values(), key=lambda x: x.status.team)),
+                lambda x: x.status.team)]
+        teams: list[Team] = [Team(players=players) for players in player_by_team]
+        return teams
 
     def team(self, player: Player) -> Optional[int]:
         """
@@ -117,11 +133,13 @@ class UserList(BaseModel):
     def player_ready(self, player: Player):
         """
         Player says they is ready.
-        :param player: player who is ready
+        :param player: player who is ready, must be joined
         :type player: Player
-        :return: None
+        :return: Raised PlayerNotJoinedError if the player has not yet joined.
         :rtype: None
         """
+        if not self.is_joined(player):
+            raise PlayerNotJoinedError()
         status: Status = self._get_status(player)
         status.ready = True
 
@@ -130,9 +148,11 @@ class UserList(BaseModel):
         Player says they is not ready.
         :param player: player who is not ready
         :type player: Player
-        :return: None
+        :return: Raised PlayerNotJoinedError if the player has not yet joined.
         :rtype: None
         """
+        if not self.is_joined(player):
+            raise PlayerNotJoinedError()
         status: Status = self._get_status(player)
         status.ready = False
 
