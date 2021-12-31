@@ -19,6 +19,9 @@ class PlayOrder:
                 player_index = team_index + player_index * len(teams)
                 self._play_order[player_index] = PlayerAtTable(player, Hand())
 
+    def __iter__(self):
+        return iter(self._play_order)
+
     def __eq__(self, other):
         if not isinstance(other, PlayOrder):
             return False
