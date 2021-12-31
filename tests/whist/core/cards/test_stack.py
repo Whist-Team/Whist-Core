@@ -46,3 +46,13 @@ class StackTestCase(unittest.TestCase):
         first_stack.add(self.seven_club)
         second_stack.add(self.seven_club)
         self.assertEqual(first_stack, second_stack)
+
+    def test_not_equal(self):
+        first_stack = Stack()
+        second_stack = Stack()
+        first_stack.add(self.seven_club)
+        self.assertNotEqual(first_stack, second_stack)
+
+    def test_not_instance(self):
+        with self.assertRaises(ValueError):
+            Stack() == object()
