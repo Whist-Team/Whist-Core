@@ -61,7 +61,7 @@ class Hand:
         self._tricks.append(first_trick)
         return first_trick
 
-    def next_trick(self, suppress=False) -> Trick:
+    def next_trick(self) -> Trick:
         """
         Starts the next trick.
         :return: the next trick
