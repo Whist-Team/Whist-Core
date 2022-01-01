@@ -15,3 +15,9 @@ class TeamBaseTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.team_a = Team(players=[self.player_a, self.player_b])
         self.team_b = Team(players=[self.player_c, self.player_d])
+
+    def tearDown(self) -> None:
+        self.player_a.rating = 1600
+        self.player_b.rating = 1800
+        self.player_c.rating = 1700
+        self.player_d.rating = 1700
