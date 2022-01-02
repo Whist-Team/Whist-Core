@@ -35,6 +35,13 @@ class Hand:
         """
         return self._current_play_order.next_order()
 
+    @property
+    def current_trick(self):
+        """
+        Returns the current trick.
+        """
+        return self._tricks[-1]
+
     def deal(self) -> Trick:
         """
         Deals the hand and starts the first trick.

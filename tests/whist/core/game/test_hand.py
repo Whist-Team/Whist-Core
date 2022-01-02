@@ -44,3 +44,11 @@ class HandTestCase(PlayerAtTableBaseTestCase):
     def test_player_to_table_player(self):
         player_at_table = self.hand.get_player(self.player_a)
         self.assertEqual(self.player_a, player_at_table.player)
+
+    def test_trick_getter(self):
+        first_trick = self.hand.deal()
+        trick = self.hand.current_trick
+        for player in self.play_order:
+            self.assertEqual(13, len(player.hand))
+        self.assertIsInstance(trick, Trick)
+        self.assertEqual(first_trick, trick)
