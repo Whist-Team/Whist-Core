@@ -7,6 +7,13 @@ First off contributions are very welcomed regardless of your level of expertise.
 We only follow up on bugs that are reported via a GitHub issue. So if you find a bug please create
 an issue and use our issue template.
 
+## Requesting a feature
+
+We are happy to consider feature requests. However, following up on them may not be possible due to
+various reasons. For example, it has be implemented in all the repositories (Core, Server and
+Desktop). So the best way to ensure a feature you want to see be implemented is to create a PR
+yourself. Even partial works will greatly increase the chance that a feature will be merged.
+
 ## Contribute to source code
 
 ### General specification
