@@ -33,3 +33,11 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         _ = self.hand.deal()
         with self.assertRaises(TrickNotDoneWarning):
             _ = self.hand.next_trick()
+
+    def test_trick_getter(self):
+        first_trick = self.hand.deal()
+        trick = self.hand.current_trick
+        for player in self.play_order:
+            self.assertEqual(13, len(player.hand))
+        self.assertIsInstance(trick, Trick)
+        self.assertEqual(first_trick, trick)
