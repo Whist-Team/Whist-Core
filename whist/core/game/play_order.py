@@ -2,6 +2,7 @@
 from whist.core.cards.hand import Hand
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.team import Team
+from whist.core.user.player import Player
 
 
 class PlayOrder:
@@ -18,10 +19,23 @@ class PlayOrder:
                 player_index = team_index + player_index * len(teams)
                 self._play_order[player_index] = PlayerAtTable(player, Hand())
 
+    def __iter__(self):
+        return iter(self._play_order)
+
     def __eq__(self, other):
         if not isinstance(other, PlayOrder):
             return False
         return self._play_order == other._play_order
+
+    def rotate(self, player: PlayerAtTable) -> None:
+        """
+        Rotates the play order, so the player will be next player.
+        :param player: who should be at beginning of the play order
+        :return: None
+        """
+        order = list(self)
+        rotation: int = order.index(player)
+        self._next_player = rotation
 
     def next_order(self) -> 'PlayOrder':
         """
@@ -38,6 +52,15 @@ class PlayOrder:
         player: PlayerAtTable = self._play_order[self._next_player]
         self._next_player = (self._next_player + 1) % self._size
         return player
+
+    def get_player(self, player: Player) -> PlayerAtTable:
+        """
+        Retrieves the PlayerAtTable for the player given.
+        :param player: who needs it's counterpart at the table
+        :return: the player at table
+        """
+        return [table_player for table_player in self._play_order
+                if table_player.player == player][0]
 
     # pylint: disable=protected-access
     @classmethod
