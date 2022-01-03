@@ -13,6 +13,12 @@ class Stack:
     def __len__(self):
         return len(self.__cards)
 
+    def __eq__(self, other):
+        if not isinstance(other, Stack):
+            raise ValueError(f'{other} is not a stack.')
+        # pylint: disable=protected-access
+        return self.__cards == other.__cards
+
     @property
     def lead(self) -> Optional[Card]:
         """
