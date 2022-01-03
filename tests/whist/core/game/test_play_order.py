@@ -17,7 +17,7 @@ class PlayOrderTestCase(TeamBaseTestCase):
         self.assertEqual(next_order, second_next_order)
 
     def test_next_player(self):
-        self.assertTrue(self.team_a.players[0], self.order.next_player().player)
-        self.assertTrue(self.team_b.players[0], self.order.next_player().player)
-        self.assertTrue(self.team_a.players[1], self.order.next_player().player)
-        self.assertTrue(self.team_b.players[1], self.order.next_player().player)
+        self.assertEqual(self.team_a.players[0], self.order.next_player().player)
+        self.assertEqual(self.team_b.players[0], self.order.next_player().player)
+        self.assertEqual(self.team_a.players[1], self.order.next_player().player)
+        self.assertEqual(self.team_b.players[1], self.order.next_player().player)

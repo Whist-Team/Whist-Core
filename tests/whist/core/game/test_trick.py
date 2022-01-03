@@ -9,7 +9,7 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.trick = Trick(play_order=self.play_order, trump=Suit.CLUBS)
+        self.trick = Trick(play_order=self.player_order, trump=Suit.CLUBS)
 
     def test_not_done(self):
         self.assertFalse(self.trick.done)
@@ -22,7 +22,7 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
     def test_winner(self):
         self._play_four_cards()
 
-        self.assertEqual(self.play_order[0], self.trick.winner)
+        self.assertEqual(self.player_order[0], self.trick.winner)
 
     def test_winner_not_done(self):
         with self.assertRaises(TrickNotDoneWarning):
@@ -37,7 +37,7 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
     def test_not_turn(self):
         ace_spades = Card(Suit.SPADES, Rank.A)
         with self.assertRaises(NotPlayersTurnError):
-            self.trick.play_card(self.play_order[1], ace_spades)
+            self.trick.play_card(self.player_order[1], ace_spades)
 
     def _play_four_cards(self):
         ace_heart = Card(Suit.HEARTS, Rank.A)
@@ -45,5 +45,5 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
         queen_heart = Card(Suit.HEARTS, Rank.Q)
         jack_heart = Card(Suit.HEARTS, Rank.J)
         cards = [ace_heart, king_heart, queen_heart, jack_heart]
-        for card, player in zip(cards, self.play_order):
+        for card, player in zip(cards, self.player_order):
             self.trick.play_card(player, card)
