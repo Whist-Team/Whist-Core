@@ -42,7 +42,7 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
 
     def test_stack(self):
         ace_spades = Card(Suit.SPADES, Rank.A)
-        self.trick.play_card(self.play_order[0], ace_spades)
+        self.trick.play_card(self.player_order[0], ace_spades)
         expected_stack = Stack()
         expected_stack.add(ace_spades)
         self.assertEqual(expected_stack, self.trick.stack)
