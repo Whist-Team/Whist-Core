@@ -1,4 +1,6 @@
 """Checks the legality of a move."""
+from typing import Optional
+
 from whist.core.cards.card import Card
 from whist.core.cards.hand import Hand
 
@@ -10,14 +12,14 @@ class LegalChecker:
     """
 
     @staticmethod
-    def check_legal(hand: Hand, card: Card, lead: Card) -> bool:
+    def check_legal(hand: Hand, card: Card, lead: Optional[Card]) -> bool:
         """
         Checks if move is legal.
         :param hand: of the current player
         :type hand: Hand
         :param card: the card which should be played next
         :type card: Card
-        :param lead: the first played card
+        :param lead: the first played card, can be None if no card has been played
         :type lead: Card
         :return: True if legal else false
         :rtype: bool
