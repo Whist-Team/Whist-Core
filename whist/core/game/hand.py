@@ -41,6 +41,8 @@ class Hand:
         """
         Returns the current trick.
         """
+        if len(self._tricks) == 0:
+            self.deal()
         return self._tricks[-1]
 
     def deal(self) -> Trick:

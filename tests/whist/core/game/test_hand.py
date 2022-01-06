@@ -55,6 +55,12 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         self.assertEqual(first_trick, trick)
 
     def test_safe_deal(self):
-        first_trick = self.hand.deal()
+        _ = self.hand.deal()
         with self.assertRaises(HandAlreadyDealtError):
             self.hand.deal()
+
+    def test_trick_initialized(self):
+        trick = self.hand.current_trick
+        for player in self.play_order:
+            self.assertEqual(13, len(player.hand))
+        self.assertIsInstance(trick, Trick)
