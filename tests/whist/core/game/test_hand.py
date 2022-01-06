@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from tests.whist.core.player_table_base_test_case import PlayerAtTableBaseTestCase
+from whist.core.error.hand_error import HandAlreadyDealtError
 from whist.core.game.hand import Hand
 from whist.core.game.trick import Trick
 from whist.core.game.warnings import TrickNotDoneWarning
@@ -52,3 +53,8 @@ class HandTestCase(PlayerAtTableBaseTestCase):
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(trick, Trick)
         self.assertEqual(first_trick, trick)
+
+    def test_safe_deal(self):
+        first_trick = self.hand.deal()
+        with self.assertRaises(HandAlreadyDealtError):
+            self.hand.deal()
