@@ -1,6 +1,7 @@
 from unittest.mock import patch
 
 from tests.whist.core.player_table_base_test_case import PlayerAtTableBaseTestCase
+from whist.core.cards.card import Card, Suit, Rank
 from whist.core.error.hand_error import HandAlreadyDealtError
 from whist.core.game.hand import Hand
 from whist.core.game.trick import Trick
@@ -64,3 +65,12 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         for player in self.play_order:
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(trick, Trick)
+
+    def test_second_card_same_suit(self):
+        trick = self.hand.deal()
+        first_card = Card(Suit.CLUBS, Rank.A)
+        second_card = Card(Suit.CLUBS, Rank.K)
+        first_player = self.hand._current_play_order._play_order[0]
+        second_player = self.hand._current_play_order._play_order[1]
+        trick.play_card(first_player, first_card)
+        trick.play_card(second_player, second_card)
