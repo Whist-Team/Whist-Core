@@ -14,3 +14,12 @@ class TestLegalCheckerCase(TestCase):
         hand.add(second_card)
 
         self.assertTrue(LegalChecker.check_legal(hand, third_card, first_card))
+
+    def test_suit_not_served(self):
+        hand = Hand()
+        first_card = Card(Suit.CLUBS, Rank.A)
+        second_card = Card(Suit.CLUBS, Rank.K)
+        third_card = Card(Suit.HEARTS, Rank.Q)
+        hand.add(second_card)
+
+        self.assertFalse(LegalChecker.check_legal(hand, third_card, first_card))
