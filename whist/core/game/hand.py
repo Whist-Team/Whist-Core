@@ -1,6 +1,7 @@
 """Hand of whist"""
 
 from whist.core.cards.deck import Deck
+from whist.core.error.hand_error import HandAlreadyDealtError
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.trick import Trick
@@ -40,6 +41,8 @@ class Hand:
         """
         Returns the current trick.
         """
+        if len(self._tricks) == 0:
+            self.deal()
         return self._tricks[-1]
 
     def deal(self) -> Trick:
@@ -48,6 +51,8 @@ class Hand:
         :return: the first trick
         :rtype: Trick
         """
+        if len(self._tricks) != 0:
+            raise HandAlreadyDealtError()
         deck = Deck.full()
         while len(deck) > 0:
             player = self._current_play_order.next_player()
