@@ -63,7 +63,7 @@ class Trick:
             raise TrickDoneError()
         if player != self._play_order[turn]:
             raise NotPlayersTurnError(player.player, self._play_order[turn].player)
-        if not LegalChecker.check_legal(player.hand, self._stack.lead):
+        if not LegalChecker.check_legal(player.hand, card, self._stack.lead):
             raise ServSuitFirstWarning()
 
         self._stack.add(card)
