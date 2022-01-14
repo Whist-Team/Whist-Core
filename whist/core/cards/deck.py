@@ -36,4 +36,4 @@ class Deck(CardContainer):
 
         :return: full deck
         """
-        return Deck((Card(suit, rank) for suit in Suit for rank in Rank))
+        return Deck((Card(suit=suit, rank=rank) for suit in Suit for rank in Rank))

@@ -9,14 +9,18 @@ class SuitTestCase(unittest.TestCase):
         self.assertLess(Suit.DIAMONDS, Suit.HEARTS)
         self.assertLess(Suit.HEARTS, Suit.SPADES)
 
-    def test_by_label(self):
-        clubs = Suit.by_label('clubs')
+    def test_by_name(self):
+        clubs = Suit('clubs')
         self.assertEqual(Suit.CLUBS, clubs)
 
-    def test_by_short_label(self):
-        clubs = Suit.by_label('♣', search_symbols=True)
+    def test_by_short_name(self):
+        clubs = Suit('♣')
         self.assertEqual(Suit.CLUBS, clubs)
 
-    def test_by_label_wrong_key(self):
-        with self.assertRaises(KeyError):
-            Suit.by_label('herz')
+    def test_by_constructor_lookup_wrong_key(self):
+        with self.assertRaises(ValueError):
+            Suit('herz')
+
+    def test_by_name_wrong_key(self):
+        with self.assertRaises(ValueError):
+            Suit('herz')

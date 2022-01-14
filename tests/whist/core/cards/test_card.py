@@ -5,10 +5,10 @@ from whist.core.cards.card import Suit, Rank, Card
 
 class CardTestCase(unittest.TestCase):
     def setUp(self):
-        self.card = Card(Suit.HEARTS, Rank.A)
+        self.card = Card(suit=Suit.HEARTS, rank=Rank.A)
 
     def test_card_equality(self):
-        card = Card(Suit.HEARTS, Rank.A)
+        card = Card(suit=Suit.HEARTS, rank=Rank.A)
         self.assertEqual(card, self.card)
 
     def test_short_name(self):

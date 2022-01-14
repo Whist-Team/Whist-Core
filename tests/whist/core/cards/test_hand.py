@@ -7,16 +7,16 @@ from whist.core.cards.hand import Hand
 class HandTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.hand = Hand()
-        self.spades_king = Card(Suit.SPADES, Rank.K)
+        self.spades_king = Card(suit=Suit.SPADES, rank=Rank.K)
 
     def contains_suit(self):
         hand = Hand()
-        hand.add(Card(Suit.HEARTS, Rank.NUM_8))
+        hand.add(Card(suit=Suit.HEARTS, rank=Rank.NUM_8))
         self.assertTrue(hand.contains_suit(Suit.HEARTS))
 
     def contains_not_suit(self):
         hand = Hand()
-        hand.add(Card(Suit.CLUBS, Rank.NUM_8))
+        hand.add(Card(suit=Suit.CLUBS, rank=Rank.NUM_8))
         self.assertTrue(hand.contains_suit(Suit.HEARTS))
 
     def test_empty(self):
@@ -41,7 +41,7 @@ class HandTestCase(unittest.TestCase):
             self.hand.add(self.spades_king)
 
     def test_iter(self):
-        queen_diamonds = Card(Suit.DIAMONDS, Rank.Q)
+        queen_diamonds = Card(suit=Suit.DIAMONDS, rank=Rank.Q)
         cards = {self.spades_king, queen_diamonds}
         hand = Hand(cards)
         self.assertSetEqual(cards, {card for card in hand})

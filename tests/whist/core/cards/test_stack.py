@@ -7,10 +7,10 @@ from whist.core.cards.stack import Stack
 class StackTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.king_hearts = Card(Suit.HEARTS, Rank.K)
-        cls.ace_hearts = Card(Suit.HEARTS, Rank.A)
-        cls.seven_club = Card(Suit.CLUBS, Rank.NUM_7)
-        cls.ten_diamond = Card(Suit.DIAMONDS, Rank.NUM_10)
+        cls.king_hearts = Card(suit=Suit.HEARTS, rank=Rank.K)
+        cls.ace_hearts = Card(suit=Suit.HEARTS, rank=Rank.A)
+        cls.seven_club = Card(suit=Suit.CLUBS, rank=Rank.NUM_7)
+        cls.ten_diamond = Card(suit=Suit.DIAMONDS, rank=Rank.NUM_10)
         cls.stack = Stack()
         cls.stack.add(cls.king_hearts)
         cls.stack.add(cls.seven_club)
@@ -38,7 +38,7 @@ class StackTestCase(unittest.TestCase):
 
     def test_turn_card_not_in(self):
         with self.assertRaises(KeyError):
-            self.stack.get_turn(Card(Suit.CLUBS, Rank.NUM_8))
+            self.stack.get_turn(Card(suit=Suit.CLUBS, rank=Rank.NUM_8))
 
     def test_equal(self):
         first_stack = Stack()
