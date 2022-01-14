@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 
 class _CardEnum(Enum):
-    def __new__(cls, *args, **kwargs) -> '_CardEnum':
+    def __new__(cls, *args) -> '_CardEnum':
         obj = object.__new__(cls)
         obj._value_ = args[0]
         # pylint: disable=protected-access, unused-private-member
@@ -26,7 +26,7 @@ class _CardEnum(Enum):
                 pass
         elif isinstance(value, str):
             for member in cls.__members__.values():
-                if member.name == value or member.short_name == value:
+                if value in (member.long_name, member.short_name):
                     return member
 
         return None
@@ -41,11 +41,11 @@ class _CardEnum(Enum):
         return self.__ordinal
 
     @property
-    def name(self):
+    def long_name(self) -> str:
         """
-        Get the name.
+        Get the long version of the name.
 
-        :return: name
+        :return: long version of name
         """
         return self.value
 
@@ -79,7 +79,7 @@ class _CardEnum(Enum):
         return NotImplemented
 
     def __str__(self) -> str:
-        return self.name
+        return self.value
 
 
 class Suit(_CardEnum):
@@ -115,7 +115,11 @@ class Card(BaseModel):
     suit: Suit
     rank: Rank
 
+    # pylint: disable=too-few-public-methods
     class Config:
+        """
+        Configuration class for base model to make it immutable and hashable.
+        """
         frozen = True
 
     @property
@@ -125,7 +129,8 @@ class Card(BaseModel):
 
         :return: short name
         """
-        return f'{self.suit.short_name}{self.rank.short_name if self.rank.short_name is not None else self.rank.name}'
+        short_name = self.rank.short_name if self.rank.short_name is not None else self.rank.name
+        return f'{self.suit.short_name}{short_name}'
 
     @property
     def name(self) -> str:

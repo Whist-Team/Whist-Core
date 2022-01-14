@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from whist.core.cards.card import Suit, Rank, Card
@@ -19,3 +20,12 @@ class CardTestCase(unittest.TestCase):
 
     def test_str(self):
         self.assertEqual('ace of hearts', str(self.card))
+
+    def test_dict(self):
+        self.assertEqual({'suit': Suit.HEARTS, 'rank': Rank.A}, self.card.dict())
+
+    def test_json(self):
+        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, json.loads(self.card.json()))
+
+    def test_constructor_with_enum_as_str(self):
+        self.assertEqual(self.card, Card(suit='hearts', rank='ace'))
