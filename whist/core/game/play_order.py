@@ -1,4 +1,6 @@
 """Ring buffer of players at the table."""
+from typing import Optional
+
 from whist.core.cards.hand import Hand
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.team import Team
@@ -13,11 +15,11 @@ class PlayOrder:
     def __init__(self, teams: list[Team]):
         self._size = len(teams) * len(teams[0].players)
         self._next_player = 0
-        self._play_order: list[PlayerAtTable] = [None] * self._size
+        self._play_order: list[Optional[PlayerAtTable]] = [None] * self._size
         for team_index, team in enumerate(teams):
             for player_index, player in enumerate(team.players):
                 player_index = team_index + player_index * len(teams)
-                self._play_order[player_index] = PlayerAtTable(player, Hand())
+                self._play_order[player_index] = PlayerAtTable(player, Hand.empty())
 
     def __iter__(self):
         return iter(self._play_order)

@@ -6,22 +6,20 @@ from whist.core.cards.deck import Deck
 
 class DeckTestCase(unittest.TestCase):
     def setUp(self) -> None:
-        self.deck = Deck()
+        self.deck = Deck.empty()
         self.spades_king = Card(suit=Suit.SPADES, rank=Rank.K)
 
     def test_empty(self):
-        self.assertEqual(Deck(), Deck.empty())
+        self.assertEqual(Deck(cards=()), Deck.empty())
 
     def test_contains(self):
-        deck = Deck(self.spades_king)
+        deck = Deck.with_cards(self.spades_king)
+        self.assertEqual(1, len(deck))
         self.assertIn(self.spades_king, deck)
 
     def test_add(self):
         self.deck.add(self.spades_king)
         self.assertIn(self.spades_king, self.deck)
-
-    def test_full_deck_length(self):
-        self.assertEqual(52, len(Deck.full()))
 
     def test_remove(self):
         full_deck = Deck.full()
@@ -30,17 +28,11 @@ class DeckTestCase(unittest.TestCase):
 
     def test_add_duplicate(self):
         self.deck.add(self.spades_king)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(ValueError):
             self.deck.add(self.spades_king)
 
     def test_iter(self):
         queen_diamonds = Card(suit=Suit.DIAMONDS, rank=Rank.Q)
         cards = {self.spades_king, queen_diamonds}
-        deck = Deck(cards)
+        deck = Deck.with_cards(cards)
         self.assertSetEqual(cards, {card for card in deck})
-
-    def test_pop_random(self):
-        full_deck = Deck.full()
-        popped_card = full_deck.pop_random()
-        self.assertNotIn(popped_card, full_deck)
-        self.assertIsInstance(popped_card, Card)

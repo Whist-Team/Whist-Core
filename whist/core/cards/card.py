@@ -1,11 +1,13 @@
 """Card related classes"""
 
 from enum import Enum
-from typing import Any, Optional
+from functools import total_ordering
+from typing import Any, Optional, Iterator
 
 from pydantic import BaseModel
 
 
+@total_ordering
 class _CardEnum(Enum):
     def __new__(cls, *args) -> '_CardEnum':
         obj = object.__new__(cls)
@@ -58,21 +60,6 @@ class _CardEnum(Enum):
         """
         return self.__short_name
 
-    def __ge__(self, other: Any) -> bool:
-        if self.__class__ is other.__class__:
-            return self.ordinal >= other.ordinal
-        return NotImplemented
-
-    def __gt__(self, other: Any) -> bool:
-        if self.__class__ is other.__class__:
-            return self.ordinal > other.ordinal
-        return NotImplemented
-
-    def __le__(self, other: Any) -> bool:
-        if self.__class__ is other.__class__:
-            return self.ordinal <= other.ordinal
-        return NotImplemented
-
     def __lt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
             return self.ordinal < other.ordinal
@@ -109,6 +96,7 @@ class Rank(_CardEnum):
     A = ('ace', 'A')
 
 
+@total_ordering
 class Card(BaseModel):
     """A playing card"""
 
@@ -121,6 +109,15 @@ class Card(BaseModel):
         Configuration class for base model to make it immutable and hashable.
         """
         frozen = True
+
+    @staticmethod
+    def all_cards() -> Iterator['Card']:
+        """
+        Get iterator of all cards.
+
+        :return: all cards
+        """
+        return (Card(suit=suit, rank=rank) for suit in Suit for rank in Rank)
 
     @property
     def short_name(self) -> str:
@@ -142,6 +139,11 @@ class Card(BaseModel):
         :return: name
         """
         return f'{self.rank} of {self.suit}'
+
+    def __lt__(self, other: Any) -> bool:
+        if self.__class__ is other.__class__:
+            return (self.suit, self.rank) < (other.suit, other.rank)
+        return NotImplemented
 
     def __str__(self) -> str:
         return self.name

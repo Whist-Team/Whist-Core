@@ -28,7 +28,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         with patch('whist.core.game.legal_checker.LegalChecker.check_legal', return_value=True):
             while not first_trick.done:
                 player = self.play_order.next_player()
-                card = player.hand._cards.pop()
+                card = player.hand.pop_random()
                 first_trick.play_card(player, card)
         next_trick = self.hand.next_trick()
         i = 0

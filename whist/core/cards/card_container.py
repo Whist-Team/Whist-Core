@@ -1,45 +1,89 @@
 """Extraction of common methods for class that contains a set of cards"""
-from typing import Iterable, Iterator, Any
+import random
+from typing import Iterator
+
+from pydantic import BaseModel, PrivateAttr
 
 from whist.core.cards.card import Card
 
 
-class CardContainer:
+class CardContainer(BaseModel):
     """
-    Super class for all class containing unordered cards.
+    Super class for all classes containing unordered cards.
     """
 
-    def __init__(self, *args: (tuple[Iterable[Card]], tuple[Card, ...])) -> None:
-        """
-        Constructor
+    cards: tuple[Card, ...]
+    _cards_set: set[Card] = PrivateAttr()
 
-        :param args: multiple cards or one card iterable
+    # pylint: disable=too-few-public-methods
+    class Config:
         """
-        if len(args) == 1 and not isinstance(args[0], Card):
-            self._cards = {*args[0]}
-        else:
-            self._cards = {*args}
+        Configuration class for base model to make it immutable.
+        """
+        allow_mutation = False
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        self._cards_set = set(self.cards)
+        self.__resync()
+
+    @classmethod
+    def empty(cls) -> 'CardContainer':
+        """
+        Creates an empty card container.
+
+        :return: empty ard container
+        :rtype: correct subtype of CardContainer
+        """
+        return cls(cards=())
+
+    @classmethod
+    def with_cards(cls, *cards) -> 'CardContainer':
+        """
+        Creates a card container with the given cards.
+
+        :param cards: cards to add
+        :return: card container with given cards
+        :rtype: correct subtype of CardContainer
+        """
+        if len(cards) == 1 and not isinstance(cards[0], Card):
+            cards = cards[0]
+        return cls(cards=cards)
+
+    @classmethod
+    def full(cls) -> 'CardContainer':
+        """
+        Create a full card container.
+
+        :return: full card container
+        :rtype: correct subtype of CardContainer
+        """
+        return cls(cards=Card.all_cards())
+
+    def pop_random(self) -> Card:
+        """
+        Removes one random card from card container.
+
+        :return: A card from deck.
+        """
+        card = random.choice(self.cards)
+        self.remove(card)
+        return card
 
     def __contains__(self, card: Card) -> bool:
-        return card in self._cards
+        return card in self._cards_set
 
     def __len__(self):
-        return len(self._cards)
+        return len(self.cards)
 
     def __iter__(self) -> Iterator[Card]:
-        return iter(self._cards)
+        return iter(self.cards)
 
     def __str__(self) -> str:
-        return str(self._cards)
+        return str(self.cards)
 
     def __repr__(self) -> str:
-        return f'CardContainer(cards={self._cards!r})'
-
-    def __eq__(self, other: Any) -> bool:
-        if self.__class__ is other.__class__:
-            # pylint: disable=protected-access
-            return self._cards == other._cards
-        return NotImplemented
+        return f'CardContainer(cards={self.cards!r})'
 
     def remove(self, card: Card) -> None:
         """
@@ -47,7 +91,12 @@ class CardContainer:
 
         :param card: card to remove
         """
-        self._cards.remove(card)
+        if not isinstance(card, Card):
+            raise ValueError(f'cannot remove {card} of type {type(card)} from card container')
+        if card not in self._cards_set:
+            raise ValueError(f'{card} not in card container')
+        self._cards_set.remove(card)
+        self.__resync()
 
     def add(self, card: Card) -> None:
         """
@@ -55,6 +104,14 @@ class CardContainer:
 
         :param card: card to add
         """
-        if card in self._cards:
-            raise KeyError(f'{card} already in set')
-        self._cards.add(card)
+        if not isinstance(card, Card):
+            raise ValueError(f'cannot add {card} of type {type(card)} to card container')
+        if card in self._cards_set:
+            raise ValueError(f'{card} already in card container')
+        self._cards_set.add(card)
+        self.__resync()
+
+    def __resync(self):
+        self.__config__.allow_mutation = True
+        self.cards = tuple(sorted(self._cards_set))
+        self.__config__.allow_mutation = False

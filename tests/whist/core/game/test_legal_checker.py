@@ -7,7 +7,7 @@ from whist.core.game.legal_checker import LegalChecker
 
 class TestLegalCheckerCase(TestCase):
     def test_first_card(self):
-        hand = Hand()
+        hand = Hand.empty()
         first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         second_card = Card(suit=Suit.CLUBS, rank=Rank.K)
         hand.add(second_card)
@@ -15,7 +15,7 @@ class TestLegalCheckerCase(TestCase):
         self.assertTrue(LegalChecker.check_legal(hand, first_card, None))
 
     def test_suit_served(self):
-        hand = Hand()
+        hand = Hand.empty()
         first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         second_card = Card(suit=Suit.CLUBS, rank=Rank.K)
         third_card = Card(suit=Suit.CLUBS, rank=Rank.Q)
@@ -24,7 +24,7 @@ class TestLegalCheckerCase(TestCase):
         self.assertTrue(LegalChecker.check_legal(hand, third_card, first_card))
 
     def test_suit_not_served(self):
-        hand = Hand()
+        hand = Hand.empty()
         first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         second_card = Card(suit=Suit.CLUBS, rank=Rank.K)
         third_card = Card(suit=Suit.HEARTS, rank=Rank.Q)
