@@ -1,5 +1,5 @@
 """Player instance during the game phase."""
-from whist.core.cards.hand import Hand
+from whist.core.cards.card_container import UnorderedCardContainer
 from whist.core.user.player import Player
 
 
@@ -8,7 +8,7 @@ class PlayerAtTable:
     Wraps the current hand and player instance.
     """
 
-    def __init__(self, player: Player, hand: Hand):
+    def __init__(self, player: Player, hand: UnorderedCardContainer):
         self._player = player
         self._hand = hand
 
@@ -31,10 +31,9 @@ class PlayerAtTable:
         return self._player
 
     @property
-    def hand(self) -> Hand:
+    def hand(self) -> UnorderedCardContainer:
         """
         Hand of the player
         :return: hand of the player
-        :rtype: Hand
         """
         return self._hand

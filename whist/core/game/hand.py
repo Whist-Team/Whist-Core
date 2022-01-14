@@ -1,6 +1,5 @@
 """Hand of whist"""
-
-from whist.core.cards.deck import Deck
+from whist.core.cards.card_container import UnorderedCardContainer
 from whist.core.error.hand_error import HandAlreadyDealtError
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
@@ -53,7 +52,7 @@ class Hand:
         """
         if len(self._tricks) != 0:
             raise HandAlreadyDealtError()
-        deck = Deck.full()
+        deck = UnorderedCardContainer.full()
         while len(deck) > 0:
             player = self._current_play_order.next_player()
             card = deck.pop_random()

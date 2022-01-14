@@ -2,7 +2,7 @@
 from typing import Optional
 
 from whist.core.cards.card import Card
-from whist.core.cards.hand import Hand
+from whist.core.cards.card_container import UnorderedCardContainer
 
 
 # pylint: disable=too-few-public-methods
@@ -12,21 +12,17 @@ class LegalChecker:
     """
 
     @staticmethod
-    def check_legal(hand: Hand, card: Card, lead: Optional[Card]) -> bool:
+    def check_legal(hand: UnorderedCardContainer, card: Card, first: Optional[Card]) -> bool:
         """
         Checks if move is legal.
         :param hand: of the current player
-        :type hand: Hand
         :param card: the card which should be played next
-        :type card: Card
-        :param lead: the first played card, can be None if no card has been played
-        :type lead: Card
+        :param first: the first played card, can be None if no card has been played
         :return: True if legal else false
-        :rtype: bool
         """
-        first_card_played = lead is not None
+        first_card_played = first is not None
         if not first_card_played:
             return True
-        if card.suit == lead.suit:
+        if card.suit == first.suit:
             return True
-        return not hand.contains_suit(lead.suit)
+        return not hand.contains_suit(first.suit)
