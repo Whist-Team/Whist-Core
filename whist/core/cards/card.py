@@ -1,32 +1,35 @@
 """Card related classes"""
 
-from dataclasses import dataclass
-from enum import Enum, unique
-from typing import final, Any
+from enum import Enum
+from typing import Any, Optional
+
+from pydantic import BaseModel
 
 
-class _OrderedEnum(Enum):
-    def __new__(cls, *args) -> '_OrderedEnum':
-        if len(args) == 1:
-            value = args[0]
-        else:
-            value = args
-
+class _CardEnum(Enum):
+    def __new__(cls, *args) -> '_CardEnum':
         obj = object.__new__(cls)
-        obj._value_ = value
+        obj._value_ = args[0]
         # pylint: disable=protected-access, unused-private-member
         obj.__ordinal = len(cls.__members__)
         return obj
 
-    @classmethod
-    def by_ordinal(cls, ordinal: int) -> '_OrderedEnum':
-        """
-        Get enum constant by ordinal.
+    def __init__(self, _: str, short_name: Optional[str] = None):
+        self.__short_name = short_name
 
-        :param ordinal: ordinal
-        :return: enum constant
-        """
-        return list(cls.__members__.values())[ordinal]
+    @classmethod
+    def _missing_(cls, value: Any) -> Optional['_CardEnum']:
+        if isinstance(value, int):
+            try:
+                return list(cls.__members__.values())[value]
+            except IndexError:
+                pass
+        elif isinstance(value, str):
+            for member in cls.__members__.values():
+                if value in (member.long_name, member.short_name):
+                    return member
+
+        return None
 
     @property
     def ordinal(self) -> int:
@@ -36,6 +39,24 @@ class _OrderedEnum(Enum):
         :return: ordinal
         """
         return self.__ordinal
+
+    @property
+    def long_name(self) -> str:
+        """
+        Get the long version of the name.
+
+        :return: long version of name
+        """
+        return self.value
+
+    @property
+    def short_name(self) -> str:
+        """
+        Get the short version of the name.
+
+        :return: short version of name
+        """
+        return self.__short_name
 
     def __ge__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
@@ -57,60 +78,20 @@ class _OrderedEnum(Enum):
             return self.ordinal < other.ordinal
         return NotImplemented
 
+    def __str__(self) -> str:
+        return self.value
 
-@unique
-@final
-class Suit(_OrderedEnum):
+
+class Suit(_CardEnum):
     """Suits in a playing card deck"""
 
-    CLUBS = ('♣', 'clubs')
-    DIAMONDS = ('♦', 'diamonds')
-    HEARTS = ('♥', 'hearts')
-    SPADES = ('♠', 'spades')
-
-    @classmethod
-    def by_label(cls, label: str, search_symbols: bool = False) -> 'Suit':
-        """
-        Get suit by label.
-
-        :param label: label
-        :param search_symbols: True if the suit symbols should be searched as well
-        :return: suit
-        """
-        for _, value in cls.__members__.items():
-            if label == value.label:
-                return value
-            if search_symbols and label == value.symbol:
-                return value
-        raise KeyError
-
-    @property
-    def symbol(self) -> str:
-        """
-        Get the suit symbol.
-
-        :return: suit symbol
-        """
-        # pylint: disable=unsubscriptable-object
-        return self.value[0]
-
-    @property
-    def label(self) -> str:
-        """
-        Get the suit label.
-
-        :return: suit label
-        """
-        # pylint: disable=unsubscriptable-object
-        return self.value[1]
-
-    def __str__(self) -> str:
-        return self.label
+    CLUBS = ('clubs', '♣')
+    DIAMONDS = ('diamonds', '♦')
+    HEARTS = ('hearts', '♥')
+    SPADES = ('spades', '♠')
 
 
-@unique
-@final
-class Rank(_OrderedEnum):
+class Rank(_CardEnum):
     """Ranks in a playing card deck"""
 
     NUM_2 = '2'
@@ -122,57 +103,24 @@ class Rank(_OrderedEnum):
     NUM_8 = '8'
     NUM_9 = '9'
     NUM_10 = '10'
-    J = ('J', 'jack')
-    Q = ('Q', 'queen')
-    K = ('K', 'king')
-    A = ('A', 'ace')
-
-    @classmethod
-    def by_label(cls, label: str, search_short_labels: bool = False) -> 'Rank':
-        """
-        Get rank by label.
-
-        :param label: rank
-        :param search_short_labels: True if the rank short labels should be searched as well
-        :return: label
-        """
-        for _, value in cls.__members__.items():
-            if label == value.label:
-                return value
-            if search_short_labels and label == value.short_label:
-                return value
-        raise KeyError
-
-    @property
-    def short_label(self) -> str:
-        """
-        Get the short version of the rank label.
-
-        :return: short version of rank label
-        """
-        # pylint: disable=unsubscriptable-object
-        return self.value if isinstance(self.value, str) else self.value[0]
-
-    @property
-    def label(self) -> str:
-        """
-        Get the rank label.
-
-        :return: rank label
-        """
-        # pylint: disable=unsubscriptable-object
-        return self.value if isinstance(self.value, str) else self.value[1]
-
-    def __str__(self) -> str:
-        return self.label
+    J = ('jack', 'J')
+    Q = ('queen', 'Q')
+    K = ('king', 'K')
+    A = ('ace', 'A')
 
 
-@final
-@dataclass(frozen=True)
-class Card:
+class Card(BaseModel):
     """A playing card"""
+
     suit: Suit
     rank: Rank
+
+    # pylint: disable=too-few-public-methods
+    class Config:
+        """
+        Configuration class for base model to make it immutable and hashable.
+        """
+        frozen = True
 
     @property
     def short_name(self) -> str:
@@ -181,7 +129,10 @@ class Card:
 
         :return: short name
         """
-        return f'{self.suit.symbol}{self.rank.short_label}'
+        short_name = self.rank.short_name \
+            if self.rank.short_name is not None \
+            else self.rank.long_name
+        return f'{self.suit.short_name}{short_name}'
 
     @property
     def name(self) -> str:
