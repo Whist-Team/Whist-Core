@@ -129,7 +129,7 @@ class Card(BaseModel):
 
         :return: short name
         """
-        short_name = self.rank.short_name if self.rank.short_name is not None else self.rank.name
+        short_name = self.rank.short_name if self.rank.short_name is not None else self.rank.long_name
         return f'{self.suit.short_name}{short_name}'
 
     @property
