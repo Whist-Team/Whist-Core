@@ -111,7 +111,10 @@ class CardContainer(BaseModel):
         self._cards_set.add(card)
         self.__resync()
 
-    def __resync(self):
+    def __resync(self) -> None:
+        """
+        de-duplicate and re-sort self.cards - i.e. synchronize with the set representation
+        """
         self.__config__.allow_mutation = True
         self.cards = tuple(sorted(self._cards_set))
         self.__config__.allow_mutation = False
