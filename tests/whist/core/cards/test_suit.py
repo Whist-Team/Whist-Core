@@ -9,6 +9,10 @@ class SuitTestCase(unittest.TestCase):
         self.assertLess(Suit.DIAMONDS, Suit.HEARTS)
         self.assertLess(Suit.HEARTS, Suit.SPADES)
 
+    def test_by_ordinal(self):
+        clubs = Suit(0)
+        self.assertEqual(Suit.CLUBS, clubs)
+
     def test_by_long_name(self):
         clubs = Suit('clubs')
         self.assertEqual(Suit.CLUBS, clubs)
