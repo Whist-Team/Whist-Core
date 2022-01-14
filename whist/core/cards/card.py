@@ -22,7 +22,7 @@ class _CardEnum(Enum):
         if isinstance(value, int):
             try:
                 return list(cls.__members__.values())[value]
-            except KeyError:
+            except IndexError:
                 pass
         elif isinstance(value, str):
             for member in cls.__members__.values():

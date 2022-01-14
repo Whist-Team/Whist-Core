@@ -13,6 +13,10 @@ class RankTestCase(unittest.TestCase):
         jack = Rank(9)
         self.assertEqual(Rank.J, jack)
 
+    def test_by_name_wrong_ordinal(self):
+        with self.assertRaises(ValueError):
+            Rank(99)
+
     def test_by_long_name(self):
         jack = Rank('jack')
         self.assertEqual(Rank.J, jack)

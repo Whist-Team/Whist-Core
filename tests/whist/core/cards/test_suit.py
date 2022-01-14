@@ -13,6 +13,10 @@ class SuitTestCase(unittest.TestCase):
         clubs = Suit(0)
         self.assertEqual(Suit.CLUBS, clubs)
 
+    def test_by_name_wrong_ordinal(self):
+        with self.assertRaises(ValueError):
+            Suit(99)
+
     def test_by_long_name(self):
         clubs = Suit('clubs')
         self.assertEqual(Suit.CLUBS, clubs)
