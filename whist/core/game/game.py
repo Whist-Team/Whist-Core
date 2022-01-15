@@ -17,7 +17,7 @@ class Game:
         self.teams: list[Team] = teams
         self.win_score: int = 3
         self.score_card: ScoreCard = ScoreCard()
-        self._current_hand: Optional[Hand] = None
+        self.current_hand: Optional[Hand] = None
 
     def next_hand(self) -> Hand:
         """
@@ -25,12 +25,12 @@ class Game:
         return the current hand.
         :rtype: Hand
         """
-        if self._current_hand is None:
-            self._current_hand = Hand(PlayOrder(self.teams))
-        elif self._current_hand.done:
-            next_order = self._current_hand.next_play_order
-            self._current_hand = Hand(next_order)
-        return self._current_hand
+        if self.current_hand is None:
+            self.current_hand = Hand(PlayOrder(self.teams))
+        elif self.current_hand.done:
+            next_order = self.current_hand.next_play_order
+            self.current_hand = Hand(next_order)
+        return self.current_hand
 
     @property
     def done(self):

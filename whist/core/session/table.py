@@ -14,8 +14,8 @@ class Table(Session):
     min_player: int
     max_player: int
     team_size: int = 2
-    _started: bool = False
-    _rubbers: list[Rubber] = []
+    started: bool = False
+    rubbers: list[Rubber] = []
 
     # pylint: disable=too-few-public-methods
     class Config:
@@ -43,14 +43,6 @@ class Table(Session):
         return len(self.users) >= self.min_player and self.users.ready
 
     @property
-    def started(self):
-        """
-        Flag if the current table has been started.
-        :return: True if it has been started else False.
-        """
-        return self._started
-
-    @property
     def current_rubber(self) -> Rubber:
         """
         Returns the current rubber
@@ -58,7 +50,7 @@ class Table(Session):
         """
         if not self.started:
             raise TableNotStartedError()
-        return self._rubbers[-1]
+        return self.rubbers[-1]
 
     def start(self) -> None:
         """
@@ -67,8 +59,8 @@ class Table(Session):
         if not self.ready:
             raise TableNotReadyError()
 
-        self._rubbers.append(Rubber.create_random(num_teams=2, team_size=2, users=self.users))
-        self._started = True
+        self.rubbers.append(Rubber.create_random(num_teams=2, team_size=2, users=self.users))
+        self.started = True
 
     def join(self, player: Player) -> None:
         """
