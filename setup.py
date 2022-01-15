@@ -8,7 +8,7 @@ with open('requirements/requirements.txt') as f:
 
 setup(
     name='whist-core',
-    version='0.1.0rc9',
+    version='0.1.0rc10',
     author='Whist Team',
     description='Game implementation of Whist.',
     long_description=long_description,
