@@ -94,7 +94,7 @@ class CardContainer(BaseModel, abc.ABC):
 
     @abc.abstractmethod
     def _remove_impl(self, card: Card) -> None:
-        pass
+        raise NotImplementedError
 
     def add(self, card: Card) -> None:
         """
@@ -110,7 +110,7 @@ class CardContainer(BaseModel, abc.ABC):
 
     @abc.abstractmethod
     def _add_impl(self, card: Card) -> None:
-        pass
+        raise NotImplementedError
 
     def contains_suit(self, suit: Suit) -> bool:
         """
