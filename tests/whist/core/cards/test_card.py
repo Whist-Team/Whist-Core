@@ -29,3 +29,7 @@ class CardTestCase(unittest.TestCase):
 
     def test_constructor_with_enum_as_str(self):
         self.assertEqual(self.card, Card(suit='hearts', rank='ace'))
+
+    def test_hashable(self):
+        d = {self.card: 42}
+        self.assertEqual(42, d[self.card])

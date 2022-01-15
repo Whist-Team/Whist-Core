@@ -1,6 +1,7 @@
 from tests.whist.core.player_table_base_test_case import PlayerAtTableBaseTestCase
 from whist.core.cards.card import Suit, Card, Rank
-from whist.core.cards.stack import Stack
+
+from whist.core.cards.card_container import OrderedCardContainer
 from whist.core.game.errors import TrickDoneError, NotPlayersTurnError
 from whist.core.game.trick import Trick
 from whist.core.game.warnings import TrickNotDoneWarning
@@ -43,7 +44,7 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
     def test_stack(self):
         ace_spades = Card(suit=Suit.SPADES, rank=Rank.A)
         self.trick.play_card(self.player_order[0], ace_spades)
-        expected_stack = Stack()
+        expected_stack = OrderedCardContainer.empty()
         expected_stack.add(ace_spades)
         self.assertEqual(expected_stack, self.trick.stack)
 

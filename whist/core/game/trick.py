@@ -1,6 +1,6 @@
 """Trick implementation"""
 from whist.core.cards.card import Card, Suit
-from whist.core.cards.stack import Stack
+from whist.core.cards.card_container import OrderedCardContainer
 from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
 from whist.core.game.legal_checker import LegalChecker
 from whist.core.game.player_at_table import PlayerAtTable
@@ -14,7 +14,7 @@ class Trick:
 
     def __init__(self, play_order: list[PlayerAtTable], trump: Suit):
         self._play_order: list[PlayerAtTable] = play_order
-        self._stack: Stack = Stack()
+        self._stack: OrderedCardContainer = OrderedCardContainer.empty()
         self._trump = trump
 
     @property
@@ -27,7 +27,7 @@ class Trick:
         return len(self._stack) == len(self._play_order)
 
     @property
-    def stack(self) -> Stack:
+    def stack(self) -> OrderedCardContainer:
         """
         Retrieves the current stack.
         """
@@ -43,8 +43,8 @@ class Trick:
         """
         if not self.done:
             raise TrickNotDoneWarning()
-        winner_card = self._stack.winner_card(self._trump)
-        return self._play_order[self._stack.get_turn(winner_card)]
+        turn, _ = self._stack.get_turn_and_winner_card(self._trump)
+        return self._play_order[turn]
 
     def play_card(self, player: PlayerAtTable, card: Card) -> None:
         """
@@ -63,7 +63,7 @@ class Trick:
             raise TrickDoneError()
         if player != self._play_order[turn]:
             raise NotPlayersTurnError(player.player, self._play_order[turn].player)
-        if not LegalChecker.check_legal(player.hand, card, self._stack.lead):
+        if not LegalChecker.check_legal(player.hand, card, self._stack.first):
             raise ServSuitFirstWarning()
 
         self._stack.add(card)

@@ -35,7 +35,7 @@ jobs:
           pip install --upgrade -r requirements/requirements.txt
       - name: Lint everything with flake8
         run: |
-          flake8 . --count --show-source --statistics
+          flake8 whist --count --show-source --statistics
       - name: Lint sources with pylint
         run: |
           pylint whist
