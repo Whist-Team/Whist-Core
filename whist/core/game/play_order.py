@@ -13,24 +13,24 @@ class PlayOrder:
     """
 
     def __init__(self, teams: list[Team]):
-        self._size = len(teams) * len(teams[0].players)
-        self._next_player = 0
-        self._play_order: list[Optional[PlayerAtTable]] = [None] * self._size
+        self.size = len(teams) * len(teams[0].players)
+        self.next_player = 0
+        self.play_order: list[Optional[PlayerAtTable]] = [None] * self.size
         for team_index, team in enumerate(teams):
             for player_index, player in enumerate(team.players):
                 player_index = team_index + player_index * len(teams)
-                self._play_order[player_index] = PlayerAtTable(
-                    player,
-                    UnorderedCardContainer.empty()
+                self.play_order[player_index] = PlayerAtTable(
+                    player=player,
+                    hand=UnorderedCardContainer.empty()
                 )
 
     def __iter__(self):
-        return iter(self._play_order)
+        return iter(self.play_order)
 
     def __eq__(self, other):
         if not isinstance(other, PlayOrder):
             return False
-        return self._play_order == other._play_order
+        return self.play_order == other.play_order
 
     def rotate(self, player: PlayerAtTable) -> None:
         """
@@ -40,7 +40,7 @@ class PlayOrder:
         """
         order = list(self)
         rotation: int = order.index(player)
-        self._next_player = rotation
+        self.next_player = rotation
 
     def next_order(self) -> 'PlayOrder':
         """
@@ -54,8 +54,8 @@ class PlayOrder:
         Retrieves the next player who's turn it is.
         :rtype: PlayOrder
         """
-        player: PlayerAtTable = self._play_order[self._next_player]
-        self._next_player = (self._next_player + 1) % self._size
+        player: PlayerAtTable = self.play_order[self.next_player]
+        self.next_player = (self.next_player + 1) % self.size
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
@@ -64,14 +64,14 @@ class PlayOrder:
         :param player: who needs it's counterpart at the table
         :return: the player at table
         """
-        return [table_player for table_player in self._play_order
+        return [table_player for table_player in self.play_order
                 if table_player.player == player][0]
 
     # pylint: disable=protected-access
     @classmethod
     def _new_order(cls, old_order: 'PlayOrder'):
         instance = cls.__new__(cls)
-        instance._play_order = old_order._play_order[1:] + old_order._play_order[:1]
-        instance._size = len(instance._play_order)
-        instance._next_player = 0
+        instance.play_order = old_order.play_order[1:] + old_order.play_order[:1]
+        instance.size = len(instance.play_order)
+        instance.next_player = 0
         return instance

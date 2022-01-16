@@ -68,7 +68,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         trick = self.hand.deal()
         first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         second_card = Card(suit=Suit.CLUBS, rank=Rank.K)
-        first_player = self.hand._current_play_order._play_order[0]
-        second_player = self.hand._current_play_order._play_order[1]
+        first_player = self.hand._current_play_order.play_order[0]
+        second_player = self.hand._current_play_order.play_order[1]
         trick.play_card(first_player, first_card)
         trick.play_card(second_player, second_card)

@@ -64,7 +64,7 @@ class Hand:
             player.hand.add(card)
         self._trump = card.suit
 
-        first_trick = Trick(list(self._current_play_order), self._trump)
+        first_trick = Trick(list(self._current_play_order), self.trump)
         self._tricks.append(first_trick)
         return first_trick
 
