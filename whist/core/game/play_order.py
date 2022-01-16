@@ -14,7 +14,7 @@ class PlayOrder:
 
     def __init__(self, teams: list[Team]):
         self.size = len(teams) * len(teams[0].players)
-        self.next_player = 0
+        self._next_player = 0
         self.play_order: list[Optional[PlayerAtTable]] = [None] * self.size
         for team_index, team in enumerate(teams):
             for player_index, player in enumerate(team.players):
@@ -40,7 +40,7 @@ class PlayOrder:
         """
         order = list(self)
         rotation: int = order.index(player)
-        self.next_player = rotation
+        self._next_player = rotation
 
     def next_order(self) -> 'PlayOrder':
         """
@@ -54,8 +54,8 @@ class PlayOrder:
         Retrieves the next player who's turn it is.
         :rtype: PlayOrder
         """
-        player: PlayerAtTable = self.play_order[self.next_player]
-        self.next_player = (self.next_player + 1) % self.size
+        player: PlayerAtTable = self.play_order[self._next_player]
+        self._next_player = (self._next_player + 1) % self.size
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
@@ -73,5 +73,5 @@ class PlayOrder:
         instance = cls.__new__(cls)
         instance.play_order = old_order.play_order[1:] + old_order.play_order[:1]
         instance.size = len(instance.play_order)
-        instance.next_player = 0
+        instance._next_player = 0
         return instance
