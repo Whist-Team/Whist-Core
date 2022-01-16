@@ -1,4 +1,7 @@
 """Hand of whist"""
+from typing import Optional
+
+from whist.core.cards.card import Card
 from whist.core.cards.card_container import UnorderedCardContainer
 from whist.core.error.hand_error import HandAlreadyDealtError
 from whist.core.game.play_order import PlayOrder
@@ -52,15 +55,15 @@ class Hand:
         """
         if len(self._tricks) != 0:
             raise HandAlreadyDealtError()
+
         deck = UnorderedCardContainer.full()
-        while len(deck) > 0:
+        card: Optional[Card] = None
+        while deck:
             player = self._current_play_order.next_player()
             card = deck.pop_random()
-            if len(deck) == 1:
-                self._trump = card.suit
             player.hand.add(card)
-        if self._trump is None:
-            raise ValueError
+        self._trump = card.suit
+
         first_trick = Trick(list(self._current_play_order), self._trump)
         self._tricks.append(first_trick)
         return first_trick

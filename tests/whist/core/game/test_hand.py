@@ -15,9 +15,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
 
     def test_first_trick(self):
         first_trick = self.hand.deal()
-        i = 0
-        while i < len(self.player_order):
-            i += 1
+        for i in range(len(self.player_order)):
             player = self.play_order.next_player()
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(first_trick, Trick)
