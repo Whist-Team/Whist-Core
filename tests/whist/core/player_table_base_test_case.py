@@ -8,7 +8,8 @@ class PlayerAtTableBaseTestCase(TeamBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.play_order = PlayOrder([self.team_a, self.team_b])
-        self.player_order: list[PlayerAtTable] = [PlayerAtTable(self.player_a, UnorderedCardContainer.empty()),
-                                                  PlayerAtTable(self.player_c, UnorderedCardContainer.empty()),
-                                                  PlayerAtTable(self.player_b, UnorderedCardContainer.empty()),
-                                                  PlayerAtTable(self.player_d, UnorderedCardContainer.empty())]
+        self.player_order: list[PlayerAtTable] = [
+            PlayerAtTable(player=self.player_a, hand=UnorderedCardContainer.empty()),
+            PlayerAtTable(player=self.player_c, hand=UnorderedCardContainer.empty()),
+            PlayerAtTable(player=self.player_b, hand=UnorderedCardContainer.empty()),
+            PlayerAtTable(player=self.player_d, hand=UnorderedCardContainer.empty())]
