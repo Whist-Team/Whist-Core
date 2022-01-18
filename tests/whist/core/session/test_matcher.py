@@ -1,6 +1,6 @@
 import unittest
 
-from whist.core.session.matcher import RandomMatcher, RoundRobinMatcher
+from whist.core.session.matcher import RandomMatcher, RoundRobinMatcher, Matcher
 from whist.core.session.userlist import UserList
 from whist.core.user.player import Player
 
@@ -29,3 +29,7 @@ class MatchTestCase(unittest.TestCase):
         self.assertEqual(teams[1].players[0], self.players[1])
         self.assertEqual(teams[0].players[1], self.players[2])
         self.assertEqual(teams[1].players[1], self.players[3])
+
+    def test_abstract(self):
+        with self.assertRaises(NotImplementedError):
+            Matcher.distribute(1, 2, self.user_list)
