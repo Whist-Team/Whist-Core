@@ -48,7 +48,6 @@ class Rubber(BaseModel):
             self.games.append(Game(self.teams))
         return self.games[-1]
 
-
     @classmethod
     def create_random(cls, users: UserList, num_teams: int, team_size: int) -> 'Rubber':
         """
