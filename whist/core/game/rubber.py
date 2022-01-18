@@ -55,7 +55,7 @@ class Rubber(BaseModel):
         Creates a rubber with a random distribution of players in teams.
         :param users: all players and stati at the table
         :param num_teams: the amount of teams
-        :param team_size: the size of each teams
+        :param team_size: the size of each team
         :return: the rubber object
         """
         teams = RandomMatch.distribute(num_teams, team_size, users)
