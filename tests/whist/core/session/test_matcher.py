@@ -1,6 +1,6 @@
 import unittest
 
-from whist.core.session.matcher import RandomMatcher
+from whist.core.session.matcher import RandomMatcher, RoundRobinMatcher
 from whist.core.session.userlist import UserList
 from whist.core.user.player import Player
 
@@ -22,3 +22,10 @@ class MatchTestCase(unittest.TestCase):
         self.assertEqual(2, len(teams[1].players))
         self.assertEqual(2, self.user_list.team_size(0))
         self.assertEqual(2, self.user_list.team_size(1))
+
+    def test_round_robin_distribute(self):
+        teams = RoundRobinMatcher.distribute(2, 2, self.user_list)
+        self.assertEqual(teams[0].players[0], self.players[0])
+        self.assertEqual(teams[1].players[0], self.players[1])
+        self.assertEqual(teams[0].players[1], self.players[2])
+        self.assertEqual(teams[1].players[1], self.players[3])

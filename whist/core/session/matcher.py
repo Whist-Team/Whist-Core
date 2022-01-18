@@ -17,10 +17,34 @@ class Matcher(abc.ABC):
         Distributes cards according to subclass implementation.
         :param num_teams: the amount of teams
         :param team_size: how many players per team
-        :param users: the userlist at that table
+        :param users: the user list at that table
         :return: the list of teams with players distributed to them
         """
         raise NotImplementedError
+
+
+class RoundRobinMatcher(Matcher):
+    """
+    Distributes the players in the order of the user list.
+    """
+
+    @staticmethod
+    def distribute(num_teams: int, team_size: int, users: UserList) -> list[Team]:
+        """
+        Distributes one player to each team each round in order of the user list. Repeats until
+        the user list is empty.
+        :param num_teams: the amount of teams
+        :param team_size: how many players per team
+        :param users: the user list at that table
+        :return: the teams in round robin distribution
+        """
+        players = users.players
+        for _ in range(0, team_size):
+            for team_id in range(0, num_teams):
+                users.change_team(players.pop(0), team_id)
+
+        return users.teams
+
 
 class RandomMatcher(Matcher):
     """
