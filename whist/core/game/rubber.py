@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from whist.core.game.game import Game
 from whist.core.scoring.team import Team
-from whist.core.session.matcher import RandomMatch
+from whist.core.session.matcher import RandomMatcher
 from whist.core.session.userlist import UserList
 
 
@@ -58,6 +58,6 @@ class Rubber(BaseModel):
         :param team_size: the size of each team
         :return: the rubber object
         """
-        teams = RandomMatch.distribute(num_teams, team_size, users)
+        teams = RandomMatcher.distribute(num_teams, team_size, users)
         rubber = Rubber(teams=teams)
         return rubber

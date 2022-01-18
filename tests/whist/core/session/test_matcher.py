@@ -1,6 +1,6 @@
 import unittest
 
-from whist.core.session.matcher import RandomMatch
+from whist.core.session.matcher import RandomMatcher
 from whist.core.session.userlist import UserList
 from whist.core.user.player import Player
 
@@ -17,7 +17,7 @@ class MatchTestCase(unittest.TestCase):
             self.user_list.append(player)
 
     def test_distribute(self):
-        teams = RandomMatch.distribute(2, 2, self.user_list)
+        teams = RandomMatcher.distribute(2, 2, self.user_list)
         self.assertEqual(2, len(teams[0].players))
         self.assertEqual(2, len(teams[1].players))
         self.assertEqual(2, self.user_list.team_size(0))

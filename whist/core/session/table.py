@@ -3,7 +3,7 @@
 from whist.core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError
 from whist.core.game.rubber import Rubber
-from whist.core.session.matcher import RandomMatch
+from whist.core.session.matcher import RandomMatcher
 from whist.core.session.session import Session
 from whist.core.user.player import Player
 
@@ -60,7 +60,7 @@ class Table(Session):
         if not self.ready:
             raise TableNotReadyError()
 
-        teams = RandomMatch.distribute(num_teams=2, team_size=self.team_size, users=self.users)
+        teams = RandomMatcher.distribute(num_teams=2, team_size=self.team_size, users=self.users)
         rubber = Rubber(teams=teams)
         self.rubbers.append(rubber)
         self.started = True

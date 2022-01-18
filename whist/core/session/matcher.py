@@ -22,8 +22,7 @@ class Matcher(abc.ABC):
         """
         raise NotImplementedError
 
-
-class RandomMatch(Matcher):
+class RandomMatcher(Matcher):
     """
     Distributes the players randomly to teams.
     """
