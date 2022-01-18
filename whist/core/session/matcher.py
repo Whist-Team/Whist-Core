@@ -1,6 +1,7 @@
 """
 Match making tool.
 """
+import abc
 import random
 
 from whist.core.scoring.team import Team
@@ -8,7 +9,21 @@ from whist.core.session.userlist import UserList
 
 
 # pylint: disable=too-few-public-methods
-class RandomMatch:
+class Matcher(abc.ABC):
+    @staticmethod
+    @abc.abstractmethod
+    def distribute(num_teams: int, team_size: int, users: UserList) -> list[Team]:
+        """
+        Distributes cards according to subclass implementation.
+        :param num_teams: the amount of teams
+        :param team_size: how many players per team
+        :param users: the userlist at that table
+        :return: the list of teams with players distributed to them
+        """
+        raise NotImplementedError
+
+
+class RandomMatch(Matcher):
     """
     Distributes the players randomly to teams.
     """
