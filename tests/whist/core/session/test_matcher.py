@@ -16,7 +16,7 @@ class MatchTestCase(unittest.TestCase):
         for player in self.players:
             self.user_list.append(player)
 
-    def test_distribute(self):
+    def test_random_distribute(self):
         teams = RandomMatcher.distribute(2, 2, self.user_list)
         self.assertEqual(2, len(teams[0].players))
         self.assertEqual(2, len(teams[1].players))
