@@ -10,6 +10,10 @@ from whist.core.session.userlist import UserList
 
 # pylint: disable=too-few-public-methods
 class Matcher(abc.ABC):
+    """
+    Abstrakt class for player to teams matching.
+    """
+
     @staticmethod
     @abc.abstractmethod
     def distribute(num_teams: int, team_size: int, users: UserList) -> list[Team]:
