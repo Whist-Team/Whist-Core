@@ -17,7 +17,8 @@ class MatchTestCase(unittest.TestCase):
             self.user_list.append(player)
 
     def test_distribute(self):
-        matcher = RandomMatch(2, 2, self.user_list)
-        matcher.distribute()
+        teams = RandomMatch.distribute(2, 2, self.user_list)
+        self.assertEqual(2, len(teams[0].players))
+        self.assertEqual(2, len(teams[1].players))
         self.assertEqual(2, self.user_list.team_size(0))
         self.assertEqual(2, self.user_list.team_size(1))

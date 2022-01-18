@@ -48,6 +48,7 @@ class Rubber(BaseModel):
             self.games.append(Game(self.teams))
         return self.games[-1]
 
+
     @classmethod
     def create_random(cls, users: UserList, num_teams: int, team_size: int) -> 'Rubber':
         """
@@ -57,7 +58,6 @@ class Rubber(BaseModel):
         :param team_size: the size of each teams
         :return: the rubber object
         """
-        matcher = RandomMatch(num_teams, team_size, users)
-        matcher.distribute()
-        rubber = Rubber(teams=users.teams)
+        teams = RandomMatch.distribute(num_teams, team_size, users)
+        rubber = Rubber(teams=teams)
         return rubber
