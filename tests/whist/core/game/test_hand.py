@@ -72,3 +72,16 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         second_player = self.hand._current_play_order.play_order[1]
         trick.play_card(first_player, first_card)
         trick.play_card(second_player, second_card)
+
+    def test_play_order_untouched(self):
+        ace = Card(rank=Rank.A, suit=Suit.CLUBS)
+        king = Card(rank=Rank.K, suit=Suit.CLUBS)
+        queen = Card(rank=Rank.Q, suit=Suit.CLUBS)
+        jack = Card(rank=Rank.J, suit=Suit.CLUBS)
+        trick = self.hand.deal()
+        trick.play_card(self.hand._current_play_order.play_order[0], queen)
+        trick.play_card(self.hand._current_play_order.play_order[1], jack)
+        trick.play_card(self.hand._current_play_order.play_order[2], ace)
+        trick.play_card(self.hand._current_play_order.play_order[3], king)
+        next_trick = self.hand.next_trick()
+        self.assertEqual(list(next_trick.play_order)[0].player, self.player_b)

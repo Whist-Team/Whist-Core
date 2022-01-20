@@ -68,8 +68,8 @@ class Hand:
         """
         if not self._tricks[-1].done:
             raise TrickNotDoneWarning()
-        self._winner_plays_first_card()
-        next_trick = Trick(play_order=list(self._current_play_order), trump=self._trump)
+        next_trick_order = self._winner_plays_first_card()
+        next_trick = Trick(play_order=list(next_trick_order), trump=self._trump)
         self._tricks.append(next_trick)
         return next_trick
 
@@ -81,6 +81,6 @@ class Hand:
         """
         return self._current_play_order.get_player(player)
 
-    def _winner_plays_first_card(self):
+    def _winner_plays_first_card(self) -> PlayOrder:
         winner: PlayerAtTable = self._tricks[-1].winner
-        self._current_play_order.rotate(winner)
+        return self._current_play_order.rotate(winner)
