@@ -15,9 +15,8 @@ class Hand:
     Hand of whist.
     """
 
-    def __init__(self, play_order: PlayOrder):
+    def __init__(self):
         self._tricks: list[Trick] = []
-        self._current_play_order: PlayOrder = play_order
         self._trump = None
 
     @property

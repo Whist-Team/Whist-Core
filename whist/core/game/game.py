@@ -28,10 +28,10 @@ class Game:
         :rtype: Hand
         """
         if self.current_hand is None:
-            self.current_hand = Hand(self.play_order)
+            self.current_hand = Hand()
         elif self.current_hand.done:
             self._next_play_order()
-            self.current_hand = Hand(self.play_order)
+            self.current_hand = Hand()
         return self.current_hand
 
     @property

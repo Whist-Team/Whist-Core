@@ -11,7 +11,7 @@ from whist.core.game.warnings import TrickNotDoneWarning
 class HandTestCase(PlayerAtTableBaseTestCase):
     def setUp(self):
         super().setUp()
-        self.hand = Hand(self.play_order)
+        self.hand = Hand()
 
     def test_first_trick(self):
         first_trick = self.hand.deal(self.play_order)
@@ -62,8 +62,8 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         trick = self.hand.deal(self.play_order)
         first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         second_card = Card(suit=Suit.CLUBS, rank=Rank.K)
-        first_player = self.hand._current_play_order.play_order[0]
-        second_player = self.hand._current_play_order.play_order[1]
+        first_player = list(self.play_order)[0]
+        second_player = list(self.play_order)[1]
         trick.play_card(first_player, first_card)
         trick.play_card(second_player, second_card)
 
@@ -73,9 +73,9 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         queen = Card(rank=Rank.Q, suit=Suit.CLUBS)
         jack = Card(rank=Rank.J, suit=Suit.CLUBS)
         trick = self.hand.deal(self.play_order)
-        trick.play_card(self.hand._current_play_order.play_order[0], queen)
-        trick.play_card(self.hand._current_play_order.play_order[1], jack)
-        trick.play_card(self.hand._current_play_order.play_order[2], ace)
-        trick.play_card(self.hand._current_play_order.play_order[3], king)
+        trick.play_card(list(self.play_order)[0], queen)
+        trick.play_card(list(self.play_order)[1], jack)
+        trick.play_card(list(self.play_order)[2], ace)
+        trick.play_card(list(self.play_order)[3], king)
         next_trick = self.hand.next_trick(self.play_order)
         self.assertEqual(list(next_trick.play_order)[0].player, self.player_b)
