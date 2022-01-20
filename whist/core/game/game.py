@@ -35,6 +35,16 @@ class Game:
         return self.current_hand
 
     @property
+    def current_trick(self):
+        """
+        Returns the current trick of the current hand.
+        """
+        try:
+            return self.next_hand().current_trick
+        except IndexError:
+            return self.next_hand().deal(self.play_order)
+
+    @property
     def done(self):
         """
         Check if game is done.

@@ -55,10 +55,8 @@ class HandTestCase(PlayerAtTableBaseTestCase):
             self.hand.deal(self.play_order)
 
     def test_trick_initialized(self):
-        trick = self.hand.current_trick
-        for player in self.play_order:
-            self.assertEqual(13, len(player.hand))
-        self.assertIsInstance(trick, Trick)
+        with self.assertRaises(IndexError):
+            _ = self.hand.current_trick
 
     def test_second_card_same_suit(self):
         trick = self.hand.deal(self.play_order)
