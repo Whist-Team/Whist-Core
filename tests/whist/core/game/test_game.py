@@ -34,3 +34,7 @@ class GameTestCase(TeamBaseTestCase):
 
     def test_not_done(self):
         self.assertFalse(self.game.done)
+
+    def test_player_to_table_player(self):
+        player_at_table = self.game.get_player(self.player_a)
+        self.assertEqual(self.player_a, player_at_table.player)

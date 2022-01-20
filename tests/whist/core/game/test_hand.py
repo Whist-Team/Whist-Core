@@ -14,21 +14,21 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         self.hand = Hand(self.play_order)
 
     def test_first_trick(self):
-        first_trick = self.hand.deal()
+        first_trick = self.hand.deal(self.play_order)
         for i in range(len(self.player_order)):
             player = self.play_order.next_player()
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(first_trick, Trick)
 
     def test_done_trick(self):
-        first_trick = self.hand.deal()
+        first_trick = self.hand.deal(self.play_order)
         # deliberately ignore illegal moves
         with patch('whist.core.game.legal_checker.LegalChecker.check_legal', return_value=True):
             while not first_trick.done:
                 player = self.play_order.next_player()
                 card = player.hand.pop_random()
                 first_trick.play_card(player, card)
-        next_trick = self.hand.next_trick()
+        next_trick = self.hand.next_trick(self.play_order)
         i = 0
         while i < len(self.player_order):
             i += 1
@@ -37,16 +37,12 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         self.assertNotEqual(first_trick, next_trick)
 
     def test_not_done_trick(self):
-        _ = self.hand.deal()
+        _ = self.hand.deal(self.play_order)
         with self.assertRaises(TrickNotDoneWarning):
-            _ = self.hand.next_trick()
-
-    def test_player_to_table_player(self):
-        player_at_table = self.hand.get_player(self.player_a)
-        self.assertEqual(self.player_a, player_at_table.player)
+            _ = self.hand.next_trick(self.play_order)
 
     def test_trick_getter(self):
-        first_trick = self.hand.deal()
+        first_trick = self.hand.deal(self.play_order)
         trick = self.hand.current_trick
         for player in self.play_order:
             self.assertEqual(13, len(player.hand))
@@ -54,9 +50,9 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         self.assertEqual(first_trick, trick)
 
     def test_safe_deal(self):
-        _ = self.hand.deal()
+        _ = self.hand.deal(self.play_order)
         with self.assertRaises(HandAlreadyDealtError):
-            self.hand.deal()
+            self.hand.deal(self.play_order)
 
     def test_trick_initialized(self):
         trick = self.hand.current_trick
@@ -65,7 +61,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         self.assertIsInstance(trick, Trick)
 
     def test_second_card_same_suit(self):
-        trick = self.hand.deal()
+        trick = self.hand.deal(self.play_order)
         first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         second_card = Card(suit=Suit.CLUBS, rank=Rank.K)
         first_player = self.hand._current_play_order.play_order[0]
@@ -78,10 +74,10 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         king = Card(rank=Rank.K, suit=Suit.CLUBS)
         queen = Card(rank=Rank.Q, suit=Suit.CLUBS)
         jack = Card(rank=Rank.J, suit=Suit.CLUBS)
-        trick = self.hand.deal()
+        trick = self.hand.deal(self.play_order)
         trick.play_card(self.hand._current_play_order.play_order[0], queen)
         trick.play_card(self.hand._current_play_order.play_order[1], jack)
         trick.play_card(self.hand._current_play_order.play_order[2], ace)
         trick.play_card(self.hand._current_play_order.play_order[3], king)
-        next_trick = self.hand.next_trick()
+        next_trick = self.hand.next_trick(self.play_order)
         self.assertEqual(list(next_trick.play_order)[0].player, self.player_b)

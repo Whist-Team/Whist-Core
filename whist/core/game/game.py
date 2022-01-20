@@ -3,8 +3,10 @@ from typing import Optional
 
 from whist.core.game.hand import Hand
 from whist.core.game.play_order import PlayOrder
+from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.score_card import ScoreCard
 from whist.core.scoring.team import Team
+from whist.core.user.player import Player
 
 
 class Game:
@@ -40,6 +42,14 @@ class Game:
         :rtype: bool
         """
         return self.win_score <= self.score_card.max
+
+    def get_player(self, player: Player) -> PlayerAtTable:
+        """
+        Retrieves the PlayerAtTable for the player given.
+        :param player: who needs it's counterpart at the table
+        :return: the player at table
+        """
+        return self.play_order.get_player(player)
 
     def _next_play_order(self) -> None:
         """
