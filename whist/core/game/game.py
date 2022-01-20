@@ -14,7 +14,7 @@ class Game:
 
     def __init__(self, teams: list[Team]):
         super().__init__()
-        self.teams: list[Team] = teams
+        self.play_order: PlayOrder = PlayOrder(teams)
         self.win_score: int = 3
         self.score_card: ScoreCard = ScoreCard()
         self.current_hand: Optional[Hand] = None
@@ -26,10 +26,10 @@ class Game:
         :rtype: Hand
         """
         if self.current_hand is None:
-            self.current_hand = Hand(PlayOrder(self.teams))
+            self.current_hand = Hand(self.play_order)
         elif self.current_hand.done:
-            next_order = self.current_hand.next_play_order
-            self.current_hand = Hand(next_order)
+            self._next_play_order()
+            self.current_hand = Hand(self.play_order)
         return self.current_hand
 
     @property
@@ -40,3 +40,9 @@ class Game:
         :rtype: bool
         """
         return self.win_score <= self.score_card.max
+
+    def _next_play_order(self) -> None:
+        """
+        Creates the next order of player for next hand.
+        """
+        self.play_order = self.play_order.next_order()
