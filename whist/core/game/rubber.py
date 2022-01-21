@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from whist.core.game.game import Game
 from whist.core.scoring.team import Team
-from whist.core.session.matcher import RandomMatch
+from whist.core.session.matcher import RandomMatcher
 from whist.core.session.userlist import UserList
 
 
@@ -54,10 +54,9 @@ class Rubber(BaseModel):
         Creates a rubber with a random distribution of players in teams.
         :param users: all players and stati at the table
         :param num_teams: the amount of teams
-        :param team_size: the size of each teams
+        :param team_size: the size of each team
         :return: the rubber object
         """
-        matcher = RandomMatch(num_teams, team_size, users)
-        matcher.distribute()
-        rubber = Rubber(teams=users.teams)
+        teams = RandomMatcher.distribute(num_teams, team_size, users)
+        rubber = Rubber(teams=teams)
         return rubber
