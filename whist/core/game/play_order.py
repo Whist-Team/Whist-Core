@@ -32,7 +32,7 @@ class PlayOrder:
             return False
         return self.play_order == other.play_order
 
-    def rotate(self, player: PlayerAtTable) -> None:
+    def rotate(self, player: PlayerAtTable) -> 'PlayOrder':
         """
         Rotates the play order, so the player will be next player.
         :param player: who should be at beginning of the play order
@@ -40,7 +40,7 @@ class PlayOrder:
         """
         order = list(self)
         rotation: int = order.index(player)
-        self._next_player = rotation
+        return PlayOrder._new_rotate_order(self, rotation)
 
     def next_order(self) -> 'PlayOrder':
         """
@@ -72,6 +72,14 @@ class PlayOrder:
     def _new_order(cls, old_order: 'PlayOrder'):
         instance = cls.__new__(cls)
         instance.play_order = old_order.play_order[1:] + old_order.play_order[:1]
+        instance.size = len(instance.play_order)
+        instance._next_player = 0
+        return instance
+
+    @classmethod
+    def _new_rotate_order(cls, old_order: 'PlayOrder', rotation: int):
+        instance = cls.__new__(cls)
+        instance.play_order = old_order.play_order[rotation:] + old_order.play_order[:rotation]
         instance.size = len(instance.play_order)
         instance._next_player = 0
         return instance

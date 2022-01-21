@@ -3,6 +3,7 @@ from unittest.mock import patch, PropertyMock
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.game import Game
 from whist.core.game.hand import Hand
+from whist.core.game.trick import Trick
 
 
 class GameTestCase(TeamBaseTestCase):
@@ -34,3 +35,22 @@ class GameTestCase(TeamBaseTestCase):
 
     def test_not_done(self):
         self.assertFalse(self.game.done)
+
+    def test_player_to_table_player(self):
+        player_at_table = self.game.get_player(self.player_a)
+        self.assertEqual(self.player_a, player_at_table.player)
+
+    def test_trick_initialize(self):
+        trick = self.game.current_trick
+        for player in self.game.play_order:
+            self.assertEqual(13, len(player.hand))
+        self.assertIsInstance(trick, Trick)
+
+    def test_trick_getter(self):
+        hand = self.game.next_hand()
+        first_trick = self.game.current_trick
+        trick = hand.current_trick
+        for player in self.game.play_order:
+            self.assertEqual(13, len(player.hand))
+        self.assertIsInstance(trick, Trick)
+        self.assertEqual(first_trick, trick)
