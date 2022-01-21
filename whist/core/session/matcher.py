@@ -1,34 +1,71 @@
 """
 Match making tool.
 """
+import abc
 import random
 
+from whist.core.scoring.team import Team
 from whist.core.session.userlist import UserList
 
 
 # pylint: disable=too-few-public-methods
-class RandomMatch:
+class Matcher(abc.ABC):
+    """
+    Abstrakt class for player to teams matching.
+    """
+
+    @staticmethod
+    @abc.abstractmethod
+    def distribute(num_teams: int, team_size: int, users: UserList) -> list[Team]:
+        """
+        Distributes cards according to subclass implementation.
+        :param num_teams: the amount of teams
+        :param team_size: how many players per team
+        :param users: the user list at that table
+        :return: the list of teams with players distributed to them
+        """
+        raise NotImplementedError
+
+
+class RoundRobinMatcher(Matcher):
+    """
+    Distributes the players in the order of the user list.
+    """
+
+    @staticmethod
+    def distribute(num_teams: int, team_size: int, users: UserList) -> list[Team]:
+        """
+        Distributes one player to each team each round in order of the user list. Repeats until
+        the user list is empty.
+        :param num_teams: the amount of teams
+        :param team_size: how many players per team
+        :param users: the user list at that table
+        :return: the teams in round robin distribution
+        """
+        players = users.players
+        for _ in range(0, team_size):
+            for team_id in range(0, num_teams):
+                users.change_team(players.pop(0), team_id)
+
+        return users.teams
+
+
+class RandomMatcher(Matcher):
     """
     Distributes the players randomly to teams.
     """
-    _num_teams: int
-    _team_size: int
-    _users: UserList
 
-    def __init__(self, num_teams: int, team_size: int, users: UserList):
-        self._num_teams = num_teams
-        self._team_size = team_size
-        self._users = users
-
-    def distribute(self) -> None:
+    @staticmethod
+    def distribute(num_teams: int, team_size: int, users: UserList) -> list[Team]:
         """
         For given parameter distributes the players to teams.
         :return: None
         :rtype: None
         """
-        players = self._users.players
-        teams: list = list(range(0, self._team_size)) * self._num_teams
+        players = users.players
+        teams: list = list(range(0, team_size)) * num_teams
         for player in players:
             team_id = random.choice(teams)
-            self._users.change_team(player, team_id)
+            users.change_team(player, team_id)
             teams.remove(team_id)
+        return users.teams
