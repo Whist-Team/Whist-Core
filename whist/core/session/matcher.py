@@ -4,6 +4,7 @@ Match making tool.
 import abc
 import random
 
+from whist.core.error.matcher_error import NotEnoughPlayersError
 from whist.core.scoring.team import Team
 from whist.core.session.userlist import UserList
 
@@ -43,6 +44,9 @@ class RoundRobinMatcher(Matcher):
         :return: the teams in round robin distribution
         """
         players = users.players
+        if num_teams * team_size > len(players):
+            raise NotEnoughPlayersError(f'{num_teams * team_size} of players are need, but only '
+                                        f'{len(players)} have joined.')
         for _ in range(0, team_size):
             for team_id in range(0, num_teams):
                 users.change_team(players.pop(0), team_id)
