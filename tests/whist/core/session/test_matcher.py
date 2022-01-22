@@ -41,3 +41,11 @@ class MatchTestCase(unittest.TestCase):
     def test_abstract(self):
         with self.assertRaises(NotImplementedError):
             Matcher.distribute(1, 2, self.user_list)
+
+    def test_zero_players_per_team(self):
+        with self.assertRaises(ValueError):
+            _ = RoundRobinMatcher.distribute(num_teams=2, team_size=0, users=self.user_list)
+
+    def test_zero_teams(self):
+        with self.assertRaises(ValueError):
+            _ = RoundRobinMatcher.distribute(num_teams=0, team_size=2, users=self.user_list)
