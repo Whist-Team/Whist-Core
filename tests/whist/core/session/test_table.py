@@ -68,14 +68,14 @@ class TableTestCase(BaseTestCase):
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
 
-    def test_start(self):
+    def test_start_random(self):
         self.table.join(self.player)
         self.table.player_ready(self.player)
         self.table.start(RandomMatcher)
         self.assertTrue(self.table.started)
         self.assertIsInstance(self.table.current_rubber, Rubber)
 
-    def test_start(self):
+    def test_start_robin(self):
         self.table.join(self.player)
         self.table.player_ready(self.player)
         self.table.start(RoundRobinMatcher)
