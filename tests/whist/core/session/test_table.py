@@ -69,15 +69,21 @@ class TableTestCase(BaseTestCase):
         self.assertEqual(self.table, table)
 
     def test_start_random(self):
+        second_player = Player(username='miles', rating=3000)
         self.table.join(self.player)
+        self.table.join(second_player)
         self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
         self.table.start(RandomMatcher)
         self.assertTrue(self.table.started)
         self.assertIsInstance(self.table.current_rubber, Rubber)
 
     def test_start_robin(self):
+        second_player = Player(username='miles', rating=3000)
         self.table.join(self.player)
+        self.table.join(second_player)
         self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
         self.table.start(RoundRobinMatcher)
         self.assertTrue(self.table.started)
         self.assertIsInstance(self.table.current_rubber, Rubber)
