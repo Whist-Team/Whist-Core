@@ -45,7 +45,7 @@ class RoundRobinMatcher(Matcher):
         """
         if team_size <= 0:
             raise ValueError('The team size cannot be 0.')
-        if num_teams == 0:
+        if num_teams <= 0:
             raise ValueError('There must be at least one team.')
         players = users.players
         if num_teams * team_size > len(players):
