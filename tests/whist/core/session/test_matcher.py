@@ -1,5 +1,6 @@
 import unittest
 
+from whist.core.error.matcher_error import NotEnoughPlayersError
 from whist.core.session.matcher import RandomMatcher, RoundRobinMatcher, Matcher
 from whist.core.session.userlist import UserList
 from whist.core.user.player import Player
@@ -30,6 +31,21 @@ class MatchTestCase(unittest.TestCase):
         self.assertEqual(teams[0].players[1], self.players[2])
         self.assertEqual(teams[1].players[1], self.players[3])
 
+    def test_round_robin_min_player_distribute(self):
+        user_list = UserList()
+        user_list.append(self.players[0])
+        user_list.append(self.players[1])
+        with self.assertRaises(NotEnoughPlayersError):
+            _ = RoundRobinMatcher.distribute(2, 2, user_list)
+
     def test_abstract(self):
         with self.assertRaises(NotImplementedError):
             Matcher.distribute(1, 2, self.user_list)
+
+    def test_zero_players_per_team(self):
+        with self.assertRaises(ValueError):
+            _ = RoundRobinMatcher.distribute(num_teams=2, team_size=0, users=self.user_list)
+
+    def test_zero_teams(self):
+        with self.assertRaises(ValueError):
+            _ = RoundRobinMatcher.distribute(num_teams=0, team_size=2, users=self.user_list)

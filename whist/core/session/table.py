@@ -60,7 +60,11 @@ class Table(Session):
         if not self.ready:
             raise TableNotReadyError()
 
-        teams = matcher.distribute(num_teams=2, team_size=self.team_size, users=self.users)
+        team_numbers = 2
+        players_available_per_team = int(len(self.users) / team_numbers)
+        teams = matcher.distribute(num_teams=team_numbers,
+                                   team_size=min(players_available_per_team, self.team_size),
+                                   users=self.users)
         rubber = Rubber(teams=teams)
         self.rubbers.append(rubber)
         self.started = True

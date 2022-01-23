@@ -2,7 +2,7 @@ from tests.whist.core.base_test_case import BaseTestCase
 from whist.core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
     TableNotStartedError, PlayerNotJoinedError
 from whist.core.game.rubber import Rubber
-from whist.core.session.matcher import RandomMatcher
+from whist.core.session.matcher import RandomMatcher, RoundRobinMatcher
 from whist.core.session.table import Table
 from whist.core.user.player import Player
 
@@ -68,10 +68,23 @@ class TableTestCase(BaseTestCase):
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
 
-    def test_start(self):
+    def test_start_random(self):
+        second_player = Player(username='miles', rating=3000)
         self.table.join(self.player)
+        self.table.join(second_player)
         self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
         self.table.start(RandomMatcher)
+        self.assertTrue(self.table.started)
+        self.assertIsInstance(self.table.current_rubber, Rubber)
+
+    def test_start_robin(self):
+        second_player = Player(username='miles', rating=3000)
+        self.table.join(self.player)
+        self.table.join(second_player)
+        self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
+        self.table.start(RoundRobinMatcher)
         self.assertTrue(self.table.started)
         self.assertIsInstance(self.table.current_rubber, Rubber)
 
