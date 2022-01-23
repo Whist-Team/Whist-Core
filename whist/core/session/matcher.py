@@ -43,7 +43,7 @@ class RoundRobinMatcher(Matcher):
         :param users: the user list at that table
         :return: the teams in round robin distribution
         """
-        if team_size == 0:
+        if team_size <= 0:
             raise ValueError('The team size cannot be 0.')
         if num_teams == 0:
             raise ValueError('There must be at least one team.')
