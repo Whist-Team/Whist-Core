@@ -1,4 +1,4 @@
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, MagicMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.rubber import Rubber
@@ -15,7 +15,7 @@ class RubberTestCase(TeamBaseTestCase):
 
     def test_done(self):
         with patch('whist.core.game.game.Game.done',
-                   new_callable=PropertyMock(return_value=True)):
+                   new_callable=MagicMock(return_value=True)):
             _ = self.rubber.next_game()
             _ = self.rubber.next_game()
             _ = self.rubber.next_game()

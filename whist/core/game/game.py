@@ -1,25 +1,27 @@
 """One Game of whist"""
 from typing import Optional
 
+from pydantic import BaseModel
+
 from whist.core.game.hand import Hand
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.score_card import ScoreCard
-from whist.core.scoring.team import Team
 from whist.core.user.player import Player
 
 
-class Game:
+class Game(BaseModel):
     """
     One Game of whist.
     """
 
-    def __init__(self, teams: list[Team]):
-        super().__init__()
-        self.play_order: PlayOrder = PlayOrder(teams)
-        self.win_score: int = 3
-        self.score_card: ScoreCard = ScoreCard()
-        self.current_hand: Optional[Hand] = None
+    play_order: PlayOrder
+    win_score: int = 3
+    score_card: ScoreCard = ScoreCard()
+    current_hand: Optional[Hand] = None
+
+    class Config:
+        arbitrary_types_allowed = True
 
     def next_hand(self) -> Hand:
         """
@@ -29,7 +31,7 @@ class Game:
         """
         if self.current_hand is None:
             self.current_hand = Hand()
-        elif self.current_hand.done:
+        elif self.current_hand.done():
             self._next_play_order()
             self.current_hand = Hand()
         return self.current_hand
