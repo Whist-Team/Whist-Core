@@ -33,5 +33,5 @@ class PlayOrderTestCase(TeamBaseTestCase):
                 self.team_b.players[1].username,
             ],
             'next_player': 0}
-        order_json = json.dumps(self.order)
-        self.assertEqual(expected_json, order_json)
+        order_json = json.dumps(self.order, cls=PlayOrder.PlayOrderEncoder)
+        self.assertEqual(expected_json, json.loads(order_json))

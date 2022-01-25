@@ -1,5 +1,6 @@
 """Ring buffer of players at the table."""
-from typing import Optional
+import json
+from typing import Optional, Any
 
 from whist.core.cards.card_container import UnorderedCardContainer
 from whist.core.game.player_at_table import PlayerAtTable
@@ -34,36 +35,36 @@ class PlayOrder:
 
     def rotate(self, player: PlayerAtTable) -> 'PlayOrder':
         """
-        Rotates the play order, so the player will be next player.
-        :param player: who should be at beginning of the play order
-        :return: None
-        """
+            Rotates the play order, so the player will be next player.
+            :param player: who should be at beginning of the play order
+            :return: None
+            """
         order = list(self)
         rotation: int = order.index(player)
         return PlayOrder._new_rotate_order(self, rotation)
 
     def next_order(self) -> 'PlayOrder':
         """
-        Create the order for the next hand.
-        :rtype: PlayOrder
-        """
+            Create the order for the next hand.
+            :rtype: PlayOrder
+            """
         return PlayOrder._new_order(self)
 
     def next_player(self) -> PlayerAtTable:
         """
-        Retrieves the next player who's turn it is.
-        :rtype: PlayOrder
-        """
+            Retrieves the next player who's turn it is.
+            :rtype: PlayOrder
+            """
         player: PlayerAtTable = self.play_order[self._next_player]
         self._next_player = (self._next_player + 1) % self.size
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
         """
-        Retrieves the PlayerAtTable for the player given.
-        :param player: who needs it's counterpart at the table
-        :return: the player at table
-        """
+            Retrieves the PlayerAtTable for the player given.
+            :param player: who needs it's counterpart at the table
+            :return: the player at table
+            """
         return [table_player for table_player in self.play_order
                 if table_player.player == player][0]
 
@@ -83,3 +84,12 @@ class PlayOrder:
         instance.size = len(instance.play_order)
         instance._next_player = 0
         return instance
+
+    class PlayOrderEncoder(json.JSONEncoder):
+        def default(self, obj: Any) -> Any:
+            if isinstance(obj, PlayOrder):
+                player_order = [player.player.username for player in obj.play_order]
+                order_dict = {'play_order': player_order,
+                              'next_player': obj._next_player}
+                return order_dict
+            return json.JSONEncoder.default(self, obj)
