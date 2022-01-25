@@ -79,3 +79,10 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         trick.play_card(list(self.play_order)[3], king)
         next_trick = self.hand.next_trick(self.play_order)
         self.assertEqual(list(next_trick.play_order)[0].player, self.player_b)
+
+    def test_json_after_play(self):
+        trick = self.hand.deal(self.play_order)
+        first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
+        first_player = list(self.play_order)[0]
+        trick.play_card(first_player, first_card)
+        self.assertIsInstance(self.hand.json(), str)
