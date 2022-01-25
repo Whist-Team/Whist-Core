@@ -48,6 +48,12 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
         expected_stack.add(ace_spades)
         self.assertEqual(expected_stack, self.trick.stack)
 
+    def test_trick_json_after_player(self):
+        ace_spades = Card(suit=Suit.SPADES, rank=Rank.A)
+        self.trick.play_card(self.player_order[0], ace_spades)
+        trick_json = self.trick.json()
+        self.assertIsInstance(trick_json, str)
+
     def _play_four_cards(self):
         ace_heart = Card(suit=Suit.HEARTS, rank=Rank.A)
         king_heart = Card(suit=Suit.HEARTS, rank=Rank.K)
