@@ -1,3 +1,5 @@
+import json
+
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.play_order import PlayOrder
 
@@ -21,3 +23,15 @@ class PlayOrderTestCase(TeamBaseTestCase):
         self.assertEqual(self.team_b.players[0], self.order.next_player().player)
         self.assertEqual(self.team_a.players[1], self.order.next_player().player)
         self.assertEqual(self.team_b.players[1], self.order.next_player().player)
+
+    def test_json(self):
+        expected_json = {'play_order':
+            [
+                self.team_a.players[0].username,
+                self.team_b.players[0].username,
+                self.team_a.players[1].username,
+                self.team_b.players[1].username,
+            ],
+            'next_player': 0}
+        order_json = json.dumps(self.order)
+        self.assertEqual(expected_json, order_json)
