@@ -1,3 +1,4 @@
+import json
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -13,7 +14,7 @@ from whist.core.game.trick import Trick
 class GameTestCase(TeamBaseTestCase):
     def setUp(self):
         super().setUp()
-        self.game = Game(play_order=PlayOrder([self.team_a, self.team_b]))
+        self.game = Game(play_order=PlayOrder.from_team_list([self.team_a, self.team_b]))
 
     def test_first_hand(self):
         current_hand = self.game.next_hand()

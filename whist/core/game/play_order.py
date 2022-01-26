@@ -13,17 +13,9 @@ class PlayOrder:
     Iterates over the players at the table.
     """
 
-    def __init__(self, teams: list[Team]):
-        self.size = len(teams) * len(teams[0].players)
-        self._next_player = 0
-        self.play_order: list[Optional[PlayerAtTable]] = [None] * self.size
-        for team_index, team in enumerate(teams):
-            for player_index, player in enumerate(team.players):
-                player_index = team_index + player_index * len(teams)
-                self.play_order[player_index] = PlayerAtTable(
-                    player=player,
-                    hand=UnorderedCardContainer.empty()
-                )
+    def __init__(self, play_order: list[PlayerAtTable], next_player: int = 0):
+        self._next_player = next_player
+        self.play_order = play_order
 
     def __iter__(self):
         return iter(self.play_order)
@@ -32,6 +24,19 @@ class PlayOrder:
         if not isinstance(other, PlayOrder):
             return False
         return self.play_order == other.play_order
+
+    @staticmethod
+    def from_team_list(teams: list[Team]):
+        size = len(teams) * len(teams[0].players)
+        play_order: list[Optional[PlayerAtTable]] = [None] * size
+        for team_index, team in enumerate(teams):
+            for player_index, player in enumerate(team.players):
+                player_index = team_index + player_index * len(teams)
+                play_order[player_index] = PlayerAtTable(
+                    player=player,
+                    hand=UnorderedCardContainer.empty()
+                )
+        return PlayOrder(play_order, 0)
 
     def rotate(self, player: PlayerAtTable) -> 'PlayOrder':
         """
@@ -56,7 +61,7 @@ class PlayOrder:
             :rtype: PlayOrder
             """
         player: PlayerAtTable = self.play_order[self._next_player]
-        self._next_player = (self._next_player + 1) % self.size
+        self._next_player = (self._next_player + 1) % len(self.play_order)
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
@@ -84,6 +89,23 @@ class PlayOrder:
         instance.size = len(instance.play_order)
         instance._next_player = 0
         return instance
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, values):
+        if isinstance(values, PlayOrder):
+            play_order = values.play_order
+            next_player = values._next_player
+        elif isinstance(values, str):
+            json_loads = json.loads(values)
+            play_order = json_loads['play_order']
+            next_player = json_loads['next_player']
+        if not isinstance(next_player, int):
+            raise TypeError(f'next player: {next_player} is not an int')
+        return cls(play_order=play_order, next_player=next_player)
 
     class PlayOrderEncoder(json.JSONEncoder):
         """
