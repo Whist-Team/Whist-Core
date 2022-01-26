@@ -109,7 +109,7 @@ class PlayOrder:
             if not isinstance(next_player, int):
                 raise TypeError(f'next player: {next_player} is not an int')
             return cls(play_order=play_order, next_player=next_player)
-        elif isinstance(values, str):
+        if isinstance(values, str):
             return json.loads(values, cls=cls.PlayOrderDecoder)
         else:
             raise NotImplementedError
