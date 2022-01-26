@@ -23,7 +23,7 @@ class PlayOrder:
     def __eq__(self, other):
         if not isinstance(other, PlayOrder):
             return False
-        return self.play_order == other.play_order
+        return self.play_order == other.play_order and self._next_player == other._next_player
 
     @staticmethod
     def from_team_list(teams: list[Team]):
