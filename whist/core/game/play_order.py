@@ -124,7 +124,7 @@ class PlayOrder:
             :return: dict containing the order of players and the index of the next player
             """
             if isinstance(obj, PlayOrder):
-                player_order = [player.player.username for player in obj.play_order]
+                player_order = [player.json() for player in obj.play_order]
                 order_dict = {'play_order': player_order,
                               'next_player': obj._next_player}
                 return order_dict

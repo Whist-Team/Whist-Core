@@ -27,10 +27,10 @@ class PlayOrderTestCase(TeamBaseTestCase):
     def test_json(self):
         expected_json = {'play_order':
             [
-                self.team_a.players[0].username,
-                self.team_b.players[0].username,
-                self.team_a.players[1].username,
-                self.team_b.players[1].username,
+                self.team_a.players[0],
+                self.team_b.players[0],
+                self.team_a.players[1],
+                self.team_b.players[1],
             ],
             'next_player': 0}
         order_json = json.dumps(self.order, cls=PlayOrder.PlayOrderEncoder)
