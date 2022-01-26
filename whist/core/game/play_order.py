@@ -143,7 +143,8 @@ class PlayOrder:
         def __init__(self, *args, **kwargs):
             json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
 
-        def object_hook(self, obj):
+        @staticmethod
+        def object_hook(obj):
             """
             Parses each player from raw and take the next player directly.
             :param obj: dictionary which is to be parsed to PlayOrder
