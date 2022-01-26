@@ -25,13 +25,6 @@ class PlayOrderTestCase(TeamBaseTestCase):
         self.assertEqual(self.team_b.players[1], self.order.next_player().player)
 
     def test_json(self):
-        expected_json = {'play_order':
-            [
-                self.team_a.players[0],
-                self.team_b.players[0],
-                self.team_a.players[1],
-                self.team_b.players[1],
-            ],
-            'next_player': 0}
+
         order_json = json.dumps(self.order, cls=PlayOrder.PlayOrderEncoder)
-        self.assertEqual(expected_json, json.loads(order_json))
+        self.assertEqual(self.order, json.loads(order_json, cls=PlayOrder.PlayOrderDecoder))
