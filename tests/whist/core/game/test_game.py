@@ -69,3 +69,4 @@ class GameTestCase(TeamBaseTestCase):
         trick.play_card(first_player, first_card)
         game_json = self.game.json()
         self.assertIsInstance(game_json, str)
+        self.assertEqual(self.game, Game(**json.loads(game_json)))
