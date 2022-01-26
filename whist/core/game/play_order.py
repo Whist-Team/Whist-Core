@@ -101,6 +101,11 @@ class PlayOrder:
 
     @classmethod
     def validate(cls, values):
+        """
+        Validates a json string and a PlayOrder object
+        :param values: PlayOrder or json string
+        :return: PlayOrder
+        """
         if isinstance(values, PlayOrder):
             play_order = values.play_order
             next_player = values._next_player
