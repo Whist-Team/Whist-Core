@@ -27,6 +27,11 @@ class PlayOrder:
 
     @staticmethod
     def from_team_list(teams: list[Team]):
+        """
+        Factory method to create a play order from a team list.
+        :param teams: list of teams
+        :return: PlayOrder
+        """
         size = len(teams) * len(teams[0].players)
         play_order: list[Optional[PlayerAtTable]] = [None] * size
         for team_index, team in enumerate(teams):
@@ -129,10 +134,19 @@ class PlayOrder:
             return json.JSONEncoder.default(self, obj)
 
     class PlayOrderDecoder(json.JSONDecoder):
+        """
+        Decodes a play order from a json string.
+        """
+
         def __init__(self, *args, **kwargs):
             json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
 
         def object_hook(self, obj):
+            """
+            Parses each player from raw and take the next player directly.
+            :param obj: dictionary which is to be parsed to PlayOrder
+            :return: PlayOrder
+            """
             play_order_list = obj['play_order']
             play_order = [PlayerAtTable.parse_raw(player) for player in play_order_list]
             return PlayOrder(play_order=play_order, next_player=obj['next_player'])
