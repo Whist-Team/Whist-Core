@@ -116,8 +116,7 @@ class PlayOrder:
             return cls(play_order=play_order, next_player=next_player)
         if isinstance(values, str):
             return json.loads(values, cls=cls.PlayOrderDecoder)
-        else:
-            raise NotImplementedError
+        raise NotImplementedError('Only PlayOrder or json are supported.')
 
     class PlayOrderEncoder(json.JSONEncoder):
         """
