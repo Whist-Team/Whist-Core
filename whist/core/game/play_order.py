@@ -99,17 +99,15 @@ class PlayOrder:
         if isinstance(values, PlayOrder):
             play_order = values.play_order
             next_player = values._next_player
+            if not isinstance(play_order[0], PlayerAtTable):
+                raise TypeError(f'play order is not list of PlayerAtTable: {play_order}')
+            if not isinstance(next_player, int):
+                raise TypeError(f'next player: {next_player} is not an int')
+            return cls(play_order=play_order, next_player=next_player)
         elif isinstance(values, str):
-            json_loads = json.loads(values)
-            play_order = json_loads['play_order']
-            next_player = json_loads['next_player']
+            return json.loads(values, cls=cls.PlayOrderDecoder)
         else:
             raise NotImplementedError
-        if not isinstance(play_order[0], PlayerAtTable):
-            raise TypeError(f'play order is not list of PlayerAtTable: {play_order}')
-        if not isinstance(next_player, int):
-            raise TypeError(f'next player: {next_player} is not an int')
-        return cls(play_order=play_order, next_player=next_player)
 
     class PlayOrderEncoder(json.JSONEncoder):
         """
