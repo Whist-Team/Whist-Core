@@ -24,7 +24,7 @@ class Game(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {
-            'play_order': lambda x: json.dumps(x, cls=PlayOrder.PlayOrderEncoder)
+            PlayOrder: lambda x: json.dumps(x, cls=PlayOrder.PlayOrderEncoder)
         }
 
     def next_hand(self) -> Hand:
