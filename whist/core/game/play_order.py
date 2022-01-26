@@ -129,3 +129,12 @@ class PlayOrder:
                               'next_player': obj._next_player}
                 return order_dict
             return json.JSONEncoder.default(self, obj)
+
+    class PlayOrderDecoder(json.JSONDecoder):
+        def __init__(self, *args, **kwargs):
+            json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
+
+        def object_hook(self, obj):
+            play_order_list = obj['play_order']
+            play_order = [PlayerAtTable.parse_raw(player) for player in play_order_list]
+            return PlayOrder(play_order=play_order, next_player=obj['next_player'])
