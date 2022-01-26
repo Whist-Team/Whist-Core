@@ -21,7 +21,11 @@ class Game(BaseModel):
     score_card: ScoreCard = ScoreCard()
     current_hand: Optional[Hand] = None
 
+    # pylint: disable=too-few-public-methods
     class Config:
+        """
+        Enables to have non models as field types and sets the encoder for play order.
+        """
         arbitrary_types_allowed = True
         json_encoders = {
             PlayOrder: lambda x: json.dumps(x, cls=PlayOrder.PlayOrderEncoder)
