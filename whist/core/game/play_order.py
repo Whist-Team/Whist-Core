@@ -83,7 +83,6 @@ class PlayOrder:
     def _new_order(cls, old_order: 'PlayOrder'):
         instance = cls.__new__(cls)
         instance.play_order = old_order.play_order[1:] + old_order.play_order[:1]
-        instance.size = len(instance.play_order)
         instance._next_player = 0
         return instance
 
@@ -91,7 +90,6 @@ class PlayOrder:
     def _new_rotate_order(cls, old_order: 'PlayOrder', rotation: int):
         instance = cls.__new__(cls)
         instance.play_order = old_order.play_order[rotation:] + old_order.play_order[:rotation]
-        instance.size = len(instance.play_order)
         instance._next_player = 0
         return instance
 
