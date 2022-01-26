@@ -46,7 +46,7 @@ class Rubber(BaseModel):
         :rtype: Game
         """
         if len(self.games) == 0 or self.games[-1].done:
-            self.games.append(Game(play_order=PlayOrder(self.teams)))
+            self.games.append(Game(play_order=PlayOrder.from_team_list(self.teams)))
         return self.games[-1]
 
     @classmethod

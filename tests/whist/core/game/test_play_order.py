@@ -7,7 +7,7 @@ from whist.core.game.play_order import PlayOrder
 class PlayOrderTestCase(TeamBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.order = PlayOrder([self.team_a, self.team_b])
+        self.order = PlayOrder.from_team_list([self.team_a, self.team_b])
 
     def test_next_order(self):
         next_order: PlayOrder = self.order.next_order()
