@@ -86,7 +86,17 @@ class PlayOrder:
         return instance
 
     class PlayOrderEncoder(json.JSONEncoder):
+        """
+        Custom json encoder to play order.
+        """
+
         def default(self, obj: Any) -> Any:
+            """
+            Encode the play order to a dictionary, if it is a play order else uses normal json
+            encoding.
+            :param obj: to be encoded
+            :return: dict containing the order of players and the index of the next player
+            """
             if isinstance(obj, PlayOrder):
                 player_order = [player.player.username for player in obj.play_order]
                 order_dict = {'play_order': player_order,
