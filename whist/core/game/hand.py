@@ -17,7 +17,7 @@ class Hand(BaseModel):
     Hand of whist.
     """
     tricks: list[Trick] = []
-    trump: Suit = None
+    trump: Optional[Suit] = None
 
     def done(self) -> bool:
         """
