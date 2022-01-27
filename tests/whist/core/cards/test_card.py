@@ -33,3 +33,8 @@ class CardTestCase(unittest.TestCase):
     def test_hashable(self):
         d = {self.card: 42}
         self.assertEqual(42, d[self.card])
+
+    def test_card_dict(self):
+        card_dict = self.card.dict()
+        expected_dict = {'suit': 'hearts', 'rank': 'ace'}
+        self.assertEqual(expected_dict, card_dict)
