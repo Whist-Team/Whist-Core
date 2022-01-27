@@ -2,7 +2,7 @@
 
 from enum import Enum
 from functools import total_ordering
-from typing import Any, Optional, Iterator
+from typing import Any, Optional, Iterator, Union
 
 from pydantic import BaseModel
 
@@ -110,7 +110,7 @@ class Card(BaseModel):
         builtin type for enum in dictionary generation.
         """
         frozen = True
-        use_enum_values = True
+        # use_enum_values = True
 
     @staticmethod
     def all_cards() -> Iterator['Card']:
@@ -141,6 +141,19 @@ class Card(BaseModel):
         :return: name
         """
         return f'{self.rank} of {self.suit}'
+
+    def dict(
+            self,
+            *,
+            include: Union['AbstractSetIntStr', 'MappingIntStrAny'] = None,
+            exclude: Union['AbstractSetIntStr', 'MappingIntStrAny'] = None,
+            by_alias: bool = False,
+            skip_defaults: bool = None,
+            exclude_unset: bool = False,
+            exclude_defaults: bool = False,
+            exclude_none: bool = False,
+    ) -> 'DictStrAny':
+        return {'suit': self.suit.long_name, 'rank': self.rank.long_name}
 
     def __lt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
