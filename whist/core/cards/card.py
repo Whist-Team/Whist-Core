@@ -110,7 +110,6 @@ class Card(BaseModel):
         builtin type for enum in dictionary generation.
         """
         frozen = True
-        # use_enum_values = True
 
     @staticmethod
     def all_cards() -> Iterator['Card']:
@@ -142,19 +141,13 @@ class Card(BaseModel):
         """
         return f'{self.rank} of {self.suit}'
 
-    # pylint: disable=unused-argument
-    def dict(
-            self,
-            *,
-            include=None,
-            exclude=None,
-            by_alias: bool = False,
-            skip_defaults: bool = None,
-            exclude_unset: bool = False,
-            exclude_defaults: bool = False,
-            exclude_none: bool = False,
-    ) -> dict[str, str]:
-        return {'suit': self.suit.long_name, 'rank': self.rank.long_name}
+    def dict(self, *args, **kwargs):
+        super_dict = super().dict(*args, **kwargs)
+        if 'suit' in super_dict:
+            super_dict['suit'] = self.suit.value
+        if 'rank' in super_dict:
+            super_dict['rank'] = self.rank.value
+        return super_dict
 
     def __lt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:

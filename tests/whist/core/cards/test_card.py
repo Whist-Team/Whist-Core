@@ -22,9 +22,7 @@ class CardTestCase(unittest.TestCase):
         self.assertEqual('ace of hearts', str(self.card))
 
     def test_dict(self):
-        card_dict = self.card.dict()
-        expected_dict = {'suit': 'hearts', 'rank': 'ace'}
-        self.assertEqual(expected_dict, card_dict)
+        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, self.card.dict())
 
     def test_json(self):
         self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, json.loads(self.card.json()))
