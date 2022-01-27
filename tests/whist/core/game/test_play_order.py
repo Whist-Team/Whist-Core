@@ -1,5 +1,3 @@
-import json
-
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.play_order import PlayOrder
 
@@ -23,8 +21,3 @@ class PlayOrderTestCase(TeamBaseTestCase):
         self.assertEqual(self.team_b.players[0], self.order.get_next_player().player)
         self.assertEqual(self.team_a.players[1], self.order.get_next_player().player)
         self.assertEqual(self.team_b.players[1], self.order.get_next_player().player)
-
-    def test_json(self):
-
-        order_json = json.dumps(self.order, cls=PlayOrder.PlayOrderEncoder)
-        self.assertEqual(self.order, json.loads(order_json, cls=PlayOrder.PlayOrderDecoder))
