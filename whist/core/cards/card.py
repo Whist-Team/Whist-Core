@@ -2,7 +2,7 @@
 
 from enum import Enum
 from functools import total_ordering
-from typing import Any, Optional, Iterator
+from typing import Any, Optional, Iterator, Union
 
 from pydantic import BaseModel
 
@@ -142,7 +142,17 @@ class Card(BaseModel):
         """
         return f'{self.rank} of {self.suit}'
 
-    def dict(self) -> dict[str, str]:
+    def dict(
+            self,
+            *,
+            include: Union['AbstractSetIntStr', 'MappingIntStrAny'] = None,
+            exclude: Union['AbstractSetIntStr', 'MappingIntStrAny'] = None,
+            by_alias: bool = False,
+            skip_defaults: bool = None,
+            exclude_unset: bool = False,
+            exclude_defaults: bool = False,
+            exclude_none: bool = False,
+    ) -> 'DictStrAny':
         return {'suit': self.suit.long_name, 'rank': self.rank.long_name}
 
     def __lt__(self, other: Any) -> bool:
