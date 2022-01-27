@@ -22,7 +22,9 @@ class CardTestCase(unittest.TestCase):
         self.assertEqual('ace of hearts', str(self.card))
 
     def test_dict(self):
-        self.assertEqual({'suit': Suit.HEARTS, 'rank': Rank.A}, self.card.dict())
+        card_dict = self.card.dict()
+        expected_dict = {'suit': 'hearts', 'rank': 'ace'}
+        self.assertEqual(expected_dict, card_dict)
 
     def test_json(self):
         self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, json.loads(self.card.json()))
@@ -33,8 +35,3 @@ class CardTestCase(unittest.TestCase):
     def test_hashable(self):
         d = {self.card: 42}
         self.assertEqual(42, d[self.card])
-
-    def test_card_dict(self):
-        card_dict = self.card.dict()
-        expected_dict = {'suit': 'hearts', 'rank': 'ace'}
-        self.assertEqual(expected_dict, card_dict)
