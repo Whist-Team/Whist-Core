@@ -1,8 +1,6 @@
 import json
 from unittest.mock import patch, MagicMock
 
-import pytest
-
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.cards.card import Card, Suit, Rank
 from whist.core.game.game import Game
@@ -20,9 +18,9 @@ class GameTestCase(TeamBaseTestCase):
         current_hand = self.game.next_hand()
         self.assertIsInstance(current_hand, Hand)
 
-    @pytest.mark.skip('Needs rework.')
     def test_second_hand(self):
         first_hand = self.game.next_hand()
+        first_hand.deal(self.game.play_order)
         with patch('whist.core.game.hand.Hand.done', return_value=True):
             second_hand = self.game.next_hand()
         self.assertNotEqual(first_hand, second_hand)
