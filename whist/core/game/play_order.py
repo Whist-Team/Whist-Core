@@ -2,20 +2,21 @@
 import json
 from typing import Optional, Any
 
+from pydantic import BaseModel
+
 from whist.core.cards.card_container import UnorderedCardContainer
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.team import Team
 from whist.core.user.player import Player
 
 
-class PlayOrder:
+class PlayOrder(BaseModel):
     """
     Iterates over the players at the table.
     """
 
-    def __init__(self, play_order: list[PlayerAtTable], next_player: int = 0):
-        self._next_player = next_player
-        self.play_order = play_order
+    next_player: int
+    play_order: list[PlayerAtTable]
 
     def __iter__(self):
         return iter(self.play_order)
@@ -23,7 +24,7 @@ class PlayOrder:
     def __eq__(self, other):
         if not isinstance(other, PlayOrder):
             return False
-        return self.play_order == other.play_order and self._next_player == other._next_player
+        return self.play_order == other.play_order and self.next_player == other.next_player
 
     @staticmethod
     def from_team_list(teams: list[Team]):
@@ -41,7 +42,7 @@ class PlayOrder:
                     player=player,
                     hand=UnorderedCardContainer.empty()
                 )
-        return PlayOrder(play_order, 0)
+        return PlayOrder(play_order=play_order, next_player=0)
 
     def rotate(self, player: PlayerAtTable) -> 'PlayOrder':
         """
@@ -60,13 +61,13 @@ class PlayOrder:
             """
         return PlayOrder._new_order(self)
 
-    def next_player(self) -> PlayerAtTable:
+    def get_next_player(self) -> PlayerAtTable:
         """
             Retrieves the next player who's turn it is.
             :rtype: PlayOrder
             """
-        player: PlayerAtTable = self.play_order[self._next_player]
-        self._next_player = (self._next_player + 1) % len(self.play_order)
+        player: PlayerAtTable = self.play_order[self.next_player]
+        self.next_player = (self.next_player + 1) % len(self.play_order)
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
@@ -81,40 +82,16 @@ class PlayOrder:
     # pylint: disable=protected-access
     @classmethod
     def _new_order(cls, old_order: 'PlayOrder'):
-        instance = cls.__new__(cls)
-        instance.play_order = old_order.play_order[1:] + old_order.play_order[:1]
-        instance._next_player = 0
-        return instance
+        play_order = old_order.play_order[1:] + old_order.play_order[:1]
+        next_player = 0
+        return PlayOrder(play_order=play_order, next_player=next_player)
 
     @classmethod
     def _new_rotate_order(cls, old_order: 'PlayOrder', rotation: int):
-        instance = cls.__new__(cls)
-        instance.play_order = old_order.play_order[rotation:] + old_order.play_order[:rotation]
-        instance._next_player = 0
-        return instance
+        play_order = old_order.play_order[rotation:] + old_order.play_order[:rotation]
+        next_player = 0
+        return PlayOrder(play_order=play_order, next_player=next_player)
 
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, values):
-        """
-        Validates a json string and a PlayOrder object
-        :param values: PlayOrder or json string
-        :return: PlayOrder
-        """
-        if isinstance(values, PlayOrder):
-            play_order = values.play_order
-            next_player = values._next_player
-            if not isinstance(play_order[0], PlayerAtTable):
-                raise TypeError(f'play order is not list of PlayerAtTable: {play_order}')
-            if not isinstance(next_player, int):
-                raise TypeError(f'next player: {next_player} is not an int')
-            return cls(play_order=play_order, next_player=next_player)
-        if isinstance(values, str):
-            return json.loads(values, cls=cls.PlayOrderDecoder)
-        raise NotImplementedError('Only PlayOrder or json are supported.')
 
     class PlayOrderEncoder(json.JSONEncoder):
         """
@@ -131,7 +108,7 @@ class PlayOrder:
             if isinstance(o, PlayOrder):
                 player_order = [player.json() for player in o.play_order]
                 order_dict = {'play_order': player_order,
-                              'next_player': o._next_player}
+                              'next_player': o.next_player}
                 return order_dict
             return json.JSONEncoder.default(self, o)
 

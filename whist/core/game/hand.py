@@ -46,7 +46,7 @@ class Hand(BaseModel):
         deck = UnorderedCardContainer.full()
         card: Optional[Card] = None
         while deck:
-            player = play_order.next_player()
+            player = play_order.get_next_player()
             card = deck.pop_random()
             player.hand.add(card)
         self.trump = card.suit

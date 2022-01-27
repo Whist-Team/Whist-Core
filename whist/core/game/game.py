@@ -1,5 +1,4 @@
 """One Game of whist"""
-import json
 from typing import Optional
 
 from pydantic import BaseModel
@@ -27,9 +26,6 @@ class Game(BaseModel):
         Enables to have non models as field types and sets the encoder for play order.
         """
         arbitrary_types_allowed = True
-        json_encoders = {
-            PlayOrder: lambda x: json.dumps(x, cls=PlayOrder.PlayOrderEncoder)
-        }
 
     def next_hand(self) -> Hand:
         """
