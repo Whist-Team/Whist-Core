@@ -5,6 +5,7 @@ from functools import total_ordering
 from typing import Any, Optional, Iterator, Union
 
 from pydantic import BaseModel
+from pydantic.typing import AbstractSetIntStr, DictStrAny, MappingIntStrAny
 
 
 @total_ordering
@@ -145,14 +146,14 @@ class Card(BaseModel):
     def dict(
             self,
             *,
-            include: Union['AbstractSetIntStr', 'MappingIntStrAny'] = None,
-            exclude: Union['AbstractSetIntStr', 'MappingIntStrAny'] = None,
+            include: Union[AbstractSetIntStr, MappingIntStrAny] = None,
+            exclude: Union[AbstractSetIntStr, MappingIntStrAny] = None,
             by_alias: bool = False,
             skip_defaults: bool = None,
             exclude_unset: bool = False,
             exclude_defaults: bool = False,
             exclude_none: bool = False,
-    ) -> 'DictStrAny':
+    ) -> DictStrAny:
         return {'suit': self.suit.long_name, 'rank': self.rank.long_name}
 
     def __lt__(self, other: Any) -> bool:
