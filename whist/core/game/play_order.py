@@ -1,6 +1,5 @@
 """Ring buffer of players at the table."""
-import json
-from typing import Optional, Any
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -91,43 +90,3 @@ class PlayOrder(BaseModel):
         play_order = old_order.play_order[rotation:] + old_order.play_order[:rotation]
         next_player = 0
         return PlayOrder(play_order=play_order, next_player=next_player)
-
-
-    class PlayOrderEncoder(json.JSONEncoder):
-        """
-        Custom json encoder to play order.
-        """
-
-        def default(self, o: Any) -> Any:
-            """
-            Encode the play order to a dictionary, if it is a play order else uses normal json
-            encoding.
-            :param o: to be encoded
-            :return: dict containing the order of players and the index of the next player
-            """
-            if isinstance(o, PlayOrder):
-                player_order = [player.json() for player in o.play_order]
-                order_dict = {'play_order': player_order,
-                              'next_player': o.next_player}
-                return order_dict
-            return json.JSONEncoder.default(self, o)
-
-    class PlayOrderDecoder(json.JSONDecoder):
-        """
-        Decodes a play order from a json string.
-        """
-
-        def __init__(self, *args, **kwargs):
-            json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
-
-        # pylint: disable=method-hidden
-        @staticmethod
-        def object_hook(obj):
-            """
-            Parses each player from raw and take the next player directly.
-            :param obj: dictionary which is to be parsed to PlayOrder
-            :return: PlayOrder
-            """
-            play_order_list = obj['play_order']
-            play_order = [PlayerAtTable.parse_raw(player) for player in play_order_list]
-            return PlayOrder(play_order=play_order, next_player=obj['next_player'])
