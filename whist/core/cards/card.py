@@ -106,8 +106,7 @@ class Card(BaseModel):
     # pylint: disable=too-few-public-methods
     class Config:
         """
-        Configuration class for base model to make it immutable and hashable. Additionally, use
-        builtin type for enum in dictionary generation.
+        Configuration class for base model to make it immutable and hashable.
         """
         frozen = True
 
