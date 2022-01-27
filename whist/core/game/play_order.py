@@ -20,11 +20,6 @@ class PlayOrder(BaseModel):
     def __iter__(self):
         return iter(self.play_order)
 
-    def __eq__(self, other):
-        if not isinstance(other, PlayOrder):
-            return False
-        return self.play_order == other.play_order and self.next_player == other.next_player
-
     @staticmethod
     def from_team_list(teams: list[Team]):
         """
