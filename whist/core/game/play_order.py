@@ -51,14 +51,14 @@ class PlayOrder(BaseModel):
             """
         order = list(self)
         rotation: int = order.index(player)
-        return PlayOrder._new_rotate_order(self, rotation)
+        return PlayOrder(play_order=PlayOrder._new_rotate_order(self, rotation), next_player=0)
 
     def next_order(self) -> 'PlayOrder':
         """
             Create the order for the next hand.
             :rtype: PlayOrder
             """
-        return PlayOrder._new_order(self)
+        return PlayOrder(play_order=PlayOrder._new_order(self), next_player=0)
 
     def get_next_player(self) -> PlayerAtTable:
         """
@@ -81,12 +81,8 @@ class PlayOrder(BaseModel):
     # pylint: disable=protected-access
     @classmethod
     def _new_order(cls, old_order: 'PlayOrder'):
-        play_order = old_order.play_order[1:] + old_order.play_order[:1]
-        next_player = 0
-        return PlayOrder(play_order=play_order, next_player=next_player)
+        return old_order.play_order[1:] + old_order.play_order[:1]
 
     @classmethod
     def _new_rotate_order(cls, old_order: 'PlayOrder', rotation: int):
-        play_order = old_order.play_order[rotation:] + old_order.play_order[:rotation]
-        next_player = 0
-        return PlayOrder(play_order=play_order, next_player=next_player)
+        return old_order.play_order[rotation:] + old_order.play_order[:rotation]
