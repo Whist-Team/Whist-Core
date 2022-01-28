@@ -68,6 +68,12 @@ class Hand(BaseModel):
         self.tricks.append(next_trick)
         return next_trick
 
+    def dict(self, *args, **kwargs):
+        super_dict = super().dict(*args, **kwargs)
+        if 'trump' in super_dict:
+            super_dict['trump'] = self.trump.value if self.trump else None
+        return super_dict
+
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner
         return play_order.rotate(winner)

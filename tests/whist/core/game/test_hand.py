@@ -86,3 +86,10 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         first_player = list(self.play_order)[0]
         trick.play_card(first_player, first_card)
         self.assertIsInstance(self.hand.json(), str)
+
+    def test_dict(self):
+        self.hand.trump = Suit.HEARTS
+        self.assertEqual({'tricks': [], 'trump': 'hearts'}, self.hand.dict())
+
+    def test_dict_no_trump(self):
+        self.assertEqual({'tricks': [], 'trump': None}, self.hand.dict())
