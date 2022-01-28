@@ -9,8 +9,8 @@ from whist.core.error.hand_error import HandAlreadyDealtError
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.trick import Trick
-from whist.core.game.util import enforce_str_on_dict
 from whist.core.game.warnings import TrickNotDoneWarning
+from whist.core.util import enforce_str_on_dict
 
 
 class Hand(BaseModel):

@@ -6,7 +6,7 @@ from typing import Any, Optional, Iterator
 
 from pydantic import BaseModel
 
-from whist.core.game.util import enforce_str_on_dict
+from whist.core.util import enforce_str_on_dict
 
 
 @total_ordering
