@@ -40,10 +40,10 @@ class PlayOrder(BaseModel):
 
     def rotate(self, player: PlayerAtTable) -> 'PlayOrder':
         """
-            Rotates the play order, so the player will be next player.
-            :param player: who should be at beginning of the play order
-            :return: None
-            """
+        Rotates the play order, so the player will be next player.
+        :param player: who should be at beginning of the play order
+        :return: None
+        """
         order = list(self)
         rotation: int = order.index(player)
         return PlayOrder(play_order=PlayOrder._new_rotate_order(self, rotation), next_player=0)
