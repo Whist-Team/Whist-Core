@@ -50,26 +50,26 @@ class PlayOrder(BaseModel):
 
     def next_order(self) -> 'PlayOrder':
         """
-            Create the order for the next hand.
-            :rtype: PlayOrder
-            """
+        Create the order for the next hand.
+        :rtype: PlayOrder
+        """
         return PlayOrder(play_order=PlayOrder._new_order(self), next_player=0)
 
     def get_next_player(self) -> PlayerAtTable:
         """
-            Retrieves the next player who's turn it is.
-            :rtype: PlayOrder
-            """
+        Retrieves the next player who's turn it is.
+        :rtype: PlayOrder
+        """
         player: PlayerAtTable = self.play_order[self.next_player]
         self.next_player = (self.next_player + 1) % len(self.play_order)
         return player
 
     def get_player(self, player: Player) -> PlayerAtTable:
         """
-            Retrieves the PlayerAtTable for the player given.
-            :param player: who needs it's counterpart at the table
-            :return: the player at table
-            """
+        Retrieves the PlayerAtTable for the player given.
+        :param player: who needs it's counterpart at the table
+        :return: the player at table
+        """
         return [table_player for table_player in self.play_order
                 if table_player.player == player][0]
 
