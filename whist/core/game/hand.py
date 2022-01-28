@@ -71,7 +71,7 @@ class Hand(BaseModel):
 
     def dict(self, *args, **kwargs):
         super_dict = super().dict(*args, **kwargs)
-        return enforce_str_on_dict(super_dict, ('trump'))
+        return enforce_str_on_dict(super_dict, ['trump'])
 
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner
