@@ -2,6 +2,7 @@
 from pydantic import BaseModel
 
 from whist.core.game.game import Game
+from whist.core.game.play_order import PlayOrder
 from whist.core.scoring.team import Team
 from whist.core.session.matcher import RandomMatcher
 from whist.core.session.userlist import UserList
@@ -45,7 +46,7 @@ class Rubber(BaseModel):
         :rtype: Game
         """
         if len(self.games) == 0 or self.games[-1].done:
-            self.games.append(Game(self.teams))
+            self.games.append(Game(play_order=PlayOrder.from_team_list(self.teams)))
         return self.games[-1]
 
     @classmethod

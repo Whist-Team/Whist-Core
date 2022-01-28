@@ -16,7 +16,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
     def test_first_trick(self):
         first_trick = self.hand.deal(self.play_order)
         for i in range(len(self.player_order)):
-            player = self.play_order.next_player()
+            player = self.play_order.get_next_player()
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(first_trick, Trick)
 
@@ -25,14 +25,14 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         # deliberately ignore illegal moves
         with patch('whist.core.game.legal_checker.LegalChecker.check_legal', return_value=True):
             while not first_trick.done:
-                player = self.play_order.next_player()
+                player = self.play_order.get_next_player()
                 card = player.hand.pop_random()
                 first_trick.play_card(player, card)
         next_trick = self.hand.next_trick(self.play_order)
         i = 0
         while i < len(self.player_order):
             i += 1
-            player = self.play_order.next_player()
+            player = self.play_order.get_next_player()
             self.assertEqual(12, len(player.hand))
         self.assertNotEqual(first_trick, next_trick)
 
@@ -79,3 +79,17 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         trick.play_card(list(self.play_order)[3], king)
         next_trick = self.hand.next_trick(self.play_order)
         self.assertEqual(list(next_trick.play_order)[0].player, self.player_b)
+
+    def test_json_after_play(self):
+        trick = self.hand.deal(self.play_order)
+        first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
+        first_player = list(self.play_order)[0]
+        trick.play_card(first_player, first_card)
+        self.assertIsInstance(self.hand.json(), str)
+
+    def test_dict(self):
+        self.hand.trump = Suit.HEARTS
+        self.assertEqual({'tricks': [], 'trump': 'hearts'}, self.hand.dict())
+
+    def test_dict_no_trump(self):
+        self.assertEqual({'tricks': [], 'trump': None}, self.hand.dict())

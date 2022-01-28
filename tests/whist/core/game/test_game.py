@@ -1,15 +1,18 @@
-from unittest.mock import patch, PropertyMock
+import json
+from unittest.mock import patch, MagicMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
+from whist.core.cards.card import Card, Suit, Rank
 from whist.core.game.game import Game
 from whist.core.game.hand import Hand
+from whist.core.game.play_order import PlayOrder
 from whist.core.game.trick import Trick
 
 
 class GameTestCase(TeamBaseTestCase):
     def setUp(self):
         super().setUp()
-        self.game = Game([self.team_a, self.team_b])
+        self.game = Game(play_order=PlayOrder.from_team_list([self.team_a, self.team_b]))
 
     def test_first_hand(self):
         current_hand = self.game.next_hand()
@@ -17,20 +20,21 @@ class GameTestCase(TeamBaseTestCase):
 
     def test_second_hand(self):
         first_hand = self.game.next_hand()
-        with patch('whist.core.game.hand.Hand.done', new_callable=PropertyMock(return_value=True)):
+        first_hand.deal(self.game.play_order)
+        with patch('whist.core.game.hand.Hand.done', return_value=True):
             second_hand = self.game.next_hand()
         self.assertNotEqual(first_hand, second_hand)
 
     def test_hand_not_done(self):
         first_hand = self.game.next_hand()
         with patch('whist.core.game.hand.Hand.done',
-                   new_callable=PropertyMock(return_value=False)):
+                   return_value=False):
             second_hand = self.game.next_hand()
         self.assertEqual(first_hand, second_hand)
 
     def test_done(self):
         with patch('whist.core.scoring.score_card.ScoreCard.max',
-                   new_callable=PropertyMock(return_value=4)):
+                   new_callable=MagicMock(return_value=4)):
             self.assertTrue(self.game.done)
 
     def test_not_done(self):
@@ -54,3 +58,13 @@ class GameTestCase(TeamBaseTestCase):
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(trick, Trick)
         self.assertEqual(first_trick, trick)
+
+    def test_json_after_play(self):
+        hand = self.game.next_hand()
+        trick = hand.deal(self.game.play_order)
+        first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
+        first_player = list(self.game.play_order)[0]
+        trick.play_card(first_player, first_card)
+        game_json = self.game.json()
+        self.assertIsInstance(game_json, str)
+        self.assertEqual(self.game, Game(**json.loads(game_json)))

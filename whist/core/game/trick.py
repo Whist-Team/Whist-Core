@@ -7,6 +7,7 @@ from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
 from whist.core.game.legal_checker import LegalChecker
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.warnings import TrickNotDoneWarning, ServSuitFirstWarning
+from whist.core.util import enforce_str_on_dict
 
 
 class Trick(BaseModel):
@@ -60,3 +61,7 @@ class Trick(BaseModel):
             raise ServSuitFirstWarning()
 
         self.stack.add(card)
+
+    def dict(self, *args, **kwargs):
+        super_dict = super().dict(*args, **kwargs)
+        return enforce_str_on_dict(super_dict, {'trump'})
