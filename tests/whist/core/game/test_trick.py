@@ -54,6 +54,9 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
         trick_json = self.trick.json()
         self.assertIsInstance(trick_json, str)
 
+    def test_dict_trump(self):
+        self.assertEqual({'trump': 'clubs'}, self.trick.dict(include={'trump'}))
+
     def _play_four_cards(self):
         ace_heart = Card(suit=Suit.HEARTS, rank=Rank.A)
         king_heart = Card(suit=Suit.HEARTS, rank=Rank.K)

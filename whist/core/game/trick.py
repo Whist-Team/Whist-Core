@@ -60,3 +60,9 @@ class Trick(BaseModel):
             raise ServSuitFirstWarning()
 
         self.stack.add(card)
+
+    def dict(self, *args, **kwargs):
+        super_dict = super().dict(*args, **kwargs)
+        if 'trump' in super_dict:
+            super_dict['trump'] = self.trump.value if self.trump else None
+        return super_dict
