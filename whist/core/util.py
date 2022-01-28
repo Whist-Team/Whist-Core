@@ -1,9 +1,10 @@
 """
 Collection of utility functions.
 """
+from typing import Iterable
 
 
-def enforce_str_on_dict(dictionary: dict, keys: set[str]) -> dict:
+def enforce_str_on_dict(dictionary: dict, keys: Iterable[str]) -> dict:
     """
     Forces a dictionary to use string values instead of objects for the given keys.
     :param dictionary: which needs transformation
