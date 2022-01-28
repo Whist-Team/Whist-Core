@@ -144,7 +144,7 @@ class Card(BaseModel):
 
     def dict(self, *args, **kwargs):
         super_dict = super().dict(*args, **kwargs)
-        return enforce_str_on_dict(super_dict, {'suit', 'rank'})
+        return enforce_str_on_dict(super_dict, ('suit', 'rank'))
 
     def __lt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
