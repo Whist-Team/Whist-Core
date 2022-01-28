@@ -6,6 +6,7 @@ from whist.core.cards.card_container import OrderedCardContainer
 from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
 from whist.core.game.legal_checker import LegalChecker
 from whist.core.game.player_at_table import PlayerAtTable
+from whist.core.game.util import enforce_str_on_dict
 from whist.core.game.warnings import TrickNotDoneWarning, ServSuitFirstWarning
 
 
@@ -63,6 +64,4 @@ class Trick(BaseModel):
 
     def dict(self, *args, **kwargs):
         super_dict = super().dict(*args, **kwargs)
-        if 'trump' in super_dict:
-            super_dict['trump'] = self.trump.value if self.trump else None
-        return super_dict
+        return enforce_str_on_dict(super_dict, {'trump'})
