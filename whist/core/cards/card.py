@@ -140,6 +140,14 @@ class Card(BaseModel):
         """
         return f'{self.rank} of {self.suit}'
 
+    def dict(self, *args, **kwargs):
+        super_dict = super().dict(*args, **kwargs)
+        if 'suit' in super_dict:
+            super_dict['suit'] = self.suit.value
+        if 'rank' in super_dict:
+            super_dict['rank'] = self.rank.value
+        return super_dict
+
     def __lt__(self, other: Any) -> bool:
         if self.__class__ is other.__class__:
             return (self.suit, self.rank) < (other.suit, other.rank)
