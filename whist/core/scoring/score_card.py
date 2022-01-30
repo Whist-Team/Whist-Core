@@ -61,9 +61,16 @@ class ScoreCard(BaseModel):
         :rtype: int
         """
         score = self.score(team)
-        games = len(self.hands)
-        if score > games / 2:
+        other_team = self._other_team(team)
+        other_score = self.score(other_team)
+        if score > other_score:
             return 1
-        if score == games / 2:
+        if score == other_score:
             return 0
         return -1
+
+    def _other_team(self, team: Team) -> Team:
+        teams = list(self.hands[0].hand_score.keys())
+        teams.remove(team)
+        other_team = teams[0]
+        return other_team
