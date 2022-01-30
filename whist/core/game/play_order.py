@@ -34,7 +34,8 @@ class PlayOrder(BaseModel):
                 player_index = team_index + player_index * len(teams)
                 play_order[player_index] = PlayerAtTable(
                     player=player,
-                    hand=UnorderedCardContainer.empty()
+                    hand=UnorderedCardContainer.empty(),
+                    team=team_index
                 )
         return PlayOrder(play_order=play_order, next_player=0)
 
