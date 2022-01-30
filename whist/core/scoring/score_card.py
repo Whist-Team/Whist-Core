@@ -49,7 +49,7 @@ class ScoreCard(BaseModel):
         :return: Amount of hands won.
         :rtype: int
         """
-        return len([hand for hand in self.hands if hand.won(team)])
+        return sum([hand.hand_score[team] for hand in self.hands if hand.won(team)])
 
     def won(self, team) -> int:
         """
