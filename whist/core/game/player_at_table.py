@@ -11,6 +11,7 @@ class PlayerAtTable(BaseModel):
     """
     player: Player
     hand: UnorderedCardContainer
+    team: int
 
     def __eq__(self, other):
         if not isinstance(other, PlayerAtTable):
