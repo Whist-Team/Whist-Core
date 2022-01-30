@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, PropertyMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.cards.card import Card, Suit, Rank
@@ -28,9 +28,10 @@ class GameTestCase(TeamBaseTestCase):
     def test_score_updated(self):
         first_hand = self.game.next_hand()
         first_hand.deal(self.game.play_order)
+        first_hand.tricks = [PropertyMock(winner=self.game.play_order.play_order[0])] * 13
         with patch('whist.core.game.hand.Hand.done', return_value=True):
             _ = self.game.next_hand()
-        self.assertEqual(2, self.game.score_card.score(self.team_a))
+        self.assertEqual(7, self.game.score_card.score(self.team_a))
         self.assertEqual(0, self.game.score_card.score(self.team_b))
 
     def test_hand_not_done(self):
