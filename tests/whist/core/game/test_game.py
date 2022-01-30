@@ -21,16 +21,15 @@ class GameTestCase(TeamBaseTestCase):
     def test_second_hand(self):
         first_hand = self.game.next_hand()
         first_hand.deal(self.game.play_order)
-        with patch('whist.core.game.hand.Hand.done', return_value=True):
-            second_hand = self.game.next_hand()
+        first_hand.tricks = [PropertyMock(winner=self.game.play_order.play_order[0])] * 13
+        second_hand = self.game.next_hand()
         self.assertNotEqual(first_hand, second_hand)
 
     def test_score_updated(self):
         first_hand = self.game.next_hand()
         first_hand.deal(self.game.play_order)
         first_hand.tricks = [PropertyMock(winner=self.game.play_order.play_order[0])] * 13
-        with patch('whist.core.game.hand.Hand.done', return_value=True):
-            _ = self.game.next_hand()
+        _ = self.game.next_hand()
         self.assertEqual(7, self.game.score_card.score(self.team_a))
         self.assertEqual(0, self.game.score_card.score(self.team_b))
 
