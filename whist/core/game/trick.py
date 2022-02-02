@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from whist.core.cards.card import Card, Suit
 from whist.core.cards.card_container import OrderedCardContainer
-from whist.core.game.errors import NotPlayersTurnError, TrickDoneError
+from whist.core.game.errors import NotPlayersTurnError, TrickDoneError, CardNotInHandError
 from whist.core.game.legal_checker import LegalChecker
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.game.warnings import TrickNotDoneWarning, ServSuitFirstWarning
@@ -59,6 +59,8 @@ class Trick(BaseModel):
             raise NotPlayersTurnError(player.player, self.play_order[turn].player)
         if not LegalChecker.check_legal(player.hand, card, self.stack.first):
             raise ServSuitFirstWarning()
+        if card not in player.hand:
+            raise CardNotInHandError(f'{card} is not in {player}\'s hand')
 
         self.stack.add(card)
 
