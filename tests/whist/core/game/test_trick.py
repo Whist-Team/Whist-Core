@@ -48,14 +48,18 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
 
     def test_stack(self):
         ace_spades = Card(suit=Suit.SPADES, rank=Rank.A)
-        self.trick.play_card(self.player_order[0], ace_spades)
+        player = self.player_order[0]
+        player.hand.add(ace_spades)
+        self.trick.play_card(player, ace_spades)
         expected_stack = OrderedCardContainer.empty()
         expected_stack.add(ace_spades)
         self.assertEqual(expected_stack, self.trick.stack)
 
     def test_trick_json_after_player(self):
         ace_spades = Card(suit=Suit.SPADES, rank=Rank.A)
-        self.trick.play_card(self.player_order[0], ace_spades)
+        player = self.player_order[0]
+        player.hand.add(ace_spades)
+        self.trick.play_card(player, ace_spades)
         trick_json = self.trick.json()
         self.assertIsInstance(trick_json, str)
 
@@ -69,4 +73,5 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
         jack_heart = Card(suit=Suit.HEARTS, rank=Rank.J)
         cards = [ace_heart, king_heart, queen_heart, jack_heart]
         for card, player in zip(cards, self.player_order):
+            player.hand.add(card)
             self.trick.play_card(player, card)
