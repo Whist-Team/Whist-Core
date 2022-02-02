@@ -2,7 +2,6 @@ import json
 from unittest.mock import patch, MagicMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
-from whist.core.cards.card import Card, Suit, Rank
 from whist.core.game.game import Game
 from whist.core.game.hand import Hand
 from whist.core.game.play_order import PlayOrder
@@ -62,8 +61,8 @@ class GameTestCase(TeamBaseTestCase):
     def test_json_after_play(self):
         hand = self.game.next_hand()
         trick = hand.deal(self.game.play_order)
-        first_card = Card(suit=Suit.CLUBS, rank=Rank.A)
         first_player = list(self.game.play_order)[0]
+        first_card = list(first_player.hand)[0]
         trick.play_card(first_player, first_card)
         game_json = self.game.json()
         self.assertIsInstance(game_json, str)
