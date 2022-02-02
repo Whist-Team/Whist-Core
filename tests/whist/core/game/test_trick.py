@@ -36,6 +36,13 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
         with self.assertRaises(TrickDoneError):
             self.trick.play_card(self.player_a, ace_spades)
 
+    def test_card_remove(self):
+        ace_spades = Card(suit=Suit.SPADES, rank=Rank.A)
+        player = self.player_order[0]
+        player.hand.add(ace_spades)
+        self.trick.play_card(player, ace_spades)
+        self.assertNotIn(ace_spades, player.hand)
+
     def test_not_turn(self):
         ace_spades = Card(suit=Suit.SPADES, rank=Rank.A)
         with self.assertRaises(NotPlayersTurnError):
