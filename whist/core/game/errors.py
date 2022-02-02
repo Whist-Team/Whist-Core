@@ -2,6 +2,12 @@
 from whist.core.user.player import Player
 
 
+class CardNotInHandError(Exception):
+    """
+    Raised when a player tries to play a card, that is not in their hand.
+    """
+
+
 class NotPlayersTurnError(Exception):
     """
     Raised when players tries to play although is not their turn.
