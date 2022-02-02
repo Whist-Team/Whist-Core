@@ -63,6 +63,7 @@ class Trick(BaseModel):
             raise CardNotInHandError(f'{card} is not in {player}\'s hand')
 
         self.stack.add(card)
+        player.hand.remove(card)
 
     def dict(self, *args, **kwargs):
         super_dict = super().dict(*args, **kwargs)
