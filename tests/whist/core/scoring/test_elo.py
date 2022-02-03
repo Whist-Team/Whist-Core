@@ -8,7 +8,7 @@ class EloRaterTestCase(TeamBaseTestCase):
 
     def test_rate_one_game(self):
         score_card = ScoreCard()
-        score = Score([self.team_a, self.team_b], [7, 6])
+        score = Score([self.team_a, self.team_b], [1, 0])
         score_card.add_score(score)
         EloRater.rate([self.team_a, self.team_b], score_card)
         self.assertEqual(1620, self.team_a.players[0].rating)
@@ -18,10 +18,10 @@ class EloRaterTestCase(TeamBaseTestCase):
 
     def test_rate_multiple_games(self):
         score_card = ScoreCard()
-        score = Score([self.team_a, self.team_b], [7, 6])
+        score = Score([self.team_a, self.team_b], [1, 0])
         score_card.add_score(score)
         score_card.add_score(score)
-        score = Score([self.team_a, self.team_b], [6, 7])
+        score = Score([self.team_a, self.team_b], [0, 1])
         score_card.add_score(score)
 
         EloRater.rate([self.team_a, self.team_b], score_card)
