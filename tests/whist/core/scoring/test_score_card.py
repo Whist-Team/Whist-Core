@@ -12,6 +12,8 @@ class ScoreCardTestCase(TeamBaseTestCase):
         score = Score([self.team_a, self.team_b], [1, 0])
         self.score_card.add_score(score)
         self.assertEqual(1, len(self.score_card))
+        self.assertEqual(1, self.score_card.score(self.team_a))
+        self.assertEqual(0, self.score_card.score(self.team_b))
 
     def test_draw(self):
         score = Score([self.team_a, self.team_b], [1, 0])
