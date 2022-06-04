@@ -20,7 +20,7 @@ class Team(BaseModel):
         :return: average team rating
         :rtype: float
         """
-        return sum([player.rating for player in self.players]) / len(self.players)
+        return sum(player.rating for player in self.players) / len(self.players)
 
     def games_played(self, amount: int = 1) -> None:
         """
