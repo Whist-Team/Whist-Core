@@ -4,6 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 from whist.core.cards.card_container import UnorderedCardContainer
+from whist.core.error.table_error import PlayerNotJoinedError
 from whist.core.game.player_at_table import PlayerAtTable
 from whist.core.scoring.team import Team
 from whist.core.user.player import Player
@@ -70,9 +71,13 @@ class PlayOrder(BaseModel):
         Retrieves the PlayerAtTable for the player given.
         :param player: who needs it's counterpart at the table
         :return: the player at table
+        :raises PlayerNoteJoinedError: when a player is requested but is not in play order.
         """
-        return [table_player for table_player in self.play_order
-                if table_player.player == player][0]
+        players_matching = [table_player for table_player in self.play_order if
+                            table_player.player == player]
+        if len(players_matching) == 0:
+            raise PlayerNotJoinedError()
+        return players_matching[0]
 
     # pylint: disable=protected-access
     @classmethod
