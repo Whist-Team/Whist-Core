@@ -2,10 +2,12 @@ import json
 from unittest.mock import patch, MagicMock, PropertyMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
+from whist.core.error.table_error import PlayerNotJoinedError
 from whist.core.game.game import Game
 from whist.core.game.hand import Hand
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.trick import Trick
+from whist.core.user.player import Player
 
 
 class GameTestCase(TeamBaseTestCase):
@@ -50,6 +52,11 @@ class GameTestCase(TeamBaseTestCase):
     def test_player_to_table_player(self):
         player_at_table = self.game.get_player(self.player_a)
         self.assertEqual(self.player_a, player_at_table.player)
+
+    def test_player_not_joined(self):
+        not_join_player = Player(user_id=6, username='not joined', rating=1700)
+        with self.assertRaises(PlayerNotJoinedError):
+            self.game.get_player(not_join_player)
 
     def test_trick_initialize(self):
         trick = self.game.current_trick
