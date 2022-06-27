@@ -1,8 +1,9 @@
 import json
-from unittest.mock import patch, MagicMock, PropertyMock
+from unittest.mock import patch, MagicMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.error.table_error import PlayerNotJoinedError
+from whist.core.game.errors import HandNotDoneError
 from whist.core.game.game import Game
 from whist.core.game.hand import Hand
 from whist.core.game.play_order import PlayOrder
@@ -19,27 +20,10 @@ class GameTestCase(TeamBaseTestCase):
         current_hand = self.game.next_hand()
         self.assertIsInstance(current_hand, Hand)
 
-    def test_second_hand(self):
-        first_hand = self.game.next_hand()
-        first_hand.deal(self.game.play_order)
-        first_hand.tricks = [PropertyMock(winner=self.game.play_order.play_order[0])] * 13
-        second_hand = self.game.next_hand()
-        self.assertNotEqual(first_hand, second_hand)
-
-    def test_score_updated(self):
-        first_hand = self.game.next_hand()
-        first_hand.deal(self.game.play_order)
-        first_hand.tricks = [PropertyMock(winner=self.game.play_order.play_order[0])] * 13
-        _ = self.game.next_hand()
-        self.assertEqual(7, self.game.score_card.score(self.team_a))
-        self.assertEqual(0, self.game.score_card.score(self.team_b))
-
     def test_hand_not_done(self):
-        first_hand = self.game.next_hand()
-        with patch('whist.core.game.hand.Hand.done',
-                   return_value=False):
-            second_hand = self.game.next_hand()
-        self.assertEqual(first_hand, second_hand)
+        _ = self.game.next_hand()
+        with self.assertRaises(HandNotDoneError):
+            self.game.next_hand()
 
     def test_done(self):
         with patch('whist.core.scoring.score_card.ScoreCard.max',
@@ -59,23 +43,14 @@ class GameTestCase(TeamBaseTestCase):
             self.game.get_player(not_join_player)
 
     def test_trick_initialize(self):
-        trick = self.game.current_trick
-        for player in self.game.play_order:
-            self.assertEqual(13, len(player.hand))
-        self.assertIsInstance(trick, Trick)
-
-    def test_trick_getter(self):
         hand = self.game.next_hand()
-        first_trick = self.game.current_trick
         trick = hand.current_trick
         for player in self.game.play_order:
             self.assertEqual(13, len(player.hand))
         self.assertIsInstance(trick, Trick)
-        self.assertEqual(first_trick, trick)
 
     def test_json_after_play(self):
-        hand = self.game.next_hand()
-        trick = hand.deal(self.game.play_order)
+        trick = self.game.next_hand().current_trick
         first_player = list(self.game.play_order)[0]
         first_card = list(first_player.hand)[0]
         trick.play_card(first_player, first_card)

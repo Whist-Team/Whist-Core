@@ -8,6 +8,12 @@ class CardNotInHandError(Exception):
     """
 
 
+class HandNotDoneError(Exception):
+    """
+    Raised when the next hand is requested, but current is not done yet.
+    """
+
+
 class GameNotDoneError(Exception):
     """Raised if next game is requested, but current is not done yet."""
 
