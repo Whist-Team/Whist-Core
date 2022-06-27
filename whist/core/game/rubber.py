@@ -1,8 +1,10 @@
 """Rubber of whist"""
 from pydantic import BaseModel
 
+from whist.core.game.errors import GameNotStartedError
 from whist.core.game.game import Game
 from whist.core.game.play_order import PlayOrder
+from whist.core.game.warnings import GameDoneWarning
 from whist.core.scoring.team import Team
 from whist.core.session.matcher import RandomMatcher
 from whist.core.session.userlist import UserList
@@ -40,14 +42,24 @@ class Rubber(BaseModel):
         """
         return self.games_played == self.max_games
 
+    def current_game(self) -> Game:
+        """
+        Returns the current game.
+        """
+        if len(self.games) == 0:
+            raise GameNotStartedError()
+        elif self.games[-1].done:
+            raise GameDoneWarning()
+        return self.games[-1]
+
     def next_game(self) -> Game:
         """
-        Creates a new game if the previous is done. Else returns the current game.
+        Creates a new game if the previous is done.
         :rtype: Game
         """
         if len(self.games) == 0 or self.games[-1].done:
             self.games.append(Game(play_order=PlayOrder.from_team_list(self.teams)))
-        return self.games[-1]
+        return self.current_game()
 
     @classmethod
     def create_random(cls, users: UserList, num_teams: int, team_size: int) -> 'Rubber':
