@@ -8,6 +8,12 @@ class CardNotInHandError(Exception):
     """
 
 
+class GameNotStartedError(Exception):
+    """
+    Raised if a game has not be started.
+    """
+
+
 class NotPlayersTurnError(Exception):
     """
     Raised when players tries to play although is not their turn.
