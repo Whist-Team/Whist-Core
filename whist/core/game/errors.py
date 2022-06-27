@@ -14,6 +14,16 @@ class HandNotDoneError(Exception):
     """
 
 
+class GameNotDoneError(Exception):
+    """Raised if next game is requested, but current is not done yet."""
+
+
+class GameNotStartedError(Exception):
+    """
+    Raised if a game has not be started.
+    """
+
+
 class NotPlayersTurnError(Exception):
     """
     Raised when players tries to play although is not their turn.
