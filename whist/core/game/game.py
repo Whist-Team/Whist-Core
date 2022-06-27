@@ -3,6 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from whist.core.game.errors import HandNotDoneError
 from whist.core.game.hand import Hand
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.player_at_table import PlayerAtTable
@@ -36,12 +37,14 @@ class Game(BaseModel):
         :rtype: Hand
         """
         if self.current_hand is None:
-            self.current_hand = Hand()
-        elif self.current_hand.done():
+            self.current_hand = Hand.deal(self.play_order)
+        elif not self.current_hand.done():
+            raise HandNotDoneError()
+        else:
             score = self._calc_score()
             self.score_card.add_score(score)
             self._next_play_order()
-            self.current_hand = Hand()
+            self.current_hand = Hand.deal(self.play_order)
         return self.current_hand
 
     def _calc_score(self):
@@ -56,16 +59,6 @@ class Game(BaseModel):
         teams = [Team(players=players) for players in players_by_team]
         score = Score(teams=teams, scores=tricks_won)
         return score
-
-    @property
-    def current_trick(self):
-        """
-        Returns the current trick of the current hand.
-        """
-        try:
-            return self.next_hand().current_trick
-        except IndexError:
-            return self.next_hand().deal(self.play_order)
 
     @property
     def done(self):
