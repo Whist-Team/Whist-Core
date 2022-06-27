@@ -48,7 +48,7 @@ class Rubber(BaseModel):
         """
         if len(self.games) == 0:
             raise GameNotStartedError()
-        elif self.games[-1].done:
+        if self.games[-1].done:
             raise GameDoneWarning()
         return self.games[-1]
 
