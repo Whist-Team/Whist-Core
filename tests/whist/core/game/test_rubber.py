@@ -1,4 +1,4 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, PropertyMock
 
 from tests.whist.core.team_base_test_case import TeamBaseTestCase
 from whist.core.game.errors import GameNotStartedError
@@ -25,12 +25,8 @@ class RubberTestCase(TeamBaseTestCase):
                 self.rubber.current_game()
 
     def test_done(self):
-        with patch('whist.core.game.game.Game.done',
-                   new_callable=MagicMock(return_value=True)):
-            _ = self.rubber.next_game()
-            _ = self.rubber.next_game()
-            _ = self.rubber.next_game()
-        self.assertTrue(self.rubber.done)
+        with patch('whist.core.game.rubber.Rubber.games_played', PropertyMock(return_value=3)):
+            self.assertTrue(self.rubber.done)
 
     def test_create_random(self):
         players = [self.player_a, self.player_b, self.player_c, self.player_d]
