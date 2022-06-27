@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from whist.core.game.errors import GameNotStartedError, GameNotDoneError
 from whist.core.game.game import Game
 from whist.core.game.play_order import PlayOrder
-from whist.core.game.warnings import GameDoneWarning
 from whist.core.scoring.team import Team
 from whist.core.session.matcher import RandomMatcher
 from whist.core.session.userlist import UserList
@@ -48,8 +47,6 @@ class Rubber(BaseModel):
         """
         if len(self.games) == 0:
             raise GameNotStartedError()
-        if self.games[-1].done:
-            raise GameDoneWarning()
         return self.games[-1]
 
     def next_game(self) -> Game:
