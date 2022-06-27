@@ -1,7 +1,7 @@
 """Rubber of whist"""
 from pydantic import BaseModel
 
-from whist.core.game.errors import GameNotStartedError
+from whist.core.game.errors import GameNotStartedError, GameNotDoneError
 from whist.core.game.game import Game
 from whist.core.game.play_order import PlayOrder
 from whist.core.game.warnings import GameDoneWarning
@@ -59,6 +59,9 @@ class Rubber(BaseModel):
         """
         if len(self.games) == 0 or self.games[-1].done:
             self.games.append(Game(play_order=PlayOrder.from_team_list(self.teams)))
+        elif not self.games[-1].done:
+            raise GameNotDoneError()
+
         return self.current_game()
 
     @classmethod
