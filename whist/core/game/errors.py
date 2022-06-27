@@ -8,6 +8,12 @@ class CardNotInHandError(Exception):
     """
 
 
+class HandNotDoneError(Exception):
+    """
+    Raised when the next hand is requested, but current is not done yet.
+    """
+
+
 class NotPlayersTurnError(Exception):
     """
     Raised when players tries to play although is not their turn.
