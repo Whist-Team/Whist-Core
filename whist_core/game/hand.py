@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from whist_core.cards.card import Card, Suit
 from whist_core.cards.card_container import UnorderedCardContainer
+from whist_core.game.errors import HandDoneError
 from whist_core.game.play_order import PlayOrder
 from whist_core.game.player_at_table import PlayerAtTable
 from whist_core.game.trick import Trick
@@ -59,6 +60,8 @@ class Hand(BaseModel):
         :return: the next trick
         :rtype: Trick
         """
+        if self.done():
+            raise HandDoneError()
         if len(self.tricks) == 0:
             next_trick_order = play_order
         elif self.tricks[-1].done:
