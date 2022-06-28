@@ -1,8 +1,9 @@
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from tests.whist_core.player_table_base_test_case import PlayerAtTableBaseTestCase
 from whist_core.cards.card import Card, Suit, Rank
 from whist_core.cards.card_container import UnorderedCardContainer
+from whist.core.game.errors import HandDoneError
 from whist_core.game.hand import Hand
 from whist_core.game.trick import Trick
 
@@ -50,6 +51,11 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         first_card = list(first_player.hand)[0]
         self.hand.current_trick.play_card(first_player, first_card)
         self.assertIsInstance(self.hand.json(), str)
+
+    def test_hand_is_done_after_all_tricks(self):
+        self.hand.tricks = [MagicMock] * 13
+        with self.assertRaises(HandDoneError):
+            self.hand.next_trick(self.play_order)
 
     def _enforce_card_in_hand(self, card, player):
         # Enforce card is in player's hand
