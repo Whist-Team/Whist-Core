@@ -33,7 +33,7 @@ extensions = [
     'autoapi.extension'
 ]
 
-autoapi_dirs = ['../../whist/core']
+autoapi_dirs = ['../../whist_core']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

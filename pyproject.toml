@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "whist-core"
+# remember to also update the version in __init__.py!
 version = "0.3.0"
 description = "Whist rules implementation"
 authors = ["Whist-Team"]
