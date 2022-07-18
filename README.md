@@ -8,9 +8,8 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/whist-core)
 ![PyPI - License](https://img.shields.io/pypi/l/whist-core)
 
-
 # Whist-Core
-Rules implementation
+Whist rules implementation
 
 ## Run tests
 ```bash
