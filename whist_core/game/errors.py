@@ -8,6 +8,12 @@ class CardNotInHandError(Exception):
     """
 
 
+class HandDoneError(Exception):
+    """
+    Raised when the next trick is requested, but current Hand is already done..
+    """
+
+
 class HandNotDoneError(Exception):
     """
     Raised when the next hand is requested, but current is not done yet.
