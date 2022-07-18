@@ -11,16 +11,35 @@
 # Whist-Core
 Whist rules implementation
 
-## Run tests
+## Development
+
+### Setup
+You need [Poetry](https://python-poetry.org/) for development.
 ```bash
-# Create venv
-python3 -m venv venv
-source venv/bin/activate
-pip install -U pip setuptools wheel
+# Create venv and install deps
+poetry install
+```
+The Python virtual environment will be created in the `.venv` directory.
 
-# Install with 'testing' extras
-pip install -e .[testing]
+### Run tests/lint
+```bash
+# Run tests (in venv)
+python -m pytest # or pylint...
+# OR
+poetry run python -m pytest
+```
 
-# Run tests
-python -m pytest
+### Build
+Generates `sdist` and `bdist_wheel`.
+```bash
+poetry build
+```
+
+### Publish
+You need the environment variable `POETRY_PYPI_TOKEN_PYPI` filled with a PyPI token.
+```bash
+poetry build
+poetry publish
+# OR
+poetry publish --build
 ```
