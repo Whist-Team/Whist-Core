@@ -10,7 +10,7 @@ Welcome to Whist-Core's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   autoapi/whist/core/index.rst
+   autoapi/whist_core/index.rst
 
 Indices and tables
 ==================
