@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 from tests.whist_core.player_table_base_test_case import PlayerAtTableBaseTestCase
 from whist_core.cards.card import Card, Suit, Rank
 from whist_core.cards.card_container import UnorderedCardContainer
-from whist.core.game.errors import HandDoneError
+from whist_core.game.errors import HandDoneError
 from whist_core.game.hand import Hand
 from whist_core.game.trick import Trick
 
