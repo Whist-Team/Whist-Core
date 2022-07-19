@@ -3,7 +3,7 @@ Retrieves envs for the whist core module.
 """
 import os
 
-# remember to update the version in pyproject.toml!
+# remember to also update the version in pyproject.toml!
 __version__ = '0.3.0'
 
 ALGORITHM = os.getenv('ALGORITHM', 'HS256')
