@@ -1,4 +1,4 @@
-name: Python application
+name: Python CI
 
 on:
   push:
@@ -17,25 +17,9 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python ${{ matrix.python-version }}
-        id: setup-python
-        uses: actions/setup-python@v4
+      - uses: Whist-Team/actions/setup-poetry@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
-
-      - name: Load cached venv
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
-      - name: Install dependencies
-        run: poetry install --no-interaction
 
       - name: Test with pytest
         run: poetry run python -m pytest --cov=whist_core --cov-report=xml
