@@ -4,7 +4,7 @@ from whist_core.scoring.team import Team
 
 class ScoreCalculator:
     @staticmethod
-    def calc_score(current_hand, play_order):
+    def calc_score(current_hand, play_order) -> Score:
         tricks_won = [0, 0]
         for trick in current_hand.tricks:
             winner = trick.winner
