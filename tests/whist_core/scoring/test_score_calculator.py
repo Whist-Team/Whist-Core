@@ -36,4 +36,4 @@ class TestScoreCalculator(TeamBaseTestCase):
         self.assertEqual(expected_score, score)
 
     def test_count_wins(self):
-        self.assertEqual([1, 0], ScoreCalculator.count_wins(self.hand))
+        self.assertEqual([1, 0], ScoreCalculator.calc_score_raw(self.hand))

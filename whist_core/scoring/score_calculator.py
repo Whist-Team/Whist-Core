@@ -21,14 +21,19 @@ class ScoreCalculator:
         :param play_order: the order of players
         :return: Score
         """
-        tricks_won = ScoreCalculator.count_wins(hand)
+        tricks_won = ScoreCalculator.calc_score_raw(hand)
         players_by_team = play_order.to_team_list()
         teams = [Team(players=players) for players in players_by_team]
         score = Score(teams=teams, scores=tricks_won)
         return score
 
     @staticmethod
-    def count_wins(hand: Hand) -> list[int]:
+    def calc_score_raw(hand: Hand) -> list[int]:
+        """
+        Calculates the raw score values by team.
+        :param hand: the hand to be scored
+        :return: list of integers representing the score
+        """
         tricks_won = [0, 0]
         for trick in hand.tricks:
             winner = trick.winner
