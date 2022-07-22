@@ -1,34 +1,37 @@
-import unittest
 from unittest.mock import MagicMock
 
+from tests.whist_core.team_base_test_case import TeamBaseTestCase
+from whist_core.cards.card_container import UnorderedCardContainer
+from whist_core.game.play_order import PlayOrder
+from whist_core.game.player_at_table import PlayerAtTable
 from whist_core.scoring.score import Score
 from whist_core.scoring.score_calculator import ScoreCalculator
 
 
-class TestScoreCalculator(unittest.TestCase):
+class TestScoreCalculator(TeamBaseTestCase):
     def setUp(self) -> None:
-        player_a = MagicMock(team=0, player=MagicMock(username='a', rating=1200))
-        player_c = MagicMock(team=1, player=MagicMock(username='c', rating=1200))
+        super().setUp()
+        self.table_player_a = PlayerAtTable(team=0, player=self.player_a,
+                                            hand=UnorderedCardContainer.empty())
+        self.table_player_b = PlayerAtTable(team=0, player=self.player_b,
+                                            hand=UnorderedCardContainer.empty())
+        self.table_player_c = PlayerAtTable(team=1, player=self.player_c,
+                                            hand=UnorderedCardContainer.empty())
+        self.table_player_d = PlayerAtTable(team=1, player=self.player_d,
+                                            hand=UnorderedCardContainer.empty())
 
         tricks = []
         for _ in range(0, 7):
-            trick = MagicMock(winner=player_a)
+            trick = MagicMock(winner=self.table_player_a)
             tricks.append(trick)
         for _ in range(0, 6):
-            trick = MagicMock(winner=player_c)
+            trick = MagicMock(winner=self.table_player_c)
             tricks.append(trick)
         self.hand = MagicMock(tricks=tricks)
 
     def test_single_score(self):
-        player_a = MagicMock(team=0, player=MagicMock(username='a', rating=1200))
-        player_b = MagicMock(team=0, player=MagicMock(username='b', rating=1200))
-        player_c = MagicMock(team=1, player=MagicMock(username='c', rating=1200))
-        player_d = MagicMock(team=1, player=MagicMock(username='d', rating=1200))
-        play_order = MagicMock(play_order=[player_a, player_c, player_b, player_d])
-        play_order.__iter__ = MagicMock(return_value=iter(play_order.play_order))
-        teams = [MagicMock(players=[player_a, player_b]), MagicMock(players=[player_c, player_d])]
-
-        expected_score = Score(scores=[1, 0], teams=teams)
+        play_order = PlayOrder.from_team_list([self.team_a, self.team_b])
+        expected_score = Score(scores=[1, 0], teams=[self.team_a, self.team_b])
         score = ScoreCalculator.calc_score(self.hand, play_order)
         self.assertEqual(expected_score, score)
 
