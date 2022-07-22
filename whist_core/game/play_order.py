@@ -79,7 +79,10 @@ class PlayOrder(BaseModel):
             raise PlayerNotJoinedError()
         return players_matching[0]
 
-    def to_team_list(self):
+    def to_team_list(self) -> list[list[Player]]:
+        """
+        Returns a two-dimensional array of players sorted by teams.
+        """
         players_by_team = [[], []]
         for player in self.play_order:
             players_by_team[player.team].append(player.player)
