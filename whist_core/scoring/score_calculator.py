@@ -23,17 +23,16 @@ class ScoreCalculator:
         :param play_order: the order of players
         :return: Score
         """
-        tricks_won = ScoreCalculator.count_winners(hand)
-        tricks_won = [max(0, trick_score - TRICK_EXCESS_BASE) for trick_score in tricks_won]
+        tricks_won = ScoreCalculator.count_wins(hand)
         players_by_team = get_players_by_team(play_order)
         teams = [Team(players=players) for players in players_by_team]
         score = Score(teams=teams, scores=tricks_won)
         return score
 
     @staticmethod
-    def count_winners(hand):
+    def count_wins(hand: Hand) -> list[int]:
         tricks_won = [0, 0]
         for trick in hand.tricks:
             winner = trick.winner
             tricks_won[winner.team] += 1
-        return tricks_won
+        return [max(0, trick_score - TRICK_EXCESS_BASE) for trick_score in tricks_won]
