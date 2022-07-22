@@ -8,7 +8,6 @@ from whist_core.scoring.team import Team
 TRICK_EXCESS_BASE = 6
 
 
-# pylint: disable=too-few-public-methods
 class ScoreCalculator:
     """
     Util class for score calculating.
