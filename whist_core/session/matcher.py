@@ -73,7 +73,7 @@ class RandomMatcher(Matcher):
         players = users.players
         teams: list = list(range(0, team_size)) * num_teams
         for player in players:
-            team_id = random.choice(teams)
+            team_id = random.choice(teams)  # nosec random
             users.change_team(player, team_id)
             teams.remove(team_id)
         return users.teams

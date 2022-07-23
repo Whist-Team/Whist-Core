@@ -1,0 +1,28 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ 3.9, '3.10' ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: Whist-Team/actions/setup-poetry@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Test with pytest & coverage
+        uses: Whist-Team/actions/test-cov@v2
+        with:
+          package: whist_core
+          token: ${{ secrets.CODECOV_TOKEN }}

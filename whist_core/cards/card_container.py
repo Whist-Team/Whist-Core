@@ -61,7 +61,7 @@ class CardContainer(BaseModel, abc.ABC):
 
         :return: A card from deck.
         """
-        card = random.choice(self.cards)
+        card = random.choice(self.cards)  # nosec random
         self.remove(card)
         return card
 
