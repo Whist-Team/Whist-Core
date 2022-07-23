@@ -25,3 +25,4 @@ jobs:
         uses: Whist-Team/actions/test-cov@v2
         with:
           package: "whist-core"
+          token: ${{ secrets.CODECOV_TOKEN }}
