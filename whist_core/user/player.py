@@ -1,6 +1,7 @@
 """DAO of user."""
-from pydantic import validator
 from typing import Optional
+
+from pydantic import validator
 
 from whist_core.error.player_error import NegativeRatingError
 from whist_core.user.user import User
@@ -24,10 +25,12 @@ class Player(User):
             return False
         return other.username == self.username
 
+    # Pydantic will convert this into a classmethod, cls is the correct parameter
     @validator('rating')
-    def rating_must_not_be_negative(cls, value):
+    # noinspection ImproperFirstParameter
+    def rating_must_not_be_negative(cls, value):  # pylint: disable=no-self-argument
         """
-        Validates the rating.It must be zero or positiv.
+        Validates the rating. It must be zero or positiv.
         """
         if value < 0:
             raise NegativeRatingError()
