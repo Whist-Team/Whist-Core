@@ -1,6 +1,8 @@
 """DAO of user."""
+from pydantic import validator
 from typing import Optional
 
+from whist_core.error.player_error import NegativeRatingError
 from whist_core.user.user import User
 
 
@@ -21,6 +23,12 @@ class Player(User):
         if not isinstance(other, Player):
             return False
         return other.username == self.username
+
+    @validator('rating')
+    def rating_must_not_be_negative(cls, value):
+        if value < 0:
+            raise NegativeRatingError()
+        return value
 
     @staticmethod
     def get_player(database: dict, username: str) -> Optional['Player']:
