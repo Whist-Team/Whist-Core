@@ -27,7 +27,7 @@ class PlayerTestCase(BaseTestCase):
     def test_username(self):
         player = Player.get_player(self.db, USERNAME)
         self.assertEqual(player.username, str(player))
-        
+
     def test_negative_rating(self):
-        with self.assertRaises(NegativeRTingError):
+        with self.assertRaises(NegativeRatingError):
             Player(user_id=3, username='negative', rating=-1)
