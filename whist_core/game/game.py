@@ -7,9 +7,8 @@ from whist_core.game.errors import HandNotDoneError
 from whist_core.game.hand import Hand
 from whist_core.game.play_order import PlayOrder
 from whist_core.game.player_at_table import PlayerAtTable
-from whist_core.scoring.score import Score
+from whist_core.scoring.score_calculator import ScoreCalculator
 from whist_core.scoring.score_card import ScoreCard
-from whist_core.scoring.team import Team
 from whist_core.user.player import Player
 
 
@@ -41,24 +40,11 @@ class Game(BaseModel):
         elif not self.current_hand.done():
             raise HandNotDoneError()
         else:
-            score = self._calc_score()
+            score = ScoreCalculator.calc_score(self.current_hand, self.play_order)
             self.score_card.add_score(score)
             self._next_play_order()
             self.current_hand = Hand.deal(self.play_order)
         return self.current_hand
-
-    def _calc_score(self):
-        tricks_won = [0, 0]
-        for trick in self.current_hand.tricks:
-            winner = trick.winner
-            tricks_won[winner.team] += 1
-        tricks_won = [max(0, trick_score - 6) for trick_score in tricks_won]
-        players_by_team = [[], []]
-        for player in self.play_order:
-            players_by_team[player.team].append(player.player)
-        teams = [Team(players=players) for players in players_by_team]
-        score = Score(teams=teams, scores=tricks_won)
-        return score
 
     @property
     def done(self):
