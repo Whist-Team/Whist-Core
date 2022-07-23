@@ -26,6 +26,9 @@ class Player(User):
 
     @validator('rating')
     def rating_must_not_be_negative(cls, value):
+        """
+        Validates the rating.It must be zero or positiv.
+        """
         if value < 0:
             raise NegativeRatingError()
         return value
