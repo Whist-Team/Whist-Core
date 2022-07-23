@@ -24,4 +24,4 @@ jobs:
       - name: Test with pytest & coverage
         uses: Whist-Team/actions/test-cov@v2
         with:
-          package: 'whist-core'
+          package: "whist-core"
