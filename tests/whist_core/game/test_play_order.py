@@ -21,3 +21,8 @@ class PlayOrderTestCase(TeamBaseTestCase):
         self.assertEqual(self.team_b.players[0], self.order.get_next_player().player)
         self.assertEqual(self.team_a.players[1], self.order.get_next_player().player)
         self.assertEqual(self.team_b.players[1], self.order.get_next_player().player)
+
+    def test_to_team_list(self):
+        players_by_team = self.order.to_team_list()
+        self.assertEqual([[self.player_a, self.player_b], [self.player_c, self.player_d]],
+                         players_by_team)

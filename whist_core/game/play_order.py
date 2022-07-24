@@ -79,6 +79,15 @@ class PlayOrder(BaseModel):
             raise PlayerNotJoinedError()
         return players_matching[0]
 
+    def to_team_list(self) -> list[list[Player]]:
+        """
+        Returns a two-dimensional array of players sorted by teams.
+        """
+        players_by_team = [[], []]
+        for player in self.play_order:
+            players_by_team[player.team].append(player.player)
+        return players_by_team
+
     # pylint: disable=protected-access
     @classmethod
     def _new_order(cls, old_order: 'PlayOrder'):
