@@ -3,4 +3,5 @@
 
 class NegativeRatingError(Exception):
     """
-    Will be raised if a attempt to assign a negative rating to a player"""
+    Is raised if an attempt is made to assign a negative rating to a player.
+    """
