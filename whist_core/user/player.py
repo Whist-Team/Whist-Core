@@ -30,7 +30,7 @@ class Player(User):
     # noinspection ImproperFirstParameter
     def rating_must_not_be_negative(cls, value):  # pylint: disable=no-self-argument
         """
-        Validates the rating. It must be zero or positiv.
+        Validates the rating. It must be zero or positive.
         """
         if value < 0:
             raise NegativeRatingError()
