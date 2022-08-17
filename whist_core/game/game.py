@@ -1,5 +1,4 @@
 """One Game of whist"""
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -20,7 +19,7 @@ class Game(BaseModel):
     play_order: PlayOrder
     win_score: int = 3
     score_card: ScoreCard = ScoreCard()
-    current_hand: Optional[Hand] = None
+    hands: list[Hand] = []
 
     # pylint: disable=too-few-public-methods
     class Config:
@@ -36,15 +35,24 @@ class Game(BaseModel):
         :rtype: Hand
         """
         if self.current_hand is None:
-            self.current_hand = Hand.deal(self.play_order)
+            hand = Hand.deal(self.play_order)
+            self.hands.append(hand)
         elif not self.current_hand.done():
             raise HandNotDoneError()
         else:
             score = ScoreCalculator.calc_score(self.current_hand, self.play_order)
             self.score_card.add_score(score)
             self._next_play_order()
-            self.current_hand = Hand.deal(self.play_order)
+            hand = Hand.deal(self.play_order)
+            self.hands.append(hand)
         return self.current_hand
+
+    @property
+    def current_hand(self):
+        """
+        Returns the current hand if there is one. Else None.
+        """
+        return self.hands[-1] if len(self.hands) > 0 else None
 
     @property
     def done(self):
