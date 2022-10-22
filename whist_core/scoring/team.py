@@ -11,6 +11,7 @@ class Team(BaseModel):
     players: list[Player]
 
     def __hash__(self):
+        """Hash value of the team object."""
         return hash(tuple(self.players))
 
     @property

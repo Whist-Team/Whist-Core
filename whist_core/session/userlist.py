@@ -27,6 +27,7 @@ class UserList(BaseModel):
     users: Dict[str, UserListEntry] = {}
 
     def __len__(self):
+        """Amount of players"""
         return len(self.users)
 
     @property
