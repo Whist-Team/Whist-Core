@@ -66,18 +66,23 @@ class CardContainer(BaseModel, abc.ABC):
         return card
 
     def __contains__(self, card: Card) -> bool:
+        """Returns if a card is in container. True if yes else False."""
         return card in self.cards
 
     def __len__(self):
+        """Returns the amount of cards in the container."""
         return len(self.cards)
 
     def __iter__(self) -> Iterator[Card]:
+        """Iterates over all cards."""
         return iter(self.cards)
 
     def __str__(self) -> str:
+        """Returns string representation of all cards."""
         return str(self.cards)
 
     def __repr__(self) -> str:
+        """Returns string representation of all cards with class name."""
         return f'{self.__class__.__name__}(cards={self.cards!r})'
 
     def remove(self, card: Card) -> None:
@@ -139,11 +144,16 @@ class UnorderedCardContainer(CardContainer):
     _cards_set: set[Card] = PrivateAttr()
 
     def __init__(self, **data):
+        """
+        Constructor.
+        :param data: set of cards
+        """
         super().__init__(**data)
         self._cards_set = set(self.cards)
         self.__resync()
 
     def __contains__(self, card: Card) -> bool:
+        """Returns if a card is in container. True if yes else False."""
         return card in self._cards_set
 
     def _remove_impl(self, card: Card) -> None:

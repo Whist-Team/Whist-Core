@@ -36,6 +36,11 @@ class NotPlayersTurnError(Exception):
     """
 
     def __init__(self, player: Player, turn_player: Player):
+        """
+        Constructor.
+        :param player: Who tried to play a card.
+        :param turn_player: Which turn it actually is.
+        """
         super().__init__()
         self.message = f'Is not {player} turn, but {turn_player}.'
 

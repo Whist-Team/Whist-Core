@@ -73,6 +73,7 @@ class Hand(BaseModel):
         return next_trick
 
     def dict(self, *args, **kwargs):
+        """Returns as dictionary."""
         super_dict = super().dict(*args, **kwargs)
         return enforce_str_on_dict(super_dict, ['trump'])
 

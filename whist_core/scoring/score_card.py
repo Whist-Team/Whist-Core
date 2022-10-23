@@ -14,6 +14,7 @@ class ScoreCard(BaseModel):
     hands: list[Score] = []
 
     def __len__(self):
+        """Amount of hands played."""
         return len(self.hands)
 
     @property

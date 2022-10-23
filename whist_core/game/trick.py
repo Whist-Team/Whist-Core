@@ -66,5 +66,6 @@ class Trick(BaseModel):
         player.hand.remove(card)
 
     def dict(self, *args, **kwargs):
+        """Returns dictionary."""
         super_dict = super().dict(*args, **kwargs)
         return enforce_str_on_dict(super_dict, {'trump'})
