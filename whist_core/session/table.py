@@ -1,7 +1,8 @@
 """DAO of session."""
+from pydantic import root_validator
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
-    TableNotStartedError
+    TableNotStartedError, TableSettingsError
 from whist_core.game.rubber import Rubber
 from whist_core.session.matcher import Matcher
 from whist_core.session.session import Session
@@ -17,6 +18,18 @@ class Table(Session):
     team_size: int = 2
     started: bool = False
     rubbers: list[Rubber] = []
+
+    @root_validator(pre=True)
+    def validate_min_is_lower_max_player(cls, values):
+        """
+        Checks if the min_player is less or equal than max_player.
+        :param values:
+        :return:
+        """
+        if values.get('min_player') > values.get('max_player'):
+            raise TableSettingsError('The amount of minimum player must not be higher than the '
+                                     'maximum amount.')
+        return values
 
     # pylint: disable=too-few-public-methods
     class Config:
