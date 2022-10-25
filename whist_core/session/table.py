@@ -19,6 +19,7 @@ class Table(Session):
     started: bool = False
     rubbers: list[Rubber] = []
 
+    # pylint: disable=no-self-argument
     @root_validator(pre=True)
     def validate_min_is_lower_max_player(cls, values):
         """
