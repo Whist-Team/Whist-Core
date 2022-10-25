@@ -15,12 +15,18 @@ class Score(BaseModel):
     hand_score: dict = {}
 
     def __init__(self, teams: list[Team], scores: list[int], **data: Any):
+        """
+        Constructor.
+        :param teams: list of the teams
+        :param scores: list if the scores as int
+        """
         super().__init__(**data)
         for team, score in zip(teams, scores):
             self.hand_score.update({team: score})
             team.games_played()
 
     def __getitem__(self, item):
+        """Returns a specific hand score."""
         return self.hand_score[item]
 
     @property

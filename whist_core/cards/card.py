@@ -143,13 +143,18 @@ class Card(BaseModel):
         return f'{self.rank} of {self.suit}'
 
     def dict(self, *args, **kwargs):
+        """
+        Returns the dictionary. See BaseModel for details.
+        """
         super_dict = super().dict(*args, **kwargs)
         return enforce_str_on_dict(super_dict, ('suit', 'rank'))
 
     def __lt__(self, other: Any) -> bool:
+        """Checks if the other card is lower than this card."""
         if self.__class__ is other.__class__:
             return (self.suit, self.rank) < (other.suit, other.rank)
         return NotImplemented
 
     def __str__(self) -> str:
+        """Returns string representation of this card."""
         return self.name

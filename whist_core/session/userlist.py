@@ -27,6 +27,7 @@ class UserList(BaseModel):
     users: Dict[str, UserListEntry] = {}
 
     def __len__(self):
+        """Amount of players"""
         return len(self.users)
 
     @property
@@ -57,10 +58,10 @@ class UserList(BaseModel):
         Returns the teams.
         :return: list of teams
         """
+        players_by_team = list(sorted(self.users.values(), key=lambda x: x.status.team))
         player_by_team: list[list[Player]] = [[entry.player for entry in list(grp)]
-                                              for k, grp in groupby(
-                list(sorted(self.users.values(), key=lambda x: x.status.team)),
-                lambda x: x.status.team)]
+                                              for k, grp in groupby(players_by_team,
+                                                                    lambda x: x.status.team)]
         teams: list[Team] = [Team(players=players) for players in player_by_team]
         return teams
 

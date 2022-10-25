@@ -15,12 +15,15 @@ class Player(User):
     rating: int
 
     def __str__(self):
+        """Returns string representation of the player."""
         return self.username
 
     def __hash__(self):
+        """Returns the hash value of the player object."""
         return hash(self.username)
 
     def __eq__(self, other):
+        """Checks if the other is the same player."""
         if not isinstance(other, Player):
             return False
         return other.username == self.username

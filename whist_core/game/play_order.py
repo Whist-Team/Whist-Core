@@ -19,6 +19,7 @@ class PlayOrder(BaseModel):
     play_order: list[PlayerAtTable]
 
     def __iter__(self):
+        """Iteration over all players."""
         return iter(self.play_order)
 
     @staticmethod
