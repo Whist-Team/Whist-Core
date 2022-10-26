@@ -51,6 +51,12 @@ class NoTrumpSelectedError(Exception):
     """
 
 
+class RubberNotDoneError(Exception):
+    """
+    Raised if the current rubber is not done, but action requested requires it to be done.
+    """
+
+
 class TrickDoneError(Exception):
     """
     Raised when the trick is already done.
