@@ -54,7 +54,16 @@ class Table(Session):
             raise TableNotStartedError()
         return self.rubbers[-1]
 
-    def start(self, matcher: Matcher) -> None:
+    def next_rubber(self) -> Rubber:
+        """
+        Creates the next rubber.
+        :return: the new rubber
+        """
+        if len(self.rubbers) == 0 or self.rubbers[-1].done:
+            self.rubbers.append(self._create_rubber())
+        return self.current_rubber
+
+    def start(self) -> None:
         """
         Starts the table, but will check if every player is ready first.
         """
