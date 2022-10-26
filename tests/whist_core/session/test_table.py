@@ -124,4 +124,14 @@ class TableTestCase(BaseTestCase):
         self.table.start()
         with self.assertRaises(RubberNotDoneError):
             self.table.next_rubber()
-        self.assertEqual(2, len(self.table.rubbers))
+        self.assertEqual(1, len(self.table.rubbers))
+
+    def test_next_rubber_first(self):
+        second_player = Player(username='miles', rating=3000)
+        self.table.join(self.player)
+        self.table.join(second_player)
+        self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
+        with self.assertRaises(TableNotStartedError):
+            self.table.next_rubber()
+        self.assertEqual(0, len(self.table.rubbers))
