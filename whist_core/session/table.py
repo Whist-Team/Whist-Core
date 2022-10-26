@@ -2,6 +2,7 @@
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError
+from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
 from whist_core.session.matcher import Matcher, RoundRobinMatcher
 from whist_core.session.session import Session
@@ -56,11 +57,15 @@ class Table(Session):
 
     def next_rubber(self) -> Rubber:
         """
-        Creates the next rubber.
+        Creates the next rubber. In order to create the first rubber use 'Table.start()'.
         :return: the new rubber
         """
-        if len(self.rubbers) == 0 or self.rubbers[-1].done:
+        if len(self.rubbers) == 0:
+            raise TableNotStartedError()
+        if self.rubbers[-1].done:
             self.rubbers.append(self._create_rubber())
+        else:
+            raise RubberNotDoneError()
         return self.current_rubber
 
     def start(self) -> None:
