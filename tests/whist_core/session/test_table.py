@@ -64,19 +64,21 @@ class TableTestCase(BaseTestCase):
 
     def test_conversion(self):
         self.table.join(self.player)
-        table_dict = self.table.dict()
+        table_dict = self.table.dict(exclude={'matcher'})
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
 
     def test_start_random(self):
+        table = Table(name='test table', min_player=1, max_player=4, matcher=RandomMatcher())
         second_player = Player(username='miles', rating=3000)
-        self.table.join(self.player)
-        self.table.join(second_player)
-        self.table.player_ready(self.player)
-        self.table.player_ready(second_player)
-        self.table.start(RandomMatcher)
-        self.assertTrue(self.table.started)
-        self.assertIsInstance(self.table.current_rubber, Rubber)
+        table.join(self.player)
+        table.join(second_player)
+        table.player_ready(self.player)
+        table.player_ready(second_player)
+        table.start()
+        self.assertTrue(table.started)
+        self.assertIsInstance(table.current_rubber, Rubber)
+        self.assertTrue(isinstance(table.matcher, RandomMatcher))
 
     def test_start_robin(self):
         second_player = Player(username='miles', rating=3000)
@@ -84,14 +86,15 @@ class TableTestCase(BaseTestCase):
         self.table.join(second_player)
         self.table.player_ready(self.player)
         self.table.player_ready(second_player)
-        self.table.start(RoundRobinMatcher)
+        self.table.start()
         self.assertTrue(self.table.started)
         self.assertIsInstance(self.table.current_rubber, Rubber)
+        self.assertTrue(isinstance(self.table.matcher, RoundRobinMatcher))
 
     def test_not_ready_start(self):
         self.table.join(self.player)
         with self.assertRaises(TableNotReadyError):
-            self.table.start(RandomMatcher)
+            self.table.start()
         self.assertFalse(self.table.started)
 
     def test_rubber_without_start(self):
