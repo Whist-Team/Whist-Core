@@ -1,6 +1,9 @@
+from unittest.mock import patch
+
 from tests.whist_core.base_test_case import BaseTestCase
 from whist_core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
     TableNotStartedError, PlayerNotJoinedError
+from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
 from whist_core.session.matcher import RandomMatcher, RoundRobinMatcher
 from whist_core.session.table import Table
@@ -100,3 +103,25 @@ class TableTestCase(BaseTestCase):
     def test_rubber_without_start(self):
         with self.assertRaises(TableNotStartedError):
             _ = self.table.current_rubber
+
+    def test_next_rubber(self):
+        second_player = Player(username='miles', rating=3000)
+        self.table.join(self.player)
+        self.table.join(second_player)
+        self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
+        self.table.start()
+        with patch('whist_core.game.rubber.Rubber.done', return_value=True):
+            self.table.next_rubber()
+        self.assertEqual(2, len(self.table.rubbers))
+
+    def test_next_rubber_not_done(self):
+        second_player = Player(username='miles', rating=3000)
+        self.table.join(self.player)
+        self.table.join(second_player)
+        self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
+        self.table.start()
+        with self.assertRaises(RubberNotDoneError):
+            self.table.next_rubber()
+        self.assertEqual(2, len(self.table.rubbers))
