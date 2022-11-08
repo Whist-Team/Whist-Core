@@ -1,6 +1,12 @@
 """Errors regarding table logic."""
 
 
+class TableSettingsError(Exception):
+    """
+    Thrown if the table is not setup correctly.
+    """
+
+
 class TableFullError(Exception):
     """
     Thrown if the table is already full.

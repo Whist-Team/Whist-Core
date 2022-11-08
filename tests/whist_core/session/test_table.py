@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from tests.whist_core.base_test_case import BaseTestCase
 from whist_core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
-    TableNotStartedError, PlayerNotJoinedError
+    TableNotStartedError, PlayerNotJoinedError, TableSettingsError
 from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
 from whist_core.session.matcher import RandomMatcher, RoundRobinMatcher
@@ -14,6 +14,10 @@ class TableTestCase(BaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.table = Table(name='test table', min_player=1, max_player=4)
+
+    def test_min_max_validation(self):
+        with self.assertRaises(TableSettingsError):
+            _ = Table(name='faulty table', min_player=3, max_player=2)
 
     def test_ready(self):
         self.table.join(self.player)
