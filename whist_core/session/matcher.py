@@ -4,13 +4,15 @@ Match making tool.
 import abc
 import random
 
+from pydantic import BaseModel
+
 from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.scoring.team import Team
 from whist_core.session.userlist import UserList
 
 
 # pylint: disable=too-few-public-methods
-class Matcher(abc.ABC):
+class Matcher(abc.ABC, BaseModel):
     """
     Abstrakt class for player to teams matching.
     """

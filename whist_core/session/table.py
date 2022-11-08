@@ -3,8 +3,9 @@ from pydantic import root_validator
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
+from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
-from whist_core.session.matcher import Matcher
+from whist_core.session.matcher import Matcher, RoundRobinMatcher
 from whist_core.session.session import Session
 from whist_core.user.player import Player
 
@@ -18,6 +19,7 @@ class Table(Session):
     team_size: int = 2
     started: bool = False
     rubbers: list[Rubber] = []
+    matcher: Matcher = RoundRobinMatcher()
 
     # pylint: disable=no-self-argument
     @root_validator(pre=True)
@@ -67,20 +69,27 @@ class Table(Session):
             raise TableNotStartedError()
         return self.rubbers[-1]
 
-    def start(self, matcher: Matcher) -> None:
+    def next_rubber(self) -> Rubber:
+        """
+        Creates the next rubber. In order to create the first rubber use 'Table.start()'.
+        :return: the new rubber
+        """
+        if len(self.rubbers) == 0:
+            raise TableNotStartedError()
+        if self.rubbers[-1].done:
+            self.rubbers.append(self._create_rubber())
+        else:
+            raise RubberNotDoneError()
+        return self.current_rubber
+
+    def start(self) -> None:
         """
         Starts the table, but will check if every player is ready first.
         """
         if not self.ready:
             raise TableNotReadyError()
 
-        team_numbers = 2
-        players_available_per_team = int(len(self.users) / team_numbers)
-        teams = matcher.distribute(num_teams=team_numbers,
-                                   team_size=min(players_available_per_team, self.team_size),
-                                   users=self.users)
-        rubber = Rubber(teams=teams)
-        self.rubbers.append(rubber)
+        self.rubbers.append(self._create_rubber())
         self.started = True
 
     def join(self, player: Player) -> None:
@@ -142,3 +151,13 @@ class Table(Session):
         :rtype: None
         """
         self.users.player_unready(player)
+
+    def _create_rubber(self):
+        team_numbers = 2
+        players_available_per_team = int(len(self.users) / team_numbers)
+        teams = self.matcher.distribute(num_teams=team_numbers,
+                                        team_size=min(players_available_per_team,
+                                                      self.team_size),
+                                        users=self.users)
+        rubber = Rubber(teams=teams)
+        return rubber
