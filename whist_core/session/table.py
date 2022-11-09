@@ -2,7 +2,7 @@
 from typing import Optional, Union
 
 from pydantic import root_validator
-from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, DictStrAny
+from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, DictStrAny  # pylint: disable=E0611
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
