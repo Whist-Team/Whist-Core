@@ -15,6 +15,17 @@ class TableTestCase(BaseTestCase):
         super().setUp()
         self.table = Table(name='test table', min_player=1, max_player=4)
 
+    def test_table_empty_matcher_from_dict(self):
+        table_dict = self.table.dict()
+        _ = table_dict.pop('matcher')
+        self.assertEqual(self.table, Table(**table_dict))
+
+    def test_table_random_matcher_from_dict(self):
+        self.table.matcher = RandomMatcher()
+        table_from_dict = Table(**self.table.dict())
+        self.assertEqual(self.table, table_from_dict)
+        self.assertIsInstance(table_from_dict.matcher, RandomMatcher)
+
     def test_min_max_validation(self):
         with self.assertRaises(TableSettingsError):
             _ = Table(name='faulty table', min_player=3, max_player=2)
