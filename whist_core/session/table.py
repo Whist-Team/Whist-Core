@@ -1,8 +1,7 @@
 """DAO of session."""
-from typing import Optional, Union
+from typing import Optional
 
 from pydantic import root_validator
-from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, DictStrAny  # pylint: disable=E0611
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
@@ -164,11 +163,9 @@ class Table(Session):
         """
         self.users.player_unready(player)
 
-    def dict(self, *, include: Optional[Union['AbstractSetIntStr', 'MappingIntStrAny']] = None,
-             exclude: Optional[Union['AbstractSetIntStr', 'MappingIntStrAny']] = None,
-             by_alias: bool = False, skip_defaults: Optional[bool] = None,
-             exclude_unset: bool = False, exclude_defaults: bool = False,
-             exclude_none: bool = False) -> 'DictStrAny':
+    def dict(self, *, include=None, exclude=None, by_alias: bool = False,
+             skip_defaults: Optional[bool] = None, exclude_unset: bool = False,
+             exclude_defaults: bool = False, exclude_none: bool = False):
         """
         Transform the model into a dictionary. See details in super method.
         :param include:
