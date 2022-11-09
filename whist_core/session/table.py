@@ -1,4 +1,6 @@
 """DAO of session."""
+from typing import Optional, Union
+
 from pydantic import root_validator
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
@@ -26,7 +28,7 @@ class Table(Session):
         Constructor.
         :param data: dictionary containing the fields defined above.
         """
-        if 'matcher' in data and len(data['matcher']) == 0:
+        if 'matcher' in data and not isinstance(data['matcher'], Matcher):
             _ = data.pop('matcher')
         super().__init__(**data)
 
@@ -160,6 +162,17 @@ class Table(Session):
         :rtype: None
         """
         self.users.player_unready(player)
+
+    def dict(self, *, include: Optional[Union['AbstractSetIntStr', 'MappingIntStrAny']] = None,
+             exclude: Optional[Union['AbstractSetIntStr', 'MappingIntStrAny']] = None,
+             by_alias: bool = False, skip_defaults: Optional[bool] = None,
+             exclude_unset: bool = False, exclude_defaults: bool = False,
+             exclude_none: bool = False) -> 'DictStrAny':
+        super__dict = super().dict(include=include, exclude=exclude, by_alias=by_alias,
+                                   skip_defaults=skip_defaults, exclude_unset=exclude_unset,
+                                   exclude_defaults=exclude_defaults, exclude_none=exclude_none)
+        super__dict['matcher'] = dict(self)['matcher']
+        return super__dict
 
     def _create_rubber(self):
         team_numbers = 2
