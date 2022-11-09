@@ -2,6 +2,7 @@
 from typing import Optional, Union
 
 from pydantic import root_validator
+from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, DictStrAny
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
@@ -168,6 +169,17 @@ class Table(Session):
              by_alias: bool = False, skip_defaults: Optional[bool] = None,
              exclude_unset: bool = False, exclude_defaults: bool = False,
              exclude_none: bool = False) -> 'DictStrAny':
+        """
+        Transform the model into a dictionary. See details in super method.
+        :param include:
+        :param exclude:
+        :param by_alias:
+        :param skip_defaults:
+        :param exclude_unset:
+        :param exclude_defaults:
+        :param exclude_none:
+        :return:
+        """
         super__dict = super().dict(include=include, exclude=exclude, by_alias=by_alias,
                                    skip_defaults=skip_defaults, exclude_unset=exclude_unset,
                                    exclude_defaults=exclude_defaults, exclude_none=exclude_none)
