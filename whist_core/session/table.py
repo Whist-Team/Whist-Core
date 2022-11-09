@@ -23,15 +23,6 @@ class Table(Session):
     rubbers: list[Rubber] = []
     matcher: Matcher = RoundRobinMatcher()
 
-    def __init__(self, **data):
-        """
-        Constructor.
-        :param data: dictionary containing the fields defined above.
-        """
-        if 'matcher' in data and not isinstance(data['matcher'], Matcher):
-            _ = data.pop('matcher')
-        super().__init__(**data)
-
     # pylint: disable=no-self-argument
     @root_validator(pre=True)
     def validate_min_is_lower_max_player(cls, values):
