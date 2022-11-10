@@ -4,15 +4,13 @@ Match making tool.
 import abc
 import random
 
-from pydantic import BaseModel
-
 from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.scoring.team import Team
 from whist_core.session.userlist import UserList
 
 
 # pylint: disable=too-few-public-methods
-class Matcher(abc.ABC, BaseModel):
+class Matcher(abc.ABC):
     """
     Abstrakt class for player to teams matching.
     """
@@ -28,6 +26,14 @@ class Matcher(abc.ABC, BaseModel):
         :return: the list of teams with players distributed to them
         """
         raise NotImplementedError
+
+    def __eq__(self, other: object) -> bool:
+        """
+        Checks if the objects are of the same class.
+        :param other: to be checked
+        :return: True if same class else False
+        """
+        return isinstance(other, self.__class__)
 
 
 class RoundRobinMatcher(Matcher):

@@ -1,11 +1,13 @@
 """DAO of session."""
-from pydantic import root_validator
+from typing import Union
+
+from pydantic import root_validator, validator
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
 from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
-from whist_core.session.matcher import Matcher, RoundRobinMatcher
+from whist_core.session.matcher import Matcher, RoundRobinMatcher, RandomMatcher
 from whist_core.session.session import Session
 from whist_core.user.player import Player
 
@@ -34,13 +36,29 @@ class Table(Session):
                                      'maximum amount.')
         return values
 
+    @validator('matcher', pre=True)
+    def validate_matcher(cls, matcher: Union[Matcher, str]) -> Matcher:
+        """
+        Validates the matcher type. Transforms form string to correct type if necessary.
+        :param matcher: matcher object or string with class name.
+        :return: matcher instance
+        """
+        if isinstance(matcher, Matcher):
+            return matcher
+        return RandomMatcher() if matcher == 'RandomMatcher' else RoundRobinMatcher()
+
     # pylint: disable=too-few-public-methods
     class Config:
         """
         Configures the table class to allow private field. PrivateAttr cannot be used here as
         pylint does not detect the correct types in python 3.10.
         """
+        arbitrary_types_allowed = True
         underscore_attrs_are_private = True
+        json_encoders = {
+            RandomMatcher: lambda v: 'RandomMatcher',
+            RoundRobinMatcher: lambda v: 'RoundRobinMatcher'
+        }
 
     def __len__(self):
         """
