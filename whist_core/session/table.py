@@ -1,13 +1,13 @@
 """DAO of session."""
-from typing import Optional
+from typing import Union
 
-from pydantic import root_validator
+from pydantic import root_validator, validator
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
 from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
-from whist_core.session.matcher import Matcher, RoundRobinMatcher
+from whist_core.session.matcher import Matcher, RoundRobinMatcher, RandomMatcher
 from whist_core.session.session import Session
 from whist_core.user.player import Player
 
@@ -36,13 +36,29 @@ class Table(Session):
                                      'maximum amount.')
         return values
 
+    @validator('matcher', pre=True)
+    def validate_matcher(cls, matcher: Union[Matcher, str]) -> Matcher:
+        """
+        Validates the matcher type. Transforms form string to correct type if necessary.
+        :param matcher: matcher object or string with class name.
+        :return: matcher instance
+        """
+        if isinstance(matcher, Matcher):
+            return matcher
+        return RandomMatcher() if matcher == 'RandomMatcher' else RoundRobinMatcher()
+
     # pylint: disable=too-few-public-methods
     class Config:
         """
         Configures the table class to allow private field. PrivateAttr cannot be used here as
         pylint does not detect the correct types in python 3.10.
         """
+        arbitrary_types_allowed = True
         underscore_attrs_are_private = True
+        json_encoders = {
+            RandomMatcher: lambda v: 'RandomMatcher',
+            RoundRobinMatcher: lambda v: 'RoundRobinMatcher'
+        }
 
     def __len__(self):
         """
@@ -153,26 +169,6 @@ class Table(Session):
         :rtype: None
         """
         self.users.player_unready(player)
-
-    def dict(self, *, include=None, exclude=None, by_alias: bool = False,
-             skip_defaults: Optional[bool] = None, exclude_unset: bool = False,
-             exclude_defaults: bool = False, exclude_none: bool = False):
-        """
-        Transform the model into a dictionary. See details in super method.
-        :param include:
-        :param exclude:
-        :param by_alias:
-        :param skip_defaults:
-        :param exclude_unset:
-        :param exclude_defaults:
-        :param exclude_none:
-        :return:
-        """
-        super__dict = super().dict(include=include, exclude=exclude, by_alias=by_alias,
-                                   skip_defaults=skip_defaults, exclude_unset=exclude_unset,
-                                   exclude_defaults=exclude_defaults, exclude_none=exclude_none)
-        super__dict['matcher'] = dict(self)['matcher']
-        return super__dict
 
     def _create_rubber(self):
         team_numbers = 2
