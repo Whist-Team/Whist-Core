@@ -56,8 +56,7 @@ class Table(Session):
         arbitrary_types_allowed = True
         underscore_attrs_are_private = True
         json_encoders = {
-            RandomMatcher: lambda v: 'RandomMatcher',
-            RoundRobinMatcher: lambda v: 'RoundRobinMatcher'
+            Matcher: lambda v: v.name
         }
 
     def __len__(self):
