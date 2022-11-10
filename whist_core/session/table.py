@@ -1,5 +1,5 @@
 """DAO of session."""
-from typing import Union
+from typing import Union, Optional
 
 from pydantic import root_validator, validator
 
@@ -169,6 +169,26 @@ class Table(Session):
         :rtype: None
         """
         self.users.player_unready(player)
+
+    def dict(self, *, include=None, exclude=None, by_alias: bool = False,
+             skip_defaults: Optional[bool] = None, exclude_unset: bool = False,
+             exclude_defaults: bool = False, exclude_none: bool = False):
+        """
+        Converts the table to a dictionary. See argument details in super method.
+        :param include:
+        :param exclude:
+        :param by_alias:
+        :param skip_defaults:
+        :param exclude_unset:
+        :param exclude_defaults:
+        :param exclude_none:
+        :return:
+        """
+        super_dict = super().dict(include=include, exclude=exclude, by_alias=by_alias,
+                                  skip_defaults=skip_defaults, exclude_unset=exclude_unset,
+                                  exclude_defaults=exclude_defaults, exclude_none=exclude_none)
+        super_dict['matcher'] = 'RandomMatcher' if super_dict['matcher'] else 'RoundRobinMatcher'
+        return super_dict
 
     def _create_rubber(self):
         team_numbers = 2
