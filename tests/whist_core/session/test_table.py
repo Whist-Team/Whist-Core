@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from tests.whist_core.base_test_case import BaseTestCase
 from whist_core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
@@ -14,13 +14,9 @@ from whist_core.user.player import Player
 class TableTestCase(BaseTestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.table = Table(name='test table', min_player=1, max_player=4)
-
-    def test_table_empty_matcher_from_dict(self):
-        table_dict = self.table.dict()
-        _ = table_dict.pop('matcher')
-        self.assertEqual(self.table, Table(**table_dict))
-
+        self.mock_user_list = MagicMock()
+        self.table = Table(name='test table', min_player=1, max_player=4,
+                           matcher=RoundRobinMatcher())
     def test_table_random_matcher_from_dict(self):
         self.table.matcher = RandomMatcher()
         table_from_dict = Table(**self.table.dict())
@@ -65,7 +61,7 @@ class TableTestCase(BaseTestCase):
         self.assertFalse(self.table.ready)
 
     def test_not_ready_min_player(self):
-        table = Table(name='test table', min_player=2, max_player=4)
+        table = Table(name='test table', min_player=2, max_player=4, matcher=RandomMatcher())
         table.join(self.player)
         table.player_ready(self.player)
         self.assertFalse(table.ready)
@@ -105,7 +101,7 @@ class TableTestCase(BaseTestCase):
 
     def test_conversion(self):
         self.table.join(self.player)
-        table_dict = self.table.dict(exclude={'matcher'})
+        table_dict = self.table.dict()
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
 

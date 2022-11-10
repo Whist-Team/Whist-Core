@@ -70,6 +70,7 @@ class Rubber(BaseModel):
         :param team_size: the size of each team
         :return: the rubber object
         """
-        teams = RandomMatcher.distribute(num_teams, team_size, users)
+        matcher = RandomMatcher()
+        teams = matcher.distribute(num_teams, team_size, users)
         rubber = Rubber(teams=teams)
         return rubber

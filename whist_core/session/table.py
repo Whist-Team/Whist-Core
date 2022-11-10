@@ -21,7 +21,7 @@ class Table(Session):
     team_size: int = 2
     started: bool = False
     rubbers: list[Rubber] = []
-    matcher: Matcher = RoundRobinMatcher()
+    matcher: Matcher
 
     # pylint: disable=no-self-argument
     @root_validator(pre=True)
@@ -175,7 +175,6 @@ class Table(Session):
         players_available_per_team = int(len(self.users) / team_numbers)
         teams = self.matcher.distribute(num_teams=team_numbers,
                                         team_size=min(players_available_per_team,
-                                                      self.team_size),
-                                        users=self.users)
+                                                      self.team_size), users=self.users)
         rubber = Rubber(teams=teams)
         return rubber
