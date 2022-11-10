@@ -1,3 +1,4 @@
+import json
 from unittest.mock import patch
 
 from tests.whist_core.base_test_case import BaseTestCase
@@ -32,6 +33,21 @@ class TableTestCase(BaseTestCase):
         table_from_dict = Table(**table_dict)
         self.assertEqual(self.table, table_from_dict)
         self.assertIsInstance(table_from_dict.matcher, RandomMatcher)
+
+    def test_table_random_matcher_from_json(self):
+        self.table.matcher = RandomMatcher()
+        table_json = self.table.json()
+        table_dict_from_json = json.loads(table_json)
+        table_from_json = Table(**table_dict_from_json)
+        self.assertEqual(self.table, table_from_json)
+        self.assertIsInstance(table_from_json.matcher, RandomMatcher)
+
+    def test_table_random_matcher_from_json_generic(self):
+        self.table.matcher = RandomMatcher()
+        table_json = self.table.json()
+        table_from_json = Table(**json.loads(table_json))
+        self.assertEqual(self.table, table_from_json)
+        self.assertIsInstance(table_from_json.matcher, RandomMatcher)
 
     def test_min_max_validation(self):
         with self.assertRaises(TableSettingsError):
