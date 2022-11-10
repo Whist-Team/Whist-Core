@@ -49,3 +49,9 @@ class MatchTestCase(unittest.TestCase):
     def test_zero_teams(self):
         with self.assertRaises(ValueError):
             _ = RoundRobinMatcher.distribute(num_teams=0, team_size=2, users=self.user_list)
+
+    def test_name_round_robin(self):
+        self.assertEqual('RoundRobinMatcher', RoundRobinMatcher().name)
+
+    def test_name_random(self):
+        self.assertEqual('RandomMatcher', RandomMatcher().name)
