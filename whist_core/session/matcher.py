@@ -35,6 +35,13 @@ class Matcher(abc.ABC):
         """
         return isinstance(other, self.__class__)
 
+    @property
+    def name(self):
+        """
+        Returns the class name.
+        """
+        return self.__class__.__name__
+
 
 class RoundRobinMatcher(Matcher):
     """
