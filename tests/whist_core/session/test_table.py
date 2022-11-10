@@ -105,7 +105,7 @@ class TableTestCase(BaseTestCase):
 
     def test_conversion(self):
         self.table.join(self.player)
-        table_dict = self.table.dict(exclude={'matcher'})
+        table_dict = self.table.dict()
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
 
