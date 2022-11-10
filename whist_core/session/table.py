@@ -187,7 +187,7 @@ class Table(Session):
         super_dict = super().dict(include=include, exclude=exclude, by_alias=by_alias,
                                   skip_defaults=skip_defaults, exclude_unset=exclude_unset,
                                   exclude_defaults=exclude_defaults, exclude_none=exclude_none)
-        super_dict['matcher'] = 'RandomMatcher' if super_dict['matcher'] else 'RoundRobinMatcher'
+        super_dict['matcher'] = super_dict['matcher'].name
         return super_dict
 
     def _create_rubber(self):
