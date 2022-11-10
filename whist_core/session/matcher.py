@@ -28,6 +28,11 @@ class Matcher(abc.ABC):
         raise NotImplementedError
 
     def __eq__(self, other: object) -> bool:
+        """
+        Checks if the objects are of the same class.
+        :param other: to be checked
+        :return: True if same class else False
+        """
         return isinstance(other, self.__class__)
 
 
