@@ -25,7 +25,7 @@ class Table(Session):
 
     # copied from
     # https://blog.devgenius.io/deserialize-child-classes-with-pydantic-that-gonna-work-784230e1cf83
-    def __init__(__pydantic_self__, **data: Any) -> None:
+    def __init__(self, **data: Any) -> None:
         """
         Constructor
         :param data: fields from above
@@ -33,7 +33,7 @@ class Table(Session):
         matcher = data['matcher']
         if isinstance(matcher, dict):
             item_matcher_keys = sorted(matcher.keys())
-            for name, subclass in subclass_registry.items():
+            for _, subclass in subclass_registry.items():
                 matcher_keys = sorted(subclass.__fields__.keys())
                 if item_matcher_keys == matcher_keys:
                     matcher = subclass(**matcher)
