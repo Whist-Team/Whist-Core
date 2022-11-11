@@ -48,14 +48,6 @@ class Matcher(abc.ABC, BaseModel):
         """
         raise NotImplementedError
 
-    def __eq__(self, other: object) -> bool:
-        """
-        Checks if the objects are of the same class.
-        :param other: to be checked
-        :return: True if same class else False
-        """
-        return isinstance(other, self.__class__)
-
     def _apply_distribution(self, distribution):
         self.teams.append(distribution)
 
