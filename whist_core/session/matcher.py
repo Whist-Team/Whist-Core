@@ -4,14 +4,19 @@ Match making tool.
 import abc
 import random
 from itertools import permutations
+from typing import Any
+
+from pydantic import BaseModel
 
 from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.session.distribution import Distribution, DistributionEntry
 from whist_core.session.userlist import UserList
 
+subclass_registry = {}
+
 
 # pylint: disable=too-few-public-methods
-class Matcher(abc.ABC):
+class Matcher(abc.ABC, BaseModel):
     """
     Abstrakt class for player to teams matching.
     """
@@ -19,15 +24,12 @@ class Matcher(abc.ABC):
     number_teams: int
     team_size: int
 
-    def __init__(self, number_teams: int, team_size: int):
-        if number_teams > 0:
-            self.number_teams = number_teams
-        else:
-            raise ValueError('number_teams must be positive')
-        if team_size > 0:
-            self.team_size = team_size
-        else:
-            raise ValueError('team_size must be positive')
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        subclass_registry[cls.__name__] = cls
+
+    class Config:
+        extra = "allow"
 
     @abc.abstractmethod
     def distribute(self, users: UserList) -> Distribution:
@@ -57,16 +59,17 @@ class RoundRobinMatcher(Matcher):
     iteration: int = 0
     distributions: list[Distribution] = []
 
-    def __init__(self, number_teams: int, team_size: int):
-        super().__init__(number_teams, team_size)
+    def __init__(self, number_teams: int, team_size: int, **data):
+        super().__init__(number_teams=number_teams, team_size=team_size, **data)
         number_players = self.team_size * self.number_teams
 
-        for distribution_int in sorted(
-                set(permutations((x % self.number_teams for x in range(number_players))))):
-            distribution = Distribution()
-            for player_index, team_id in enumerate(distribution_int):
-                distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
-            self.distributions.append(distribution)
+        if len(self.distributions) == 0:
+            for distribution_int in sorted(
+                    set(permutations((x % self.number_teams for x in range(number_players))))):
+                distribution = Distribution()
+                for player_index, team_id in enumerate(distribution_int):
+                    distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
+                self.distributions.append(distribution)
 
     def distribute(self, users: UserList) -> Distribution:
         """
