@@ -16,7 +16,7 @@ class Matcher(abc.ABC):
     """
     Abstrakt class for player to teams matching.
     """
-    _teams: Dict[int, dict[int, int]] = {}
+    teams: list[Distribution] = []
 
     @abc.abstractmethod
     def distribute(self, num_teams: int, team_size: int, users: UserList) -> list[Team]:
