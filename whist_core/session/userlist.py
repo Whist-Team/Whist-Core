@@ -120,6 +120,11 @@ class UserList(BaseModel):
             self.users.pop(player.username)
 
     def apply_distribution(self, distribution: Distribution) -> None:
+        """
+        Apply the changes of teams.
+        :param distribution: matrix of player assignment to teams
+        :return: None
+        """
         for entry in distribution:
             self.change_team(self.players[entry.player_index], entry.team_id)
 

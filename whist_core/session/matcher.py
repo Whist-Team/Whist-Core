@@ -25,10 +25,18 @@ class Matcher(abc.ABC, BaseModel):
     team_size: int
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
+        """
+        Initializes the subclass
+        :param kwargs: field from above
+        :return: None
+        """
         super().__init_subclass__(**kwargs)
         subclass_registry[cls.__name__] = cls
 
     class Config:
+        """
+        Configuration of matcher classes.
+        """
         extra = "allow"
 
     @abc.abstractmethod
@@ -60,6 +68,12 @@ class RoundRobinMatcher(Matcher):
     distributions: list[Distribution] = []
 
     def __init__(self, number_teams: int, team_size: int, **data):
+        """
+        Constructor. See details in base class.
+        :param number_teams:
+        :param team_size:
+        :param data:
+        """
         super().__init__(number_teams=number_teams, team_size=team_size, **data)
         number_players = self.team_size * self.number_teams
 

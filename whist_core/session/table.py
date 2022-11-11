@@ -23,9 +23,13 @@ class Table(Session):
     rubbers: list[Rubber] = []
     matcher: Matcher
 
-    # copied from https://blog.devgenius.io/deserialize-child-classes-with-pydantic-that-gonna-work-784230e1cf83
+    # copied from
+    # https://blog.devgenius.io/deserialize-child-classes-with-pydantic-that-gonna-work-784230e1cf83
     def __init__(__pydantic_self__, **data: Any) -> None:
-
+        """
+        Constructor
+        :param data: fields from above
+        """
         matcher = data['matcher']
         if isinstance(matcher, dict):
             item_matcher_keys = sorted(matcher.keys())
