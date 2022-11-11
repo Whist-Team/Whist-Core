@@ -173,8 +173,10 @@ class Table(Session):
     def _create_rubber(self):
         team_numbers = 2
         players_available_per_team = int(len(self.users) / team_numbers)
-        teams = self.matcher.distribute(num_teams=team_numbers,
-                                        team_size=min(players_available_per_team,
-                                                      self.team_size), users=self.users)
+        distribution = self.matcher.distribute(num_teams=team_numbers,
+                                               team_size=min(players_available_per_team,
+                                                             self.team_size), users=self.users)
+        self.users.apply_distribution(distribution)
+        teams = self.users.teams
         rubber = Rubber(teams=teams)
         return rubber
