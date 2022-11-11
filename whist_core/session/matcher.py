@@ -3,6 +3,7 @@ Match making tool.
 """
 import abc
 import random
+from itertools import permutations
 
 from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.session.distribution import Distribution, DistributionEntry
@@ -15,13 +16,23 @@ class Matcher(abc.ABC):
     Abstrakt class for player to teams matching.
     """
     teams: list[Distribution] = []
+    number_teams: int
+    team_size: int
+
+    def __init__(self, number_teams: int, team_size: int):
+        if number_teams > 0:
+            self.number_teams = number_teams
+        else:
+            raise ValueError('number_teams must be positive')
+        if team_size > 0:
+            self.team_size = team_size
+        else:
+            raise ValueError('team_size must be positive')
 
     @abc.abstractmethod
-    def distribute(self, num_teams: int, team_size: int, users: UserList) -> Distribution:
+    def distribute(self, users: UserList) -> Distribution:
         """
         Distributes cards according to subclass implementation.
-        :param num_teams: the amount of teams
-        :param team_size: how many players per team
         :param users: the players to be distributed to teams
         :return: the list of teams with players distributed to them
         """
@@ -43,32 +54,31 @@ class RoundRobinMatcher(Matcher):
     """
     Distributes the players in the order of the user list.
     """
+    iteration: int = 0
+    distributions: list[Distribution] = []
 
-    def distribute(self, num_teams: int, team_size: int, users: UserList) -> Distribution:
+    def __init__(self, number_teams: int, team_size: int):
+        super().__init__(number_teams, team_size)
+        number_players = self.team_size * self.number_teams
+
+        for distribution_int in sorted(
+                set(permutations((x % self.number_teams for x in range(number_players))))):
+            distribution = Distribution()
+            for player_index, team_id in enumerate(distribution_int):
+                distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
+            self.distributions.append(distribution)
+
+    def distribute(self, users: UserList) -> Distribution:
         """
         Distributes one player to each team each round in order of the user list. Repeats until
         the user list is empty.
-        :param num_teams: the amount of teams
-        :param team_size: how many players per team
         :param users: the players to be distributed to teams
         :return: the teams in round robin distribution
         """
-        if team_size <= 0:
-            raise ValueError('The team size must be positive.')
-        if num_teams <= 0:
-            raise ValueError('There must be at least one team.')
-        players = users.players
-        if num_teams * team_size > len(players):
-            raise NotEnoughPlayersError(f'{num_teams * team_size} of players are need, but only '
-                                        f'{len(players)} have joined.')
-        distribution = Distribution()
-        team_id = 0
-        for player_index in range(len(players)):
-            entry = DistributionEntry(player_index=player_index, team_id=team_id)
-            distribution.add(entry)
-            team_id = (team_id + 1) % num_teams
-
+        distribution = self.distributions[self.iteration]
+        self.iteration += 1
         self._apply_distribution(distribution)
+
         return distribution
 
 
@@ -77,14 +87,16 @@ class RandomMatcher(Matcher):
     Distributes the players randomly to teams.
     """
 
-    def distribute(self, num_teams: int, team_size: int, users: UserList) -> Distribution:
+    def distribute(self, users: UserList) -> Distribution:
         """
         For given parameter distributes the players to teams.
         :return: None
         :rtype: None
         """
         players = users.players
-        teams: list = list(range(0, team_size)) * num_teams
+        if len(players) != self.number_teams * self.team_size:
+            raise NotEnoughPlayersError()
+        teams: list = list(range(0, self.team_size)) * self.number_teams
         distribution: Distribution = Distribution()
         for player_index in range(len(players)):
             team_id = random.choice(teams)  # nosec random
