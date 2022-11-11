@@ -1,13 +1,13 @@
 """DAO of session."""
-from typing import Union
+from typing import Any
 
-from pydantic import root_validator, validator
+from pydantic import root_validator
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
 from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
-from whist_core.session.matcher import Matcher, RoundRobinMatcher, RandomMatcher
+from whist_core.session.matcher import Matcher, subclass_registry
 from whist_core.session.session import Session
 from whist_core.user.player import Player
 
@@ -23,6 +23,20 @@ class Table(Session):
     rubbers: list[Rubber] = []
     matcher: Matcher
 
+    # copied from https://blog.devgenius.io/deserialize-child-classes-with-pydantic-that-gonna-work-784230e1cf83
+    def __init__(__pydantic_self__, **data: Any) -> None:
+
+        matcher = data['matcher']
+        if isinstance(matcher, dict):
+            item_matcher_keys = sorted(matcher.keys())
+            for name, subclass in subclass_registry.items():
+                matcher_keys = sorted(subclass.__fields__.keys())
+                if item_matcher_keys == matcher_keys:
+                    matcher = subclass(**matcher)
+                    break
+            data['matcher'] = matcher
+        super().__init__(**data)
+
     # pylint: disable=no-self-argument
     @root_validator(pre=True)
     def validate_min_is_lower_max_player(cls, values):
@@ -36,17 +50,6 @@ class Table(Session):
                                      'maximum amount.')
         return values
 
-    @validator('matcher', pre=True)
-    def validate_matcher(cls, matcher: Union[Matcher, str]) -> Matcher:
-        """
-        Validates the matcher type. Transforms form string to correct type if necessary.
-        :param matcher: matcher object or string with class name.
-        :return: matcher instance
-        """
-        if isinstance(matcher, Matcher):
-            return matcher
-        return RandomMatcher() if matcher == 'RandomMatcher' else RoundRobinMatcher()
-
     # pylint: disable=too-few-public-methods
     class Config:
         """
@@ -55,10 +58,6 @@ class Table(Session):
         """
         arbitrary_types_allowed = True
         underscore_attrs_are_private = True
-        json_encoders = {
-            RandomMatcher: lambda v: 'RandomMatcher',
-            RoundRobinMatcher: lambda v: 'RoundRobinMatcher'
-        }
 
     def __len__(self):
         """
@@ -171,11 +170,7 @@ class Table(Session):
         self.users.player_unready(player)
 
     def _create_rubber(self):
-        team_numbers = 2
-        players_available_per_team = int(len(self.users) / team_numbers)
-        distribution = self.matcher.distribute(num_teams=team_numbers,
-                                               team_size=min(players_available_per_team,
-                                                             self.team_size), users=self.users)
+        distribution = self.matcher.distribute(users=self.users)
         self.users.apply_distribution(distribution)
         teams = self.users.teams
         rubber = Rubber(teams=teams)
