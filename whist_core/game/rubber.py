@@ -5,8 +5,6 @@ from whist_core.game.errors import GameNotStartedError, GameNotDoneError
 from whist_core.game.game import Game
 from whist_core.game.play_order import PlayOrder
 from whist_core.scoring.team import Team
-from whist_core.session.matcher import RandomMatcher
-from whist_core.session.userlist import UserList
 
 
 class Rubber(BaseModel):
@@ -60,17 +58,3 @@ class Rubber(BaseModel):
             raise GameNotDoneError()
 
         return self.current_game()
-
-    @classmethod
-    def create_random(cls, users: UserList, num_teams: int, team_size: int) -> 'Rubber':
-        """
-        Creates a rubber with a random distribution of players in teams.
-        :param users: all players and stati at the table
-        :param num_teams: the amount of teams
-        :param team_size: the size of each team
-        :return: the rubber object
-        """
-        matcher = RandomMatcher()
-        teams = matcher.distribute(num_teams, team_size, users)
-        rubber = Rubber(teams=teams)
-        return rubber
