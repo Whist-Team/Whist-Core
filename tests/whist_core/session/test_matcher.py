@@ -20,18 +20,21 @@ class MatchTestCase(unittest.TestCase):
             self.user_list.append(player)
 
     def test_random_distribute(self):
-        teams = self.random_matcher.distribute(2, 2, self.user_list)
-        self.assertEqual(2, len(teams[0].players))
-        self.assertEqual(2, len(teams[1].players))
-        self.assertEqual(2, self.user_list.team_size(0))
-        self.assertEqual(2, self.user_list.team_size(1))
+        distribution = self.random_matcher.distribute(2, 2, self.user_list)
+        self.assertEqual(4, len(distribution))
+        self.assertEqual(2, len([entry for entry in distribution if entry.team_id == 0]))
+        self.assertEqual(2, len([entry for entry in distribution if entry.team_id == 1]))
 
     def test_round_robin_distribute(self):
-        teams = self.robin_matcher.distribute(2, 2, self.user_list)
-        self.assertEqual(teams[0].players[0], self.players[0])
-        self.assertEqual(teams[1].players[0], self.players[1])
-        self.assertEqual(teams[0].players[1], self.players[2])
-        self.assertEqual(teams[1].players[1], self.players[3])
+        distribution = self.robin_matcher.distribute(2, 2, self.user_list)
+        self.assertEqual(distribution[0].player_index, 0)
+        self.assertEqual(distribution[0].team_id, 0)
+        self.assertEqual(distribution[1].player_index, 1)
+        self.assertEqual(distribution[1].team_id, 1)
+        self.assertEqual(distribution[2].player_index, 2)
+        self.assertEqual(distribution[2].team_id, 0)
+        self.assertEqual(distribution[3].player_index, 3)
+        self.assertEqual(distribution[3].team_id, 1)
 
     def test_round_robin_min_player_distribute(self):
         user_list = UserList()
@@ -50,8 +53,13 @@ class MatchTestCase(unittest.TestCase):
             _ = self.robin_matcher.distribute(num_teams=0, team_size=2, users=self.user_list)
 
     def test_second_round_robin(self):
-        teams = self.robin_matcher.distribute(2, 2, self.user_list)
-        self.assertEqual(teams[0].players[0], self.players[0])
-        self.assertEqual(teams[1].players[0], self.players[1])
-        self.assertEqual(teams[0].players[1], self.players[2])
-        self.assertEqual(teams[1].players[1], self.players[3])
+        _ = self.robin_matcher.distribute(2, 2, self.user_list)
+        distribution = self.robin_matcher.distribute(2, 2, self.user_list)
+        self.assertEqual(distribution[0].player_index, 0)
+        self.assertEqual(distribution[0].team_id, 0)
+        self.assertEqual(distribution[1].player_index, 1)
+        self.assertEqual(distribution[1].team_id, 0)
+        self.assertEqual(distribution[2].player_index, 2)
+        self.assertEqual(distribution[2].team_id, 1)
+        self.assertEqual(distribution[3].player_index, 3)
+        self.assertEqual(distribution[3].team_id, 1)
