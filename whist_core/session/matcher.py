@@ -3,10 +3,8 @@ Match making tool.
 """
 import abc
 import random
-from typing import Dict
 
 from whist_core.error.matcher_error import NotEnoughPlayersError
-from whist_core.scoring.team import Team
 from whist_core.session.distribution import Distribution, DistributionEntry
 from whist_core.session.userlist import UserList
 
@@ -19,7 +17,7 @@ class Matcher(abc.ABC):
     teams: list[Distribution] = []
 
     @abc.abstractmethod
-    def distribute(self, num_teams: int, team_size: int, users: UserList) -> list[Team]:
+    def distribute(self, num_teams: int, team_size: int, users: UserList) -> Distribution:
         """
         Distributes cards according to subclass implementation.
         :param num_teams: the amount of teams
@@ -37,10 +35,8 @@ class Matcher(abc.ABC):
         """
         return isinstance(other, self.__class__)
 
-    @staticmethod
-    def _apply_distribution(distribution, users):
-        for entry in distribution:
-            users.change_team(users.players[entry.player_index], entry.team_id)
+    def _apply_distribution(self, distribution):
+        self.teams.append(distribution)
 
 
 class RoundRobinMatcher(Matcher):
@@ -48,7 +44,7 @@ class RoundRobinMatcher(Matcher):
     Distributes the players in the order of the user list.
     """
 
-    def distribute(self, num_teams: int, team_size: int, users: UserList) -> list[Team]:
+    def distribute(self, num_teams: int, team_size: int, users: UserList) -> Distribution:
         """
         Distributes one player to each team each round in order of the user list. Repeats until
         the user list is empty.
@@ -72,8 +68,8 @@ class RoundRobinMatcher(Matcher):
             distribution.add(entry)
             team_id = (team_id + 1) % num_teams
 
-        self._apply_distribution(distribution, users)
-        return users.teams
+        self._apply_distribution(distribution)
+        return distribution
 
 
 class RandomMatcher(Matcher):
@@ -81,7 +77,7 @@ class RandomMatcher(Matcher):
     Distributes the players randomly to teams.
     """
 
-    def distribute(self, num_teams: int, team_size: int, users: UserList) -> list[Team]:
+    def distribute(self, num_teams: int, team_size: int, users: UserList) -> Distribution:
         """
         For given parameter distributes the players to teams.
         :return: None
@@ -95,6 +91,6 @@ class RandomMatcher(Matcher):
             teams.remove(team_id)
             distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
 
-        self._apply_distribution(distribution, users)
+        self._apply_distribution(distribution)
 
-        return users.teams
+        return distribution
