@@ -16,22 +16,23 @@ class TableTestCase(BaseTestCase):
         super().setUp()
         self.mock_user_list = MagicMock()
         self.table = Table(name='test table', min_player=1, max_player=4,
-                           matcher=RoundRobinMatcher())
+                           matcher=RoundRobinMatcher(number_teams=2, team_size=2))
+
     def test_table_random_matcher_from_dict(self):
-        self.table.matcher = RandomMatcher()
+        self.table.matcher = RandomMatcher(number_teams=2, team_size=2)
         table_from_dict = Table(**self.table.dict())
         self.assertEqual(self.table, table_from_dict)
         self.assertIsInstance(table_from_dict.matcher, RandomMatcher)
 
     def test_table_random_matcher_from_dict_generic(self):
-        self.table.matcher = RandomMatcher()
+        self.table.matcher = RandomMatcher(number_teams=2, team_size=2)
         table_dict = dict(self.table)
         table_from_dict = Table(**table_dict)
         self.assertEqual(self.table, table_from_dict)
         self.assertIsInstance(table_from_dict.matcher, RandomMatcher)
 
     def test_table_random_matcher_from_json(self):
-        self.table.matcher = RandomMatcher()
+        self.table.matcher = RandomMatcher(number_teams=2, team_size=2)
         table_json = self.table.json()
         table_dict_from_json = json.loads(table_json)
         table_from_json = Table(**table_dict_from_json)
@@ -39,7 +40,7 @@ class TableTestCase(BaseTestCase):
         self.assertIsInstance(table_from_json.matcher, RandomMatcher)
 
     def test_table_random_matcher_from_json_generic(self):
-        self.table.matcher = RandomMatcher()
+        self.table.matcher = RandomMatcher(number_teams=2, team_size=2)
         table_json = self.table.json()
         table_from_json = Table(**json.loads(table_json))
         self.assertEqual(self.table, table_from_json)
@@ -47,7 +48,8 @@ class TableTestCase(BaseTestCase):
 
     def test_min_max_validation(self):
         with self.assertRaises(TableSettingsError):
-            _ = Table(name='faulty table', min_player=3, max_player=2)
+            _ = Table(name='faulty table', min_player=3, max_player=2,
+                      matcher=RandomMatcher(number_teams=2, team_size=2))
 
     def test_ready(self):
         self.table.join(self.player)
@@ -61,7 +63,8 @@ class TableTestCase(BaseTestCase):
         self.assertFalse(self.table.ready)
 
     def test_not_ready_min_player(self):
-        table = Table(name='test table', min_player=2, max_player=4, matcher=RandomMatcher())
+        table = Table(name='test table', min_player=2, max_player=4,
+                      matcher=RandomMatcher(number_teams=2, team_size=2))
         table.join(self.player)
         table.player_ready(self.player)
         self.assertFalse(table.ready)
@@ -106,23 +109,17 @@ class TableTestCase(BaseTestCase):
         self.assertEqual(self.table, table)
 
     def test_start_random(self):
-        table = Table(name='test table', min_player=1, max_player=4, matcher=RandomMatcher())
-        second_player = Player(username='miles', rating=3000)
-        table.join(self.player)
-        table.join(second_player)
-        table.player_ready(self.player)
-        table.player_ready(second_player)
-        table.start()
-        self.assertTrue(table.started)
-        self.assertIsInstance(table.current_rubber, Rubber)
-        self.assertTrue(isinstance(table.matcher, RandomMatcher))
+        self.table.matcher = RandomMatcher(number_teams=2, team_size=2)
+        self._ready_four_players()
+        self.table.start()
+        self.assertTrue(self.table.started)
+        self.assertIsInstance(self.table.current_rubber, Rubber)
+        self.assertTrue(isinstance(self.table.matcher, RandomMatcher))
 
     def test_start_robin(self):
-        second_player = Player(username='miles', rating=3000)
-        self.table.join(self.player)
-        self.table.join(second_player)
-        self.table.player_ready(self.player)
-        self.table.player_ready(second_player)
+        self.table = Table(name='test table', min_player=1, max_player=4,
+                           matcher=RoundRobinMatcher(number_teams=2, team_size=2))
+        self._ready_four_players()
         self.table.start()
         self.assertTrue(self.table.started)
         self.assertIsInstance(self.table.current_rubber, Rubber)
@@ -139,33 +136,34 @@ class TableTestCase(BaseTestCase):
             _ = self.table.current_rubber
 
     def test_next_rubber(self):
-        second_player = Player(username='miles', rating=3000)
-        self.table.join(self.player)
-        self.table.join(second_player)
-        self.table.player_ready(self.player)
-        self.table.player_ready(second_player)
+        self._ready_four_players()
         self.table.start()
         with patch('whist_core.game.rubber.Rubber.done', return_value=True):
             self.table.next_rubber()
         self.assertEqual(2, len(self.table.rubbers))
 
     def test_next_rubber_not_done(self):
-        second_player = Player(username='miles', rating=3000)
-        self.table.join(self.player)
-        self.table.join(second_player)
-        self.table.player_ready(self.player)
-        self.table.player_ready(second_player)
+        self._ready_four_players()
         self.table.start()
         with self.assertRaises(RubberNotDoneError):
             self.table.next_rubber()
         self.assertEqual(1, len(self.table.rubbers))
 
     def test_next_rubber_first(self):
-        second_player = Player(username='miles', rating=3000)
-        self.table.join(self.player)
-        self.table.join(second_player)
-        self.table.player_ready(self.player)
-        self.table.player_ready(second_player)
+        self._ready_four_players()
         with self.assertRaises(TableNotStartedError):
             self.table.next_rubber()
         self.assertEqual(0, len(self.table.rubbers))
+
+    def _ready_four_players(self):
+        second_player = Player(username='miles', rating=3000)
+        third_player = Player(username='nico', rating=300)
+        forth_player = Player(username='abc', rating=200)
+        self.table.join(self.player)
+        self.table.join(second_player)
+        self.table.join(third_player)
+        self.table.join(forth_player)
+        self.table.player_ready(self.player)
+        self.table.player_ready(second_player)
+        self.table.player_ready(third_player)
+        self.table.player_ready(forth_player)
