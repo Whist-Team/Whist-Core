@@ -30,7 +30,7 @@ pytest-asyncio = "^0.20"
 flake8 = "^5.0"
 flake8-docstrings = "^1.6"
 pylint = "^2.15"
-sphinx = "5.0"
+sphinx = "^5.0"
 sphinx-autoapi = "^1.8"
 
 
