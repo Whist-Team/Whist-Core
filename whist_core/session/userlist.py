@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 from whist_core.error.table_error import PlayerNotJoinedError
 from whist_core.scoring.team import Team
+from whist_core.session.distribution import Distribution
 from whist_core.user.player import Player
 from whist_core.user.status import Status
 
@@ -117,6 +118,15 @@ class UserList(BaseModel):
         """
         if self.is_joined(player):
             self.users.pop(player.username)
+
+    def apply_distribution(self, distribution: Distribution) -> None:
+        """
+        Apply the changes of teams.
+        :param distribution: matrix of player assignment to teams
+        :return: None
+        """
+        for entry in distribution:
+            self.change_team(self.players[entry.player_index], entry.team_id)
 
     def change_team(self, player: Player, team: int) -> None:
         """
