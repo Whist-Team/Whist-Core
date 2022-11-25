@@ -68,12 +68,7 @@ class RoundRobinMatcher(Matcher):
         super().__init__(number_teams=number_teams, **data)
 
         if len(self.distributions) == 0:
-            for distribution_int in sorted(
-                    set(permutations((x % self.number_teams for x in range(4))))):
-                distribution = Distribution()
-                for player_index, team_id in enumerate(distribution_int):
-                    distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
-                self.distributions.append(distribution)
+            self._precalculate_distributions()
 
     def distribute(self, users: UserList) -> Distribution:
         """
@@ -82,11 +77,22 @@ class RoundRobinMatcher(Matcher):
         :param users: the players to be distributed to teams
         :return: the teams in round robin distribution
         """
+        if len(self.distributions) != len(users):
+            self.distributions = []
+            self._precalculate_distributions(len(users))
         distribution = self.distributions[self.iteration]
         self.iteration += 1
         self._apply_distribution(distribution)
 
         return distribution
+
+    def _precalculate_distributions(self, number_players: int = 4):
+        for distribution_int in sorted(
+                set(permutations((x % self.number_teams for x in range(number_players))))):
+            distribution = Distribution()
+            for player_index, team_id in enumerate(distribution_int):
+                distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
+            self.distributions.append(distribution)
 
 
 class RandomMatcher(Matcher):
@@ -101,7 +107,7 @@ class RandomMatcher(Matcher):
         :rtype: None
         """
         players = users.players
-        team_size:int = int(self.number_teams / len(players))
+        team_size: int = int(self.number_teams / len(players))
         teams: list = list(range(0, team_size)) * self.number_teams
         distribution: Distribution = Distribution()
         for player_index in range(len(players)):
