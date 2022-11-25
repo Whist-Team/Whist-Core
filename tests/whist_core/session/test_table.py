@@ -125,6 +125,12 @@ class TableTestCase(BaseTestCase):
         self.assertIsInstance(self.table.current_rubber, Rubber)
         self.assertTrue(isinstance(self.table.matcher, RoundRobinMatcher))
 
+    def test_start_early(self):
+        self.table.join(self.player)
+        self.table.player_ready(self.player)
+        self.table.start()
+        self.assertTrue(self.table.started)
+
     def test_not_ready_start(self):
         self.table.join(self.player)
         with self.assertRaises(TableNotReadyError):
