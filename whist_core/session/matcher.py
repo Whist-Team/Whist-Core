@@ -22,7 +22,6 @@ class Matcher(abc.ABC, BaseModel):
     """
     teams: list[Distribution] = []
     number_teams: int
-    team_size: int
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """
@@ -59,19 +58,18 @@ class RoundRobinMatcher(Matcher):
     iteration: int = 0
     distributions: list[Distribution] = []
 
-    def __init__(self, number_teams: int, team_size: int, **data):
+    def __init__(self, number_teams: int, **data):
         """
         Constructor. See details in base class.
         :param number_teams:
         :param team_size:
         :param data:
         """
-        super().__init__(number_teams=number_teams, team_size=team_size, **data)
-        number_players = self.team_size * self.number_teams
+        super().__init__(number_teams=number_teams, **data)
 
         if len(self.distributions) == 0:
             for distribution_int in sorted(
-                    set(permutations((x % self.number_teams for x in range(number_players))))):
+                    set(permutations((x % self.number_teams for x in range(4))))):
                 distribution = Distribution()
                 for player_index, team_id in enumerate(distribution_int):
                     distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
@@ -103,9 +101,8 @@ class RandomMatcher(Matcher):
         :rtype: None
         """
         players = users.players
-        if len(players) != self.number_teams * self.team_size:
-            raise NotEnoughPlayersError()
-        teams: list = list(range(0, self.team_size)) * self.number_teams
+        team_size:int = int(self.number_teams / len(players))
+        teams: list = list(range(0, team_size)) * self.number_teams
         distribution: Distribution = Distribution()
         for player_index in range(len(players)):
             team_id = random.choice(teams)  # nosec random
