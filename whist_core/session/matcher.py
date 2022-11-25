@@ -8,7 +8,6 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.session.distribution import Distribution, DistributionEntry
 from whist_core.session.userlist import UserList
 
