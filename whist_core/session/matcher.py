@@ -67,7 +67,6 @@ class RoundRobinMatcher(Matcher):
         """
         super().__init__(number_teams=number_teams, **data)
 
-
     def distribute(self, users: UserList) -> Distribution:
         """
         Distributes one player to each team each round in order of the user list. Repeats until
@@ -84,7 +83,7 @@ class RoundRobinMatcher(Matcher):
 
         return distribution
 
-    def _precalculate_distributions(self, number_players: int = 4):
+    def _precalculate_distributions(self, number_players: int):
         for distribution_int in sorted(
                 set(permutations((x % self.number_teams for x in range(number_players))))):
             distribution = Distribution()
