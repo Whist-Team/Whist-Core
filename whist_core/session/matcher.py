@@ -104,7 +104,7 @@ class RandomMatcher(Matcher):
         :rtype: None
         """
         players = users.players
-        team_size: int = int(self.number_teams / len(players))
+        team_size: int = int(len(players) / self.number_teams)
         teams: list = list(range(0, team_size)) * self.number_teams
         distribution: Distribution = Distribution()
         for player_index in range(len(players)):
