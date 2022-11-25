@@ -67,8 +67,6 @@ class RoundRobinMatcher(Matcher):
         """
         super().__init__(number_teams=number_teams, **data)
 
-        if len(self.distributions) == 0:
-            self._precalculate_distributions()
 
     def distribute(self, users: UserList) -> Distribution:
         """
