@@ -8,7 +8,6 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.session.distribution import Distribution, DistributionEntry
 from whist_core.session.userlist import UserList
 
@@ -22,7 +21,6 @@ class Matcher(abc.ABC, BaseModel):
     """
     teams: list[Distribution] = []
     number_teams: int
-    team_size: int
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """
@@ -59,23 +57,14 @@ class RoundRobinMatcher(Matcher):
     iteration: int = 0
     distributions: list[Distribution] = []
 
-    def __init__(self, number_teams: int, team_size: int, **data):
+    def __init__(self, number_teams: int, **data):
         """
         Constructor. See details in base class.
         :param number_teams:
         :param team_size:
         :param data:
         """
-        super().__init__(number_teams=number_teams, team_size=team_size, **data)
-        number_players = self.team_size * self.number_teams
-
-        if len(self.distributions) == 0:
-            for distribution_int in sorted(
-                    set(permutations((x % self.number_teams for x in range(number_players))))):
-                distribution = Distribution()
-                for player_index, team_id in enumerate(distribution_int):
-                    distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
-                self.distributions.append(distribution)
+        super().__init__(number_teams=number_teams, **data)
 
     def distribute(self, users: UserList) -> Distribution:
         """
@@ -84,11 +73,22 @@ class RoundRobinMatcher(Matcher):
         :param users: the players to be distributed to teams
         :return: the teams in round robin distribution
         """
+        if len(self.distributions) != len(users):
+            self.distributions = []
+            self._precalculate_distributions(len(users))
         distribution = self.distributions[self.iteration]
         self.iteration += 1
         self._apply_distribution(distribution)
 
         return distribution
+
+    def _precalculate_distributions(self, number_players: int):
+        for distribution_int in sorted(
+                set(permutations((x % self.number_teams for x in range(number_players))))):
+            distribution = Distribution()
+            for player_index, team_id in enumerate(distribution_int):
+                distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
+            self.distributions.append(distribution)
 
 
 class RandomMatcher(Matcher):
@@ -103,9 +103,8 @@ class RandomMatcher(Matcher):
         :rtype: None
         """
         players = users.players
-        if len(players) != self.number_teams * self.team_size:
-            raise NotEnoughPlayersError()
-        teams: list = list(range(0, self.team_size)) * self.number_teams
+        team_size: int = int(len(players) / self.number_teams)
+        teams: list = list(range(0, team_size)) * self.number_teams
         distribution: Distribution = Distribution()
         for player_index in range(len(players)):
             team_id = random.choice(teams)  # nosec random
