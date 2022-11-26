@@ -54,15 +54,6 @@ class Table(Session):
                                      'maximum amount.')
         return values
 
-    # pylint: disable=too-few-public-methods
-    class Config:
-        """
-        Configures the table class to allow private field. PrivateAttr cannot be used here as
-        pylint does not detect the correct types in python 3.10.
-        """
-        arbitrary_types_allowed = True
-        underscore_attrs_are_private = True
-
     def __len__(self):
         """
         The amount of players joined.
