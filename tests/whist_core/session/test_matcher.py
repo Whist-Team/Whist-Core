@@ -6,7 +6,7 @@ from whist_core.session.userlist import UserList
 from whist_core.user.player import Player
 
 
-class MatchTestCase(unittest.TestCase):
+class MatcherTestCase(unittest.TestCase):
     def setUp(self) -> None:
         player_a = Player(user_id=2, username='a', rating=1)
         player_b = Player(user_id=3, username='b', rating=1)
