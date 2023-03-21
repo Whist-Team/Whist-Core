@@ -24,7 +24,7 @@ pydantic = "^1.10"
 [tool.poetry.dev-dependencies]
 pytest = "^7.2"
 pytest-cov = "^4.0"
-pytest-asyncio = "^0.20"
+pytest-asyncio = "^0.21"
 flake8 = "^6.0"
 flake8-docstrings = "^1.7"
 pylint = "^2.17"
