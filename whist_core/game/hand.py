@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 from whist_core.cards.card import Card, Suit
-from whist_core.cards.card_container import UnorderedCardContainer
+from whist_core.cards.card_container import UnorderedCardContainer, OrderedCardContainer
 from whist_core.game.errors import HandDoneError
 from whist_core.game.play_order import PlayOrder
 from whist_core.game.player_at_table import PlayerAtTable
@@ -50,7 +50,8 @@ class Hand(BaseModel):
             player.hand.add(card)
         trump = card.suit
 
-        first_trick = Trick(play_order=list(play_order), trump=trump)
+        first_trick = Trick(play_order=list(play_order), stack=OrderedCardContainer.empty(),
+                            trump=trump)
         hand = Hand(tricks=[first_trick], trump=trump)
         return hand
 
