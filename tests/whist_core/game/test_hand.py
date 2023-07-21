@@ -57,6 +57,10 @@ class HandTestCase(PlayerAtTableBaseTestCase):
         with self.assertRaises(HandDoneError):
             self.hand.next_trick(self.play_order)
 
+    def test_trump_is_string(self):
+        model_dump = self.hand.model_dump()
+        self.assertIsInstance(model_dump['trump'], str)
+
     def _enforce_card_in_hand(self, card, player):
         # Enforce card is in player's hand
         cards = list(player.hand.cards)

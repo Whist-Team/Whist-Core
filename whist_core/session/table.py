@@ -1,7 +1,8 @@
 """DAO of session."""
-from typing import Any
+from typing import Any, Union
 
-from pydantic import root_validator
+from pydantic import model_validator
+from typing_extensions import Literal
 
 from whist_core.error.table_error import TableFullError, TeamFullError, TableNotReadyError, \
     TableNotStartedError, TableSettingsError
@@ -41,8 +42,33 @@ class Table(Session):
             data['matcher'] = matcher
         super().__init__(**data)
 
+    def model_dump(self, *, mode: Union[Literal['json', 'python'], str] = 'python', include=None,
+                   exclude=None, by_alias: bool = False, exclude_unset: bool = False,
+                   exclude_defaults: bool = False, exclude_none: bool = False,
+                   round_trip: bool = False, warnings: bool = True) -> dict[str, Any]:
+        """
+        Overrides model_dump to ensure matcher is correctly dumped.
+        :param mode:
+        :param include:
+        :param exclude:
+        :param by_alias:
+        :param exclude_unset:
+        :param exclude_defaults:
+        :param exclude_none:
+        :param round_trip:
+        :param warnings:
+        :return:
+        """
+        model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
+                                   exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
+                                   exclude_none=exclude_none, round_trip=round_trip,
+                                   warnings=warnings)
+        model['matcher'] = self.matcher.model_dump()
+        return model
+
     # pylint: disable=no-self-argument
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def validate_min_is_lower_max_player(cls, values):
         """
         Checks if the min_player is less or equal than max_player.

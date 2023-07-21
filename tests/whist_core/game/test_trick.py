@@ -11,7 +11,8 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.trick = Trick(play_order=self.player_order, trump=Suit.CLUBS)
+        self.trick = Trick(play_order=self.player_order, stack=OrderedCardContainer.empty(),
+                           trump=Suit.CLUBS)
 
     def test_not_done(self):
         self.assertFalse(self.trick.done)

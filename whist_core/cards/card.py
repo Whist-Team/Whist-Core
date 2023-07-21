@@ -99,18 +99,11 @@ class Rank(_CardEnum):
 
 
 @total_ordering
-class Card(BaseModel):
+class Card(BaseModel, frozen=True):
     """A playing card"""
 
     suit: Suit
     rank: Rank
-
-    # pylint: disable=too-few-public-methods
-    class Config:
-        """
-        Configuration class for base model to make it immutable and hashable.
-        """
-        frozen = True
 
     @staticmethod
     def all_cards() -> Iterator['Card']:
@@ -146,7 +139,7 @@ class Card(BaseModel):
         """
         Returns the dictionary. See BaseModel for details.
         """
-        super_dict = super().dict(*args, **kwargs)
+        super_dict = super().model_dump(*args, **kwargs)
         return enforce_str_on_dict(super_dict, ('suit', 'rank'))
 
     def __lt__(self, other: Any) -> bool:

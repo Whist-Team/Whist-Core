@@ -20,7 +20,7 @@ class TableTestCase(BaseTestCase):
 
     def test_table_random_matcher_from_dict(self):
         self.table.matcher = RandomMatcher(number_teams=2)
-        table_from_dict = Table(**self.table.dict())
+        table_from_dict = Table(**self.table.model_dump())
         self.assertEqual(self.table, table_from_dict)
         self.assertIsInstance(table_from_dict.matcher, RandomMatcher)
 
@@ -33,7 +33,7 @@ class TableTestCase(BaseTestCase):
 
     def test_table_random_matcher_from_json(self):
         self.table.matcher = RandomMatcher(number_teams=2)
-        table_json = self.table.json()
+        table_json = self.table.model_dump_json()
         table_dict_from_json = json.loads(table_json)
         table_from_json = Table(**table_dict_from_json)
         self.assertEqual(self.table, table_from_json)
@@ -41,7 +41,7 @@ class TableTestCase(BaseTestCase):
 
     def test_table_random_matcher_from_json_generic(self):
         self.table.matcher = RandomMatcher(number_teams=2)
-        table_json = self.table.json()
+        table_json = self.table.model_dump_json()
         table_from_json = Table(**json.loads(table_json))
         self.assertEqual(self.table, table_from_json)
         self.assertIsInstance(table_from_json.matcher, RandomMatcher)
@@ -104,7 +104,7 @@ class TableTestCase(BaseTestCase):
 
     def test_conversion(self):
         self.table.join(self.player)
-        table_dict = self.table.dict()
+        table_dict = self.table.model_dump()
         table = Table(**table_dict)
         self.assertEqual(self.table, table)
 
