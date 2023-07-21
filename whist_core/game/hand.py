@@ -1,6 +1,7 @@
 """Hand of whist"""
-from typing import Optional
+from typing import Optional, Any, Dict
 
+import deprecation
 from pydantic import BaseModel
 
 from whist_core.cards.card import Card, Suit
@@ -73,10 +74,21 @@ class Hand(BaseModel):
         self.tricks.append(next_trick)
         return next_trick
 
+    @deprecation.deprecated("Use 'model_dump()' instead")
     def dict(self, *args, **kwargs):
         """Returns as dictionary."""
         super_dict = super().dict(*args, **kwargs)
         return enforce_str_on_dict(super_dict, ['trump'])
+
+    def model_dump(self, *, mode: str = 'python', include=None,
+                   exclude=None, by_alias: bool = False, exclude_unset: bool = False,
+                   exclude_defaults: bool = False, exclude_none: bool = False,
+                   round_trip: bool = False, warnings: bool = True) -> Dict[str, Any]:
+        model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
+                                   exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
+                                   exclude_none=exclude_none, round_trip=round_trip,
+                                   warnings=warnings)
+        return enforce_str_on_dict(model, ['trump'])
 
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner
