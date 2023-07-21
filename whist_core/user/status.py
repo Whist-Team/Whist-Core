@@ -1,6 +1,7 @@
 """
 Data wrapper of player stati.
 """
+from typing import Optional
 
 # Wrapper class
 # pylint: disable=too-few-public-methods
@@ -12,4 +13,4 @@ class Status(BaseModel):
     Player status a table.
     """
     ready: bool = False
-    team: int = None
+    team: Optional[int] = None
