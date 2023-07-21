@@ -84,6 +84,7 @@ class Hand(BaseModel):
                    exclude=None, by_alias: bool = False, exclude_unset: bool = False,
                    exclude_defaults: bool = False, exclude_none: bool = False,
                    round_trip: bool = False, warnings: bool = True) -> Dict[str, Any]:
+        """Returns as dictionary."""
         model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
                                    exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
                                    exclude_none=exclude_none, round_trip=round_trip,
