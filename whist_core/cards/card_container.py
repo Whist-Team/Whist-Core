@@ -8,19 +8,12 @@ from pydantic import BaseModel, PrivateAttr
 from whist_core.cards.card import Card, Suit
 
 
-class CardContainer(BaseModel, abc.ABC):
+class CardContainer(BaseModel, abc.ABC, frozen=True):
     """
     Abstract Base Class for card containers. Duplicate cards are not allowed.
     """
 
     cards: tuple[Card, ...]
-
-    # pylint: disable=too-few-public-methods
-    class Config:
-        """
-        Configuration class for base model to make it immutable.
-        """
-        allow_mutation = False
 
     @classmethod
     def empty(cls) -> 'CardContainer':
@@ -168,9 +161,9 @@ class UnorderedCardContainer(CardContainer):
         """
         de-duplicate and re-sort self.cards - i.e. synchronize with the set representation
         """
-        self.__config__.allow_mutation = True
+        self.model_config['frozen'] = False
         self.cards = tuple(sorted(self._cards_set))
-        self.__config__.allow_mutation = False
+        self.model_config['frozen'] = True
 
 
 class OrderedCardContainer(CardContainer):
@@ -182,14 +175,14 @@ class OrderedCardContainer(CardContainer):
         card_list = list(self.cards)
         card_list.remove(card)
 
-        self.__config__.allow_mutation = True
+        self.model_config['frozen'] = False
         self.cards = tuple(card_list)
-        self.__config__.allow_mutation = False
+        self.model_config['frozen'] = True
 
     def _add_impl(self, card: Card) -> None:
-        self.__config__.allow_mutation = True
+        self.model_config['frozen'] = False
         self.cards = (*self.cards, card)
-        self.__config__.allow_mutation = False
+        self.model_config['frozen'] = True
 
     @property
     def first(self) -> Optional[Card]:
