@@ -1,5 +1,5 @@
 """DAO of session."""
-from typing import Any
+from typing import Any, Union
 
 from pydantic import model_validator
 from typing_extensions import Literal
@@ -42,7 +42,7 @@ class Table(Session):
             data['matcher'] = matcher
         super().__init__(**data)
 
-    def model_dump(self, *, mode: Literal['json', 'python'] | str = 'python', include=None,
+    def model_dump(self, *, mode: Union[Literal['json', 'python'], str] = 'python', include=None,
                    exclude=None, by_alias: bool = False, exclude_unset: bool = False,
                    exclude_defaults: bool = False, exclude_none: bool = False,
                    round_trip: bool = False, warnings: bool = True) -> dict[str, Any]:
