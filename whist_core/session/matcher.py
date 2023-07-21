@@ -15,7 +15,7 @@ subclass_registry = {}
 
 
 # pylint: disable=too-few-public-methods
-class Matcher(abc.ABC, BaseModel):
+class Matcher(abc.ABC, BaseModel, extra='allow'):
     """
     Abstrakt class for player to teams matching.
     """
@@ -30,12 +30,6 @@ class Matcher(abc.ABC, BaseModel):
         """
         super().__init_subclass__(**kwargs)
         subclass_registry[cls.__name__] = cls
-
-    class Config:
-        """
-        Configuration of matcher classes.
-        """
-        extra = "allow"
 
     @abc.abstractmethod
     def distribute(self, users: UserList) -> Distribution:
