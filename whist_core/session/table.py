@@ -46,6 +46,19 @@ class Table(Session):
                    exclude=None, by_alias: bool = False, exclude_unset: bool = False,
                    exclude_defaults: bool = False, exclude_none: bool = False,
                    round_trip: bool = False, warnings: bool = True) -> dict[str, Any]:
+        """
+        Overrides model_dump to ensure matcher is correctly dumped.
+        :param mode:
+        :param include:
+        :param exclude:
+        :param by_alias:
+        :param exclude_unset:
+        :param exclude_defaults:
+        :param exclude_none:
+        :param round_trip:
+        :param warnings:
+        :return:
+        """
         model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
                                    exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
                                    exclude_none=exclude_none, round_trip=round_trip,
