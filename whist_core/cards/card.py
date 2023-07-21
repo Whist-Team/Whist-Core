@@ -146,7 +146,7 @@ class Card(BaseModel):
         """
         Returns the dictionary. See BaseModel for details.
         """
-        super_dict = super().dict(*args, **kwargs)
+        super_dict = super().model_dump(*args, **kwargs)
         return enforce_str_on_dict(super_dict, ('suit', 'rank'))
 
     def __lt__(self, other: Any) -> bool:
