@@ -11,7 +11,7 @@ from whist_core.scoring.score_card import ScoreCard
 from whist_core.user.player import Player
 
 
-class Game(BaseModel):
+class Game(BaseModel, arbitrary_types_allowed=True):
     """
     One Game of whist.
     """
@@ -20,13 +20,6 @@ class Game(BaseModel):
     win_score: int = 3
     score_card: ScoreCard = ScoreCard()
     hands: list[Hand] = []
-
-    # pylint: disable=too-few-public-methods
-    class Config:
-        """
-        Enables to have non models as field types and sets the encoder for play order.
-        """
-        arbitrary_types_allowed = True
 
     def next_hand(self) -> Hand:
         """

@@ -7,20 +7,13 @@ from whist_core.game.play_order import PlayOrder
 from whist_core.scoring.team import Team
 
 
-class Rubber(BaseModel):
+class Rubber(BaseModel, arbitrary_types_allowed=True):
     """
     Implementation of a rubber.
     """
     max_games: int = 3
     games: list[Game] = []
     teams: list[Team]
-
-    # pylint: disable=too-few-public-methods
-    class Config:
-        """
-        Configuration class for base model to allow fields which are not pydantic models.
-        """
-        arbitrary_types_allowed = True
 
     @property
     def games_played(self) -> int:

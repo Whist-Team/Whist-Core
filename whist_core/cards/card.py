@@ -99,18 +99,11 @@ class Rank(_CardEnum):
 
 
 @total_ordering
-class Card(BaseModel):
+class Card(BaseModel, frozen=True):
     """A playing card"""
 
     suit: Suit
     rank: Rank
-
-    # pylint: disable=too-few-public-methods
-    class Config:
-        """
-        Configuration class for base model to make it immutable and hashable.
-        """
-        frozen = True
 
     @staticmethod
     def all_cards() -> Iterator['Card']:
