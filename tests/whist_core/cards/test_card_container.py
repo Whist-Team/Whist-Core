@@ -12,11 +12,14 @@ class OrderedCardContainerTestCase(TestCase):
         self.ace_hearts = Card(suit=Suit.HEARTS, rank=Rank.A)
         self.seven_clubs = Card(suit=Suit.CLUBS, rank=Rank.NUM_7)
         self.ten_diamonds = Card(suit=Suit.DIAMONDS, rank=Rank.NUM_10)
-        self.cc4 = OrderedCardContainer.with_cards(self.king_hearts, self.ace_hearts, self.seven_clubs, self.ten_diamonds)
+        self.cc4 = OrderedCardContainer.with_cards(self.king_hearts, self.ace_hearts,
+                                                   self.seven_clubs, self.ten_diamonds)
 
     def test_not_equal(self):
-        first = OrderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_2), Card(suit=Suit.HEARTS, rank=Rank.NUM_4))
-        second = OrderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_4), Card(suit=Suit.HEARTS, rank=Rank.NUM_2))
+        first = OrderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_2),
+                                                Card(suit=Suit.HEARTS, rank=Rank.NUM_4))
+        second = OrderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_4),
+                                                 Card(suit=Suit.HEARTS, rank=Rank.NUM_2))
         self.assertNotEqual(first, second)
 
     def test_empty_manual(self):
@@ -39,11 +42,11 @@ class OrderedCardContainerTestCase(TestCase):
 
     def test_json_empty(self):
         cc = OrderedCardContainer.empty()
-        self.assertEqual({'cards': []}, json.loads(cc.json()))
+        self.assertEqual({'cards': []}, json.loads(cc.model_dump_json()))
 
     def test_json_empty_load(self):
         cc = OrderedCardContainer.empty()
-        self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.json())))
+        self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.model_dump_json())))
 
     def test_json_some_cards(self):
         cc = OrderedCardContainer.with_cards(
@@ -53,18 +56,24 @@ class OrderedCardContainerTestCase(TestCase):
         self.assertEqual({'cards': [
             {'suit': 'hearts', 'rank': '2'},
             {'suit': 'hearts', 'rank': '4'}
-        ]}, json.loads(cc.json()))
+        ]}, json.loads(cc.model_dump_json()))
 
     def test_json_some_cards_load(self):
         cc = OrderedCardContainer.with_cards(
             Card(suit=Suit.HEARTS, rank=Rank.NUM_2),
             Card(suit=Suit.HEARTS, rank=Rank.NUM_4)
         )
-        self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.json())))
+        self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.model_dump_json())))
 
     def test_json_full_load(self):
         cc = OrderedCardContainer.full()
-        self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.json())))
+        self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.model_dump_json())))
+
+    def test_dump_string_conversion(self):
+        cc = OrderedCardContainer.with_cards(self.spades_king).model_dump()
+        card = cc['cards'][0]
+        self.assertEqual(str(self.spades_king.rank), card['rank'])
+        self.assertEqual(str(self.spades_king.suit), card['suit'])
 
     def test_contains(self):
         cc = OrderedCardContainer.with_cards(self.spades_king)
@@ -165,8 +174,10 @@ class UnorderedCardContainerTestCase(TestCase):
         self.spades_king = Card(suit=Suit.SPADES, rank=Rank.K)
 
     def test_equal(self):
-        first = UnorderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_2), Card(suit=Suit.HEARTS, rank=Rank.NUM_4))
-        second = UnorderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_4), Card(suit=Suit.HEARTS, rank=Rank.NUM_2))
+        first = UnorderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_2),
+                                                  Card(suit=Suit.HEARTS, rank=Rank.NUM_4))
+        second = UnorderedCardContainer.with_cards(Card(suit=Suit.HEARTS, rank=Rank.NUM_4),
+                                                   Card(suit=Suit.HEARTS, rank=Rank.NUM_2))
         self.assertEqual(first, second)
 
     def test_not_equal(self):
