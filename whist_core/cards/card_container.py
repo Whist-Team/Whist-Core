@@ -6,7 +6,6 @@ from typing import Iterator, Optional
 from pydantic import BaseModel, PrivateAttr
 
 from whist_core.cards.card import Card, Suit
-from whist_core.util import enforce_str_on_dict
 
 
 class CardContainer(BaseModel, abc.ABC, frozen=True):
@@ -58,15 +57,6 @@ class CardContainer(BaseModel, abc.ABC, frozen=True):
         card = random.choice(self.cards)  # nosec random
         self.remove(card)
         return card
-
-    def model_dump(self, *args, **kwargs):
-        """
-        Returns the dictionary. See BaseModel for details.
-        """
-        super_dict = super().model_dump(*args, **kwargs)
-        super_dict['cards'] = tuple(
-            enforce_str_on_dict(card, ('suit', 'rank')) for card in super_dict['cards'])
-        return super_dict
 
     def __contains__(self, card: Card) -> bool:
         """Returns if a card is in container. True if yes else False."""
