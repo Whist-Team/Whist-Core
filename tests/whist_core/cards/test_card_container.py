@@ -70,7 +70,7 @@ class OrderedCardContainerTestCase(TestCase):
         self.assertEqual(cc, OrderedCardContainer(**json.loads(cc.model_dump_json())))
 
     def test_dump_string_conversion(self):
-        cc = OrderedCardContainer.with_cards(self.spades_king).model_dump()
+        cc = OrderedCardContainer.with_cards(self.spades_king).model_dump(mode='json')
         card = cc['cards'][0]
         self.assertEqual(str(self.spades_king.rank), card['rank'])
         self.assertEqual(str(self.spades_king.suit), card['suit'])
