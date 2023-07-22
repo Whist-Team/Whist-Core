@@ -22,10 +22,10 @@ class CardTestCase(unittest.TestCase):
         self.assertEqual('ace of hearts', str(self.card))
 
     def test_dict(self):
-        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, self.card.dict())
+        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, self.card.model_dump())
 
     def test_json(self):
-        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, json.loads(self.card.json()))
+        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, json.loads(self.card.model_dump_json()))
 
     def test_constructor_with_enum_as_str(self):
         self.assertEqual(self.card, Card(suit='hearts', rank='ace'))
