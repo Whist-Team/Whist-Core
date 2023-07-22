@@ -136,8 +136,7 @@ class Card(BaseModel, frozen=True):
         """
         return f'{self.rank} of {self.suit}'
 
-        @deprecation.deprecated("Use model_dump instead. Will be removed in V1.")
-
+    @deprecation.deprecated("Use model_dump instead. Will be removed in V1.")
     def dict(self, *args, **kwargs):
         """
         Returns the dictionary. See BaseModel for details.
