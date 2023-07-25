@@ -4,6 +4,7 @@ from enum import Enum
 from functools import total_ordering
 from typing import Any, Optional, Iterator
 
+import deprecation
 from pydantic import BaseModel
 
 from whist_core.util import enforce_str_on_dict
@@ -135,7 +136,15 @@ class Card(BaseModel, frozen=True):
         """
         return f'{self.rank} of {self.suit}'
 
+    @deprecation.deprecated("Use model_dump instead. Will be removed in V1.")
     def dict(self, *args, **kwargs):
+        """
+        Returns the dictionary. See BaseModel for details.
+        """
+        super_dict = super().model_dump(*args, **kwargs)
+        return enforce_str_on_dict(super_dict, ('suit', 'rank'))
+
+    def model_dump(self, *args, **kwargs):
         """
         Returns the dictionary. See BaseModel for details.
         """
