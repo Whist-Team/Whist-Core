@@ -19,7 +19,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pydantic = "^2.0"
+pydantic = "^2.1"
 deprecation = "^2.1"
 
 [tool.poetry.dev-dependencies]
