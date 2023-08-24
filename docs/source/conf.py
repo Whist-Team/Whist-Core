@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Whist-Core'
-copyright = '2021, Whist Team'
+copyright = '2021 - 2023, Whist Team'
 author = 'Whist Team'
 
 # The full version, including alpha/beta/rc tags
