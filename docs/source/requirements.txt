@@ -1,2 +1,2 @@
-sphinx==7.2.3
+sphinx==7.2.4
 sphinx-autoapi==2.1.1
