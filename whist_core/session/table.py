@@ -42,6 +42,8 @@ class Table(Session):
             data['matcher'] = matcher
         super().__init__(**data)
 
+    # override base method to fix matcher dump
+    # pylint: disable=too-many-arguments 
     def model_dump(self, *, mode: Union[Literal['json', 'python'], str] = 'python', include=None,
                    exclude=None, by_alias: bool = False, exclude_unset: bool = False,
                    exclude_defaults: bool = False, exclude_none: bool = False,
