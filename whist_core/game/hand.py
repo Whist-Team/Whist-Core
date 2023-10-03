@@ -80,6 +80,8 @@ class Hand(BaseModel):
         super_dict = super().dict(*args, **kwargs)
         return enforce_str_on_dict(super_dict, ['trump'])
 
+    # fix trump to be returned as string
+    # pylint: disable=too-many-arguments
     def model_dump(self, *, mode: str = 'python', include=None,
                    exclude=None, by_alias: bool = False, exclude_unset: bool = False,
                    exclude_defaults: bool = False, exclude_none: bool = False,
