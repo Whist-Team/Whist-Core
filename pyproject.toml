@@ -23,9 +23,9 @@ pydantic = "^2.6"
 deprecation = "^2.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.4,<8.0" # keeping this below v8 because of incompatibilities with pytest-asyncio
+pytest = "^8.0"
 pytest-cov = "^4.1"
-pytest-asyncio = "^0.23"
+pytest-asyncio = "^0.23.5"
 flake8 = "^7.0"
 flake8-docstrings = "^1.7"
 pylint = "^3.0"
