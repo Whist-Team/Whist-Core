@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "whist-core"
-# remember to also update the version in __init__.py!
-version = "0.9.1"
+# remember to also update the version in __init__.py and docs/source/conf.py!
+version = "0.9.2"
 description = "Whist rules implementation"
 authors = ["Whist-Team"]
 license = "MIT"
