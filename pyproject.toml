@@ -18,7 +18,7 @@ classifiers = [
 "Bug Tracker" = "https://github.com/Whist-Team/Whist-Core/issues"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 pydantic = "^2.6"
 deprecation = "^2.1"
 
