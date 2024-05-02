@@ -1,5 +1,6 @@
 """Hand of whist"""
-from typing import Optional, Any, Dict
+
+from typing import Literal, Optional, Any, Dict, Set, TypeAlias, Union
 
 import deprecation
 from pydantic import BaseModel
@@ -12,6 +13,8 @@ from whist_core.game.player_at_table import PlayerAtTable
 from whist_core.game.trick import Trick
 from whist_core.game.warnings import TrickNotDoneWarning
 from whist_core.util import enforce_str_on_dict
+
+IncEx: TypeAlias = Union[Set[int], Set[str], Dict[int, Any], Dict[str, Any], None]
 
 
 class Hand(BaseModel):
@@ -82,16 +85,36 @@ class Hand(BaseModel):
 
     # fix trump to be returned as string
     # pylint: disable=too-many-arguments
-    def model_dump(self, *, mode: str = 'python', include=None,
-                   exclude=None, by_alias: bool = False, exclude_unset: bool = False,
-                   exclude_defaults: bool = False, exclude_none: bool = False,
-                   round_trip: bool = False, warnings: bool = True) -> Dict[str, Any]:
+    def model_dump(
+        self,
+        *,
+        mode: Literal["json", "python"] | str = "python",
+        include: IncEx = None,
+        exclude: IncEx = None,
+        context: dict[str, Any] | None = None,
+        by_alias: bool = False,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal["none", "warn", "error"] = True,
+        serialize_as_any: bool = False
+    ) -> Dict[str, Any]:
         """Returns as dictionary."""
-        model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
-                                   exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
-                                   exclude_none=exclude_none, round_trip=round_trip,
-                                   warnings=warnings)
-        return enforce_str_on_dict(model, ['trump'])
+        model = super().model_dump(
+            mode=mode,
+            include=include,
+            exclude=exclude,
+            context=context,
+            by_alias=by_alias,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            round_trip=round_trip,
+            warnings=warnings,
+            serialize_as_any=serialize_as_any,
+        )
+        return enforce_str_on_dict(model, ["trump"])
 
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner

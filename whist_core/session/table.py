@@ -1,5 +1,5 @@
 """DAO of session."""
-from typing import Any, Union
+from typing import Any, Dict, Set, TypeAlias, Union
 
 from pydantic import model_validator
 from typing_extensions import Literal
@@ -11,6 +11,8 @@ from whist_core.game.rubber import Rubber
 from whist_core.session.matcher import Matcher, subclass_registry
 from whist_core.session.session import Session
 from whist_core.user.player import Player
+
+IncEx: TypeAlias = Union[Set[int], Set[str], Dict[int, Any], Dict[str, Any], None]
 
 
 class Table(Session):
@@ -44,10 +46,21 @@ class Table(Session):
 
     # override base method to fix matcher dump
     # pylint: disable=too-many-arguments
-    def model_dump(self, *, mode: Union[Literal['json', 'python'], str] = 'python', include=None,
-                   exclude=None, by_alias: bool = False, exclude_unset: bool = False,
-                   exclude_defaults: bool = False, exclude_none: bool = False,
-                   round_trip: bool = False, warnings: bool = True) -> dict[str, Any]:
+    def model_dump(
+        self,
+        *,
+        mode: Literal["json", "python"] | str = "python",
+        include: IncEx = None,
+        exclude: IncEx = None,
+        context: dict[str, Any] | None = None,
+        by_alias: bool = False,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal["none", "warn", "error"] = True,
+        serialize_as_any: bool = False
+    ) -> Dict[str, Any]:
         """
         Overrides model_dump to ensure matcher is correctly dumped.
         :param mode:
@@ -61,10 +74,19 @@ class Table(Session):
         :param warnings:
         :return:
         """
-        model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
-                                   exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
-                                   exclude_none=exclude_none, round_trip=round_trip,
-                                   warnings=warnings)
+        model = super().model_dump(
+            mode=mode,
+            include=include,
+            exclude=exclude,
+            context=context,
+            by_alias=by_alias,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            round_trip=round_trip,
+            warnings=warnings,
+            serialize_as_any=serialize_as_any,
+        )
         model['matcher'] = self.matcher.model_dump()
         return model
 
