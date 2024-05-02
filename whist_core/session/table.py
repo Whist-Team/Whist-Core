@@ -52,7 +52,7 @@ class Table(Session):
         mode: Literal["json", "python"] | str = "python",
         include: IncEx = None,
         exclude: IncEx = None,
-        context: dict[str, Any] | None = None,
+        context: Dict[str, Any] | None = None,
         by_alias: bool = False,
         exclude_unset: bool = False,
         exclude_defaults: bool = False,
