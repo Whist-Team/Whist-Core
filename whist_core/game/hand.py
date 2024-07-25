@@ -1,5 +1,6 @@
 """Hand of whist"""
-from typing import Optional, Any, Dict
+import builtins
+from typing import Optional, Any, Literal
 
 import deprecation
 from pydantic import BaseModel
@@ -81,16 +82,28 @@ class Hand(BaseModel):
         return enforce_str_on_dict(super_dict, ['trump'])
 
     # fix trump to be returned as string
-    # pylint: disable=too-many-arguments
-    def model_dump(self, *, mode: str = 'python', include=None,
-                   exclude=None, by_alias: bool = False, exclude_unset: bool = False,
-                   exclude_defaults: bool = False, exclude_none: bool = False,
-                   round_trip: bool = False, warnings: bool = True) -> Dict[str, Any]:
+    # pylint: disable=too-many-arguments, duplicate-code
+    def model_dump(
+            self,
+            *,
+            mode: Literal['json', 'python'] | str = 'python',
+            include=None,
+            exclude=None,
+            context=None,
+            by_alias: bool = False,
+            exclude_unset: bool = False,
+            exclude_defaults: bool = False,
+            exclude_none: bool = False,
+            round_trip: bool = False,
+            warnings: bool | str = True,
+            serialize_as_any: bool = False
+    ) -> builtins.dict[str, Any]:
         """Returns as dictionary."""
-        model = super().model_dump(mode=mode, include=include, exclude=exclude, by_alias=by_alias,
-                                   exclude_unset=exclude_unset, exclude_defaults=exclude_defaults,
-                                   exclude_none=exclude_none, round_trip=round_trip,
-                                   warnings=warnings)
+        model = super().model_dump(mode=mode, include=include, exclude=exclude, context=context,
+                                   by_alias=by_alias, exclude_unset=exclude_unset,
+                                   exclude_defaults=exclude_defaults, exclude_none=exclude_none,
+                                   round_trip=round_trip, warnings=warnings,
+                                   serialize_as_any=serialize_as_any)
         return enforce_str_on_dict(model, ['trump'])
 
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
