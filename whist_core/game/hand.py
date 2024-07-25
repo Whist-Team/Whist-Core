@@ -1,4 +1,5 @@
 """Hand of whist"""
+import builtins
 from typing import Optional, Any, Literal
 
 import deprecation
@@ -96,7 +97,7 @@ class Hand(BaseModel):
             round_trip: bool = False,
             warnings: bool | str = True,
             serialize_as_any: bool = False
-    ) -> dict[str, Any]:
+    ) -> builtins.dict[str, Any]:
         """Returns as dictionary."""
         model = super().model_dump(mode=mode, include=include, exclude=exclude, context=context,
                                    by_alias=by_alias, exclude_unset=exclude_unset,
