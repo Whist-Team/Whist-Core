@@ -29,7 +29,7 @@ flake8 = "^7.1"
 flake8-docstrings = "^1.7"
 pylint = "^3.2"
 setuptools = "^72.1"
-wheel = "^0.43"
+wheel = "^0.44"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
