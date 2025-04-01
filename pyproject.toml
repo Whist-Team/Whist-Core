@@ -25,7 +25,7 @@ deprecation = "^2.1"
 [tool.poetry.dev-dependencies]
 pytest = "^8.3"
 pytest-asyncio = "^0.26.0" # .5 because that version is the first to have compat with pytest 8
-flake8 = "^7.1"
+flake8 = "^7.2"
 flake8-docstrings = "^1.7"
 pylint = "^3.3"
 setuptools = "^78.1"
