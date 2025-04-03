@@ -10,7 +10,8 @@ keywords = ["game", "whist"]
 classifiers = [
     "Operating System :: OS Independent"
 ]
-dynamic = ["requires-python", "dependencies"]
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
 
 [project.urls]
 homepage = "https://github.com/Whist-Team/Whist-Core"
@@ -22,7 +23,6 @@ issues = "https://github.com/Whist-Team/Whist-Core/issues"
 requires-poetry = ">=2.0"
 
 [tool.poetry.dependencies]
-python = "^3.10"
 pydantic = "^2.11"
 deprecation = "^2.1"
 
@@ -34,6 +34,14 @@ flake8-docstrings = "^1.7"
 pylint = "^3.3"
 setuptools = "^78.1"
 wheel = "^0.45"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^8.1" # keeping this on an older version so we can install this with our older minimum python requirement
+sphinx-autoapi = "^3.6"
+sphinx-rtd-theme = "^3.0"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.9"
 
 [build-system]
 requires = ["poetry-core>=2.0"]
