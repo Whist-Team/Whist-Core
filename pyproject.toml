@@ -27,7 +27,7 @@ pydantic = "^2.11"
 deprecation = "^2.1"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3"
+pytest = "^8.4"
 pytest-asyncio = "^0.26"
 flake8 = "^7.2"
 flake8-docstrings = "^1.7"
