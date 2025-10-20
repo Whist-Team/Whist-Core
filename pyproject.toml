@@ -23,7 +23,7 @@ issues = "https://github.com/Whist-Team/Whist-Core/issues"
 requires-poetry = ">=2.0"
 
 [tool.poetry.dependencies]
-pydantic = "^2.11"
+pydantic = "^2.12"
 deprecation = "^2.1"
 
 [tool.poetry.group.dev.dependencies]
