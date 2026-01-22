@@ -33,7 +33,7 @@ flake8 = "^7.3"
 flake8-docstrings = "^1.7"
 pylint = "^4.0"
 setuptools = "^80.9"
-wheel = "^0.45"
+wheel = "^0.46"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^8.1" # keeping this on an older version so we can install this with our older minimum python requirement
