@@ -37,7 +37,7 @@ wheel = "^0.46"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^8.1" # keeping this on an older version so we can install this with our older minimum python requirement
-sphinx-autoapi = "^3.6"
+sphinx-autoapi = "^3.8"
 sphinx-rtd-theme = "^3.1"
 
 [tool.poetry.requires-plugins]
