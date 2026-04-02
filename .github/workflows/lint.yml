@@ -25,8 +25,5 @@ jobs:
           uv run ruff format --check
           uv run ruff check
 
-      - name: Lint sources with flake8
-        run: uv run flake8 --show-source --statistics
-
       - name: Lint sources with pylint
         run: uv run pylint .
