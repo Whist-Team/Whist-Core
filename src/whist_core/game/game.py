@@ -31,7 +31,7 @@ class Game(BaseModel, arbitrary_types_allowed=True):
             hand = Hand.deal(self.play_order)
             self.hands.append(hand)
         elif not self.current_hand.done():
-            raise HandNotDoneError()
+            raise HandNotDoneError
         else:
             score = ScoreCalculator.calc_score(self.current_hand, self.play_order)
             self.score_card.add_score(score)

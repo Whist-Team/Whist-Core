@@ -39,7 +39,7 @@ class Rubber(BaseModel, arbitrary_types_allowed=True):
         Returns the current game.
         """
         if len(self.games) == 0:
-            raise GameNotStartedError()
+            raise GameNotStartedError
         return self.games[-1]
 
     def next_game(self) -> Game:
@@ -50,6 +50,6 @@ class Rubber(BaseModel, arbitrary_types_allowed=True):
         if len(self.games) == 0 or self.games[-1].done:
             self.games.append(Game(play_order=PlayOrder.from_team_list(self.teams)))
         elif not self.games[-1].done:
-            raise GameNotDoneError()
+            raise GameNotDoneError
 
         return self.current_game()

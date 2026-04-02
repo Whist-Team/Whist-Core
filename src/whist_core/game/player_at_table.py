@@ -21,6 +21,9 @@ class PlayerAtTable(BaseModel):
             return False
         return self.player == other.player
 
+    def __hash__(self):
+        return hash(self.player)
+
     def __repr__(self):
         """String representation"""
         return f"PlayerAtTable: {self.player}"

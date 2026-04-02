@@ -1,11 +1,7 @@
 from tests.whist_core.player_table_base_test_case import PlayerAtTableBaseTestCase
 from whist_core.cards.card import Card, Rank, Suit
 from whist_core.cards.card_container import OrderedCardContainer
-from whist_core.game.errors import (
-    CardNotInHandError,
-    NotPlayersTurnError,
-    TrickDoneError,
-)
+from whist_core.game.errors import CardNotInHandError, NotPlayersTurnError, TrickDoneError
 from whist_core.game.trick import Trick
 from whist_core.game.warnings import TrickNotDoneWarning
 
@@ -13,11 +9,7 @@ from whist_core.game.warnings import TrickNotDoneWarning
 class TrickTestCase(PlayerAtTableBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.trick = Trick(
-            play_order=self.player_order,
-            stack=OrderedCardContainer.empty(),
-            trump=Suit.CLUBS,
-        )
+        self.trick = Trick(play_order=self.player_order, stack=OrderedCardContainer.empty(), trump=Suit.CLUBS)
 
     def test_not_done(self):
         self.assertFalse(self.trick.done)

@@ -8,6 +8,7 @@ from whist_core.user.player import Player
 
 
 # pylint: disable=too-few-public-methods
+# ruff: disable[PLR2004]
 class EloRater:
     """
     Static class that calculates the Elo-Rating for players after several hands played.
@@ -56,3 +57,6 @@ class EloRater:
     @staticmethod
     def _team_quotient(team: Team):
         return 10 ** (team.rating / 400)
+
+
+# ruff: enable[PLR2004]

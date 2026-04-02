@@ -75,5 +75,4 @@ class ScoreCard(BaseModel):
     def _other_team(self, team: Team) -> Team:
         teams = list(self.hands[0].hand_score.keys())
         teams.remove(team)
-        other_team = teams[0]
-        return other_team
+        return teams[0]

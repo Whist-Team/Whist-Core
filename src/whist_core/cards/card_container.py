@@ -2,7 +2,7 @@
 
 import abc
 import random
-from typing import Iterator, Optional
+from collections.abc import Iterator
 
 from pydantic import BaseModel, PrivateAttr
 
@@ -47,7 +47,7 @@ class CardContainer(BaseModel, abc.ABC, frozen=True):
         :return: full card container
         :rtype: correct subtype of CardContainer
         """
-        return cls(cards=Card.all_cards())
+        return cls(cards=tuple(Card.all_cards()))
 
     def pop_random(self) -> Card:
         """
@@ -55,7 +55,7 @@ class CardContainer(BaseModel, abc.ABC, frozen=True):
 
         :return: A card from deck.
         """
-        card = random.choice(self.cards)  # nosec random
+        card = random.choice(self.cards)  # noqa: S311
         self.remove(card)
         return card
 
@@ -86,9 +86,7 @@ class CardContainer(BaseModel, abc.ABC, frozen=True):
         :param card: card to remove
         """
         if not isinstance(card, Card):
-            raise ValueError(
-                f"cannot remove {card} of type {type(card)} from card container"
-            )
+            raise TypeError(f"cannot remove {card} of type {type(card)} from card container")
         if card not in self:
             raise ValueError(f"{card} not in card container")
         self._remove_impl(card)
@@ -104,9 +102,7 @@ class CardContainer(BaseModel, abc.ABC, frozen=True):
         :param card: card to add
         """
         if not isinstance(card, Card):
-            raise ValueError(
-                f"cannot add {card} of type {type(card)} to card container"
-            )
+            raise TypeError(f"cannot add {card} of type {type(card)} to card container")
         if card in self:
             raise ValueError(f"{card} already in card container")
         self._add_impl(card)
@@ -134,7 +130,7 @@ class CardContainer(BaseModel, abc.ABC, frozen=True):
         return filter(lambda card: card.suit == suit, self)
 
 
-class UnorderedCardContainer(CardContainer):
+class UnorderedCardContainer(CardContainer, frozen=True):
     """
     Base Class unordered card containers
     """
@@ -147,7 +143,9 @@ class UnorderedCardContainer(CardContainer):
         :param data: set of cards
         """
         super().__init__(**data)
+        self.model_config["frozen"] = False
         self._cards_set = set(self.cards)
+        self.model_config["frozen"] = True
         self.__resync()
 
     def __contains__(self, card: Card) -> bool:
@@ -190,7 +188,7 @@ class OrderedCardContainer(CardContainer):
         self.model_config["frozen"] = True
 
     @property
-    def first(self) -> Optional[Card]:
+    def first(self) -> Card | None:
         """
         Returns the first card in the card container.
         :return: The first card played if it exists. Else None.
@@ -200,7 +198,7 @@ class OrderedCardContainer(CardContainer):
         return self.cards[0]
 
     @property
-    def last(self) -> Optional[Card]:
+    def last(self) -> Card | None:
         """
         Returns the last card in the card container.
         :return: The last card played if it exists. Else None.
@@ -217,7 +215,7 @@ class OrderedCardContainer(CardContainer):
         """
         return self.cards.index(card)
 
-    def get_turn_and_winner_card(self, trump: Suit) -> Optional[tuple[int, Card]]:
+    def get_turn_and_winner_card(self, trump: Suit) -> tuple[int, Card] | None:
         """
         Returns the highest trump card or the highest card of the suit played first.
         :param trump: suit of trump

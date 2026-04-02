@@ -80,14 +80,10 @@ class RoundRobinMatcher(Matcher):
         return distribution
 
     def _precalculate_distributions(self, number_players: int):
-        for distribution_int in sorted(
-            set(permutations((x % self.number_teams for x in range(number_players))))
-        ):
+        for distribution_int in sorted(set(permutations(x % self.number_teams for x in range(number_players)))):
             distribution = Distribution()
             for player_index, team_id in enumerate(distribution_int):
-                distribution.add(
-                    DistributionEntry(player_index=player_index, team_id=team_id)
-                )
+                distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
             self.distributions.append(distribution)
 
 
@@ -104,14 +100,12 @@ class RandomMatcher(Matcher):
         """
         players = users.players
         team_size: int = int(len(players) / self.number_teams)
-        teams: list = list(range(0, team_size)) * self.number_teams
+        teams: list = list(range(team_size)) * self.number_teams
         distribution: Distribution = Distribution()
         for player_index in range(len(players)):
-            team_id = random.choice(teams)  # nosec random
+            team_id = random.choice(teams)  # noqa: S311
             teams.remove(team_id)
-            distribution.add(
-                DistributionEntry(player_index=player_index, team_id=team_id)
-            )
+            distribution.add(DistributionEntry(player_index=player_index, team_id=team_id))
 
         self._apply_distribution(distribution)
 

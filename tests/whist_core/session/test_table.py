@@ -21,12 +21,7 @@ class TableTestCase(BaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.mock_user_list = MagicMock()
-        self.table = Table(
-            name="test table",
-            min_player=1,
-            max_player=4,
-            matcher=RoundRobinMatcher(number_teams=2),
-        )
+        self.table = Table(name="test table", min_player=1, max_player=4, matcher=RoundRobinMatcher(number_teams=2))
 
     def test_table_random_matcher_from_dict(self):
         self.table.matcher = RandomMatcher(number_teams=2)
@@ -58,12 +53,7 @@ class TableTestCase(BaseTestCase):
 
     def test_min_max_validation(self):
         with self.assertRaises(TableSettingsError):
-            _ = Table(
-                name="faulty table",
-                min_player=3,
-                max_player=2,
-                matcher=RandomMatcher(number_teams=2),
-            )
+            _ = Table(name="faulty table", min_player=3, max_player=2, matcher=RandomMatcher(number_teams=2))
 
     def test_ready(self):
         self.table.join(self.player)
@@ -77,12 +67,7 @@ class TableTestCase(BaseTestCase):
         self.assertFalse(self.table.ready)
 
     def test_not_ready_min_player(self):
-        table = Table(
-            name="test table",
-            min_player=2,
-            max_player=4,
-            matcher=RandomMatcher(number_teams=2),
-        )
+        table = Table(name="test table", min_player=2, max_player=4, matcher=RandomMatcher(number_teams=2))
         table.join(self.player)
         table.player_ready(self.player)
         self.assertFalse(table.ready)
@@ -136,10 +121,7 @@ class TableTestCase(BaseTestCase):
 
     def test_start_robin(self):
         self.table = Table(
-            name="test table",
-            min_player=1,
-            max_player=4,
-            matcher=RoundRobinMatcher(number_teams=2, team_size=2),
+            name="test table", min_player=1, max_player=4, matcher=RoundRobinMatcher(number_teams=2, team_size=2)
         )
         self._ready_four_players()
         self.table.start()

@@ -39,7 +39,7 @@ class Player(User):
         Validates the rating. It must be zero or positive.
         """
         if value < 0:
-            raise NegativeRatingError()
+            raise NegativeRatingError
         return value
 
     @staticmethod

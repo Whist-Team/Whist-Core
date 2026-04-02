@@ -23,7 +23,7 @@ class Score(BaseModel):
         :param scores: list if the scores as int
         """
         super().__init__(**data)
-        for team, score in zip(teams, scores):
+        for team, score in zip(teams, scores, strict=True):
             self.hand_score.update({team: score})
             team.games_played()
 

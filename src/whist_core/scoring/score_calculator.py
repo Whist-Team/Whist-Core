@@ -25,8 +25,7 @@ class ScoreCalculator:
         tricks_won = ScoreCalculator.calc_score_raw(hand)
         players_by_team = play_order.to_team_list()
         teams = [Team(players=players) for players in players_by_team]
-        score = Score(teams=teams, scores=tricks_won)
-        return score
+        return Score(teams=teams, scores=tricks_won)
 
     @staticmethod
     def calc_score_raw(hand: Hand) -> list[int]:

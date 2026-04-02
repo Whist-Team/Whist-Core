@@ -22,9 +22,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
     def test_done_trick(self):
         first_trick = self.hand.current_trick
         # deliberately ignore illegal moves
-        with patch(
-            "whist_core.game.legal_checker.LegalChecker.check_legal", return_value=True
-        ):
+        with patch("whist_core.game.legal_checker.LegalChecker.check_legal", return_value=True):
             while not first_trick.done:
                 player = self.play_order.get_next_player()
                 card = list(player.hand)[0]

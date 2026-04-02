@@ -2,7 +2,7 @@
 Collection of utility functions.
 """
 
-from typing import Iterable
+from collections.abc import Iterable
 
 
 def enforce_str_on_dict(dictionary: dict, keys: Iterable[str]) -> dict:

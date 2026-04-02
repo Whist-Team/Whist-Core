@@ -1,7 +1,5 @@
 """Ring buffer of players at the table."""
 
-from typing import Optional
-
 from pydantic import BaseModel
 
 from whist_core.cards.card_container import UnorderedCardContainer
@@ -31,11 +29,11 @@ class PlayOrder(BaseModel):
         :return: PlayOrder
         """
         size = len(teams) * len(teams[0].players)
-        play_order: list[Optional[PlayerAtTable]] = [None] * size
+        play_order: list[PlayerAtTable | None] = [None] * size
         for team_index, team in enumerate(teams):
             for player_index, player in enumerate(team.players):
-                player_index = team_index + player_index * len(teams)
-                play_order[player_index] = PlayerAtTable(
+                actual_index = team_index + player_index * len(teams)
+                play_order[actual_index] = PlayerAtTable(
                     player=player, hand=UnorderedCardContainer.empty(), team=team_index
                 )
         return PlayOrder(play_order=play_order, next_player=0)
@@ -48,9 +46,7 @@ class PlayOrder(BaseModel):
         """
         order = list(self)
         rotation: int = order.index(player)
-        return PlayOrder(
-            play_order=PlayOrder._new_rotate_order(self, rotation), next_player=0
-        )
+        return PlayOrder(play_order=PlayOrder._new_rotate_order(self, rotation), next_player=0)
 
     def next_order(self) -> "PlayOrder":
         """
@@ -75,13 +71,9 @@ class PlayOrder(BaseModel):
         :return: the player at table
         :raises PlayerNoteJoinedError: when a player is requested but is not in play order.
         """
-        players_matching = [
-            table_player
-            for table_player in self.play_order
-            if table_player.player == player
-        ]
+        players_matching = [table_player for table_player in self.play_order if table_player.player == player]
         if len(players_matching) == 0:
-            raise PlayerNotJoinedError()
+            raise PlayerNotJoinedError
         return players_matching[0]
 
     def to_team_list(self) -> list[list[Player]]:

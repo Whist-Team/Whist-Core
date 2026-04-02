@@ -3,7 +3,6 @@ Handles users joining and leaving a table.
 """
 
 from itertools import groupby
-from typing import Dict, Optional
 
 from pydantic import BaseModel
 
@@ -28,7 +27,7 @@ class UserList(BaseModel):
     User handler for tables.
     """
 
-    users: Dict[str, UserListEntry] = {}
+    users: dict[str, UserListEntry] = {}
 
     def __len__(self):
         """Amount of players"""
@@ -41,8 +40,7 @@ class UserList(BaseModel):
         :return: players of the table
         :rtype: list[Player]
         """
-        users = [user.player for user in self.users.values()]
-        return users
+        return [user.player for user in self.users.values()]
 
     @property
     def ready(self) -> bool:
@@ -51,10 +49,7 @@ class UserList(BaseModel):
         :return: Ready or not
         :rtype: boolean
         """
-        for player in self.users.values():
-            if not player.status.ready:
-                return False
-        return True
+        return all(player.status.ready for player in self.users.values())
 
     @property
     def teams(self) -> list[Team]:
@@ -62,15 +57,14 @@ class UserList(BaseModel):
         Returns the teams.
         :return: list of teams
         """
-        players_by_team = list(sorted(self.users.values(), key=lambda x: x.status.team))
+        players_by_team = sorted(self.users.values(), key=lambda x: x.status.team)
         player_by_team: list[list[Player]] = [
-            [entry.player for entry in list(grp)]
-            for k, grp in groupby(players_by_team, lambda x: x.status.team)
+            [entry.player for entry in list(grp)] for k, grp in groupby(players_by_team, lambda x: x.status.team)
         ]
         teams: list[Team] = [Team(players=players) for players in player_by_team]
         return teams
 
-    def team(self, player: Player) -> Optional[int]:
+    def team(self, player: Player) -> int | None:
         """
         Gets the id of the team for a player.
         :param player: for which the id should be retrieved
@@ -89,9 +83,7 @@ class UserList(BaseModel):
         :return: Amount of members
         :rtype: int
         """
-        return len(
-            [entry for entry in self.users.values() if entry.status.team == team]
-        )
+        return len([entry for entry in self.users.values() if entry.status.team == team])
 
     def is_joined(self, player: Player) -> bool:
         """
@@ -112,9 +104,7 @@ class UserList(BaseModel):
         :rtype: None
         """
         if not self.is_joined(player):
-            self.users.update(
-                {player.username: UserListEntry(player=player, status=Status())}
-            )
+            self.users.update({player.username: UserListEntry(player=player, status=Status())})
 
     def remove(self, player: Player):
         """
@@ -158,7 +148,7 @@ class UserList(BaseModel):
         :rtype: None
         """
         if not self.is_joined(player):
-            raise PlayerNotJoinedError()
+            raise PlayerNotJoinedError
         status: Status = self._get_status(player)
         status.ready = True
 
@@ -171,7 +161,7 @@ class UserList(BaseModel):
         :rtype: None
         """
         if not self.is_joined(player):
-            raise PlayerNotJoinedError()
+            raise PlayerNotJoinedError
         status: Status = self._get_status(player)
         status.ready = False
 

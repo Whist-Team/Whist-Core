@@ -1,7 +1,8 @@
 """Hand of whist"""
 
 import builtins
-from typing import Any, Callable, Literal, Optional
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any, Literal
 
 import deprecation
 from pydantic import BaseModel
@@ -11,10 +12,14 @@ from whist_core.cards.card import Card, Suit
 from whist_core.cards.card_container import OrderedCardContainer, UnorderedCardContainer
 from whist_core.game.errors import HandDoneError
 from whist_core.game.play_order import PlayOrder
-from whist_core.game.player_at_table import PlayerAtTable
 from whist_core.game.trick import Trick
 from whist_core.game.warnings import TrickNotDoneWarning
 from whist_core.util import enforce_str_on_dict
+
+if TYPE_CHECKING:
+    from whist_core.game.player_at_table import PlayerAtTable
+
+TRICKS_IN_GAME = 13
 
 
 class Hand(BaseModel):
@@ -31,7 +36,7 @@ class Hand(BaseModel):
         :return: True if the hand is done, else False
         :rtype: bool
         """
-        return len(self.tricks) == 13 and self.tricks[-1]
+        return len(self.tricks) == TRICKS_IN_GAME and self.tricks[-1] is not None
 
     @property
     def current_trick(self):
@@ -48,18 +53,15 @@ class Hand(BaseModel):
         :rtype: Trick
         """
         deck = UnorderedCardContainer.full()
-        card: Optional[Card] = None
+        card: Card | None = None
         while deck:
             player = play_order.get_next_player()
             card = deck.pop_random()
             player.hand.add(card)
         trump = card.suit
 
-        first_trick = Trick(
-            play_order=list(play_order), stack=OrderedCardContainer.empty(), trump=trump
-        )
-        hand = Hand(tricks=[first_trick], trump=trump)
-        return hand
+        first_trick = Trick(play_order=list(play_order), stack=OrderedCardContainer.empty(), trump=trump)
+        return Hand(tricks=[first_trick], trump=trump)
 
     def next_trick(self, play_order: PlayOrder) -> Trick:
         """
@@ -68,13 +70,13 @@ class Hand(BaseModel):
         :rtype: Trick
         """
         if self.done():
-            raise HandDoneError()
+            raise HandDoneError
         if len(self.tricks) == 0:
             next_trick_order = play_order
         elif self.tricks[-1].done:
             next_trick_order = self._winner_plays_first_card(play_order)
         else:
-            raise TrickNotDoneWarning()
+            raise TrickNotDoneWarning
         next_trick = Trick(play_order=list(next_trick_order), trump=self.trump)
         self.tricks.append(next_trick)
         return next_trick
@@ -87,6 +89,7 @@ class Hand(BaseModel):
 
     # fix trump to be returned as string
     # pylint: disable=too-many-arguments, duplicate-code
+    # ruff: disable[PLR0913, PYI051]
     def model_dump(
         self,
         *,
@@ -121,6 +124,8 @@ class Hand(BaseModel):
             serialize_as_any=serialize_as_any,
         )
         return enforce_str_on_dict(model, ["trump"])
+
+    # ruff: enable[PLR0913, PYI051]
 
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner

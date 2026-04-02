@@ -1,10 +1,10 @@
 """DAO of session."""
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any, Literal
 
 from pydantic import model_validator
 from pydantic.main import IncEx
-from typing_extensions import Literal
 
 from whist_core.error.table_error import (
     TableFullError,
@@ -42,7 +42,7 @@ class Table(Session):
         matcher = data["matcher"]
         if isinstance(matcher, dict):
             item_matcher_keys = sorted(matcher.keys())
-            for _, subclass in subclass_registry.items():
+            for subclass in subclass_registry.values():
                 matcher_keys = sorted(subclass.__fields__.keys())
                 if item_matcher_keys == matcher_keys:
                     matcher = subclass(**matcher)
@@ -52,6 +52,7 @@ class Table(Session):
 
     # override base method to fix matcher dump
     # pylint: disable=too-many-arguments, duplicate-code
+    # ruff: disable[PLR0913, PYI051]
     def model_dump(
         self,
         *,
@@ -90,6 +91,8 @@ class Table(Session):
         model["matcher"] = self.matcher.model_dump()
         return model
 
+    # ruff: enable[PLR0913, PYI051]
+
     # pylint: disable=no-self-argument
     @model_validator(mode="before")
     @classmethod
@@ -100,10 +103,7 @@ class Table(Session):
         :return:
         """
         if values.get("min_player") > values.get("max_player"):
-            raise TableSettingsError(
-                "The amount of minimum player must not be higher than the "
-                "maximum amount."
-            )
+            raise TableSettingsError("The amount of minimum player must not be higher than the maximum amount.")
         return values
 
     def __len__(self):
@@ -130,7 +130,7 @@ class Table(Session):
         :return: the latest rubber entry
         """
         if not self.started:
-            raise TableNotStartedError()
+            raise TableNotStartedError
         return self.rubbers[-1]
 
     def next_rubber(self) -> Rubber:
@@ -139,11 +139,11 @@ class Table(Session):
         :return: the new rubber
         """
         if len(self.rubbers) == 0:
-            raise TableNotStartedError()
+            raise TableNotStartedError
         if self.rubbers[-1].done:
             self.rubbers.append(self._create_rubber())
         else:
-            raise RubberNotDoneError()
+            raise RubberNotDoneError
         return self.current_rubber
 
     def start(self) -> None:
@@ -151,7 +151,7 @@ class Table(Session):
         Starts the table, but will check if every player is ready first.
         """
         if not self.ready:
-            raise TableNotReadyError()
+            raise TableNotReadyError
 
         self.rubbers.append(self._create_rubber())
         self.started = True
@@ -220,5 +220,4 @@ class Table(Session):
         distribution = self.matcher.distribute(users=self.users)
         self.users.apply_distribution(distribution)
         teams = self.users.teams
-        rubber = Rubber(teams=teams)
-        return rubber
+        return Rubber(teams=teams)

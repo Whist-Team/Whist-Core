@@ -18,12 +18,11 @@ class RubberTestCase(TeamBaseTestCase):
             self.rubber.current_game()
 
     def test_game_done_warning(self):
-        with self.assertRaises(GameNotStartedError):
-            with patch(
-                "whist_core.game.game.Game.done",
-                new_callable=MagicMock(return_value=True),
-            ):
-                self.rubber.current_game()
+        with (
+            self.assertRaises(GameNotStartedError),
+            patch("whist_core.game.game.Game.done", new_callable=MagicMock(return_value=True)),
+        ):
+            self.rubber.current_game()
 
     def test_next_game_not_done(self):
         self.rubber.next_game()
@@ -31,7 +30,5 @@ class RubberTestCase(TeamBaseTestCase):
             self.rubber.next_game()
 
     def test_done(self):
-        with patch(
-            "whist_core.game.rubber.Rubber.games_played", PropertyMock(return_value=3)
-        ):
+        with patch("whist_core.game.rubber.Rubber.games_played", PropertyMock(return_value=3)):
             self.assertTrue(self.rubber.done)

@@ -1,25 +1,27 @@
 """Card related classes"""
 
+from collections.abc import Iterator
 from enum import Enum
 from functools import total_ordering
-from typing import Any, Iterator, Optional
+from typing import Any, Optional
 
 import deprecation
 from pydantic import BaseModel
+from typing_extensions import Self
 
 from whist_core.util import enforce_str_on_dict
 
 
 @total_ordering
 class _CardEnum(Enum):
-    def __new__(cls, *args) -> "_CardEnum":
+    def __new__(cls, *args) -> Self:
         obj = object.__new__(cls)
         obj._value_ = args[0]
         # pylint: disable=protected-access, unused-private-member
-        obj.__ordinal = len(cls.__members__)
+        obj.__ordinal = len(cls.__members__)  # noqa: SLF001
         return obj
 
-    def __init__(self, _: str, short_name: Optional[str] = None):
+    def __init__(self, _: str, short_name: str | None = None):
         self.__short_name = short_name
 
     @classmethod
@@ -122,11 +124,7 @@ class Card(BaseModel, frozen=True):
 
         :return: short name
         """
-        short_name = (
-            self.rank.short_name
-            if self.rank.short_name is not None
-            else self.rank.long_name
-        )
+        short_name = self.rank.short_name if self.rank.short_name is not None else self.rank.long_name
         return f"{self.suit.short_name}{short_name}"
 
     @property

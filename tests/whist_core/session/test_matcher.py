@@ -21,12 +21,8 @@ class MatcherTestCase(unittest.TestCase):
     def test_random_distribute(self):
         distribution = self.random_matcher.distribute(self.user_list)
         self.assertEqual(4, len(distribution))
-        self.assertEqual(
-            2, len([entry for entry in distribution if entry.team_id == 0])
-        )
-        self.assertEqual(
-            2, len([entry for entry in distribution if entry.team_id == 1])
-        )
+        self.assertEqual(2, len([entry for entry in distribution if entry.team_id == 0]))
+        self.assertEqual(2, len([entry for entry in distribution if entry.team_id == 1]))
 
     def test_round_robin_distribute(self):
         distribution = self.robin_matcher.distribute(self.user_list)
