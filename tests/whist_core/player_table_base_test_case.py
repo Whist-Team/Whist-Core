@@ -12,4 +12,5 @@ class PlayerAtTableBaseTestCase(TeamBaseTestCase):
             PlayerAtTable(player=self.player_a, hand=UnorderedCardContainer.empty(), team=0),
             PlayerAtTable(player=self.player_c, hand=UnorderedCardContainer.empty(), team=0),
             PlayerAtTable(player=self.player_b, hand=UnorderedCardContainer.empty(), team=1),
-            PlayerAtTable(player=self.player_d, hand=UnorderedCardContainer.empty(), team=1)]
+            PlayerAtTable(player=self.player_d, hand=UnorderedCardContainer.empty(), team=1),
+        ]

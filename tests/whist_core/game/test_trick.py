@@ -1,18 +1,15 @@
 from tests.whist_core.player_table_base_test_case import PlayerAtTableBaseTestCase
-from whist_core.cards.card import Suit, Card, Rank
-
+from whist_core.cards.card import Card, Rank, Suit
 from whist_core.cards.card_container import OrderedCardContainer
-from whist_core.game.errors import TrickDoneError, NotPlayersTurnError, CardNotInHandError
+from whist_core.game.errors import CardNotInHandError, NotPlayersTurnError, TrickDoneError
 from whist_core.game.trick import Trick
 from whist_core.game.warnings import TrickNotDoneWarning
 
 
 class TrickTestCase(PlayerAtTableBaseTestCase):
-
     def setUp(self) -> None:
         super().setUp()
-        self.trick = Trick(play_order=self.player_order, stack=OrderedCardContainer.empty(),
-                           trump=Suit.CLUBS)
+        self.trick = Trick(play_order=self.player_order, stack=OrderedCardContainer.empty(), trump=Suit.CLUBS)
 
     def test_not_done(self):
         self.assertFalse(self.trick.done)
@@ -72,7 +69,7 @@ class TrickTestCase(PlayerAtTableBaseTestCase):
         self.assertIsInstance(trick_json, str)
 
     def test_dict_trump(self):
-        self.assertEqual({'trump': 'clubs'}, self.trick.dict(include={'trump'}))
+        self.assertEqual({"trump": "clubs"}, self.trick.dict(include={"trump"}))
 
     def _play_four_cards(self):
         ace_heart = Card(suit=Suit.HEARTS, rank=Rank.A)

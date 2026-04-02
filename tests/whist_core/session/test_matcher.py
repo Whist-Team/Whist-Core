@@ -1,6 +1,5 @@
 import unittest
 
-from whist_core.error.matcher_error import NotEnoughPlayersError
 from whist_core.session.matcher import RandomMatcher, RoundRobinMatcher
 from whist_core.session.userlist import UserList
 from whist_core.user.player import Player
@@ -8,10 +7,10 @@ from whist_core.user.player import Player
 
 class MatcherTestCase(unittest.TestCase):
     def setUp(self) -> None:
-        player_a = Player(user_id=2, username='a', rating=1)
-        player_b = Player(user_id=3, username='b', rating=1)
-        player_c = Player(user_id=4, username='c', rating=1)
-        player_d = Player(user_id=5, username='d', rating=1)
+        player_a = Player(username="a", rating=1)
+        player_b = Player(username="b", rating=1)
+        player_c = Player(username="c", rating=1)
+        player_d = Player(username="d", rating=1)
         self.players = [player_a, player_b, player_c, player_d]
         self.user_list = UserList()
         self.random_matcher = RandomMatcher(number_teams=2)

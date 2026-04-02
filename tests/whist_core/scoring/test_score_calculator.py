@@ -11,20 +11,16 @@ from whist_core.scoring.score_calculator import ScoreCalculator
 class TestScoreCalculator(TeamBaseTestCase):
     def setUp(self) -> None:
         super().setUp()
-        self.table_player_a = PlayerAtTable(team=0, player=self.player_a,
-                                            hand=UnorderedCardContainer.empty())
-        self.table_player_b = PlayerAtTable(team=0, player=self.player_b,
-                                            hand=UnorderedCardContainer.empty())
-        self.table_player_c = PlayerAtTable(team=1, player=self.player_c,
-                                            hand=UnorderedCardContainer.empty())
-        self.table_player_d = PlayerAtTable(team=1, player=self.player_d,
-                                            hand=UnorderedCardContainer.empty())
+        self.table_player_a = PlayerAtTable(team=0, player=self.player_a, hand=UnorderedCardContainer.empty())
+        self.table_player_b = PlayerAtTable(team=0, player=self.player_b, hand=UnorderedCardContainer.empty())
+        self.table_player_c = PlayerAtTable(team=1, player=self.player_c, hand=UnorderedCardContainer.empty())
+        self.table_player_d = PlayerAtTable(team=1, player=self.player_d, hand=UnorderedCardContainer.empty())
 
         tricks = []
-        for _ in range(0, 7):
+        for _ in range(7):
             trick = MagicMock(winner=self.table_player_a)
             tricks.append(trick)
-        for _ in range(0, 6):
+        for _ in range(6):
             trick = MagicMock(winner=self.table_player_c)
             tricks.append(trick)
         self.hand = MagicMock(tricks=tricks)

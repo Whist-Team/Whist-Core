@@ -11,25 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: Whist-Team/actions/setup-poetry@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.10'
+          python-version-file: "pyproject.toml"
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv sync --locked --all-extras --dev
 
-      - name: Lint sources with flake8
-        run: poetry run flake8 whist_core --count --show-source --statistics
+      - name: Lint sources with ruff
+        run: |
+          uv run ruff format --check
+          uv run ruff check
 
       - name: Lint sources with pylint
-        run: poetry run pylint whist_core
-
-  security:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Run bandit
-        uses: tj-actions/bandit@v5
-        with:
-          targets: |
-            whist_core
-          options: "-r"
+        run: uv run pylint .

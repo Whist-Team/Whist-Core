@@ -5,7 +5,6 @@ from whist_core.scoring.score_card import ScoreCard
 
 
 class EloRaterTestCase(TeamBaseTestCase):
-
     def test_rate_one_game(self):
         score_card = ScoreCard()
         score = Score([self.team_a, self.team_b], [1, 0])
