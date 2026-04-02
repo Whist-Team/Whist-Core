@@ -24,5 +24,7 @@ class PlayOrderTestCase(TeamBaseTestCase):
 
     def test_to_team_list(self):
         players_by_team = self.order.to_team_list()
-        self.assertEqual([[self.player_a, self.player_b], [self.player_c, self.player_d]],
-                         players_by_team)
+        self.assertEqual(
+            [[self.player_a, self.player_b], [self.player_c, self.player_d]],
+            players_by_team,
+        )

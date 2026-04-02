@@ -18,13 +18,13 @@ class SuitTestCase(unittest.TestCase):
             Suit(99)
 
     def test_by_long_name(self):
-        clubs = Suit('clubs')
+        clubs = Suit("clubs")
         self.assertEqual(Suit.CLUBS, clubs)
 
     def test_by_short_name(self):
-        clubs = Suit('♣')
+        clubs = Suit("♣")
         self.assertEqual(Suit.CLUBS, clubs)
 
     def test_by_name_wrong_key(self):
         with self.assertRaises(ValueError):
-            Suit('herz')
+            Suit("herz")

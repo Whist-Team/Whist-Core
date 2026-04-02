@@ -1,9 +1,15 @@
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from tests.whist_core.base_test_case import BaseTestCase
-from whist_core.error.table_error import TeamFullError, TableFullError, TableNotReadyError, \
-    TableNotStartedError, PlayerNotJoinedError, TableSettingsError
+from whist_core.error.table_error import (
+    PlayerNotJoinedError,
+    TableFullError,
+    TableNotReadyError,
+    TableNotStartedError,
+    TableSettingsError,
+    TeamFullError,
+)
 from whist_core.game.errors import RubberNotDoneError
 from whist_core.game.rubber import Rubber
 from whist_core.session.matcher import RandomMatcher, RoundRobinMatcher
@@ -15,8 +21,12 @@ class TableTestCase(BaseTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.mock_user_list = MagicMock()
-        self.table = Table(name='test table', min_player=1, max_player=4,
-                           matcher=RoundRobinMatcher(number_teams=2))
+        self.table = Table(
+            name="test table",
+            min_player=1,
+            max_player=4,
+            matcher=RoundRobinMatcher(number_teams=2),
+        )
 
     def test_table_random_matcher_from_dict(self):
         self.table.matcher = RandomMatcher(number_teams=2)
@@ -48,8 +58,12 @@ class TableTestCase(BaseTestCase):
 
     def test_min_max_validation(self):
         with self.assertRaises(TableSettingsError):
-            _ = Table(name='faulty table', min_player=3, max_player=2,
-                      matcher=RandomMatcher(number_teams=2))
+            _ = Table(
+                name="faulty table",
+                min_player=3,
+                max_player=2,
+                matcher=RandomMatcher(number_teams=2),
+            )
 
     def test_ready(self):
         self.table.join(self.player)
@@ -63,8 +77,12 @@ class TableTestCase(BaseTestCase):
         self.assertFalse(self.table.ready)
 
     def test_not_ready_min_player(self):
-        table = Table(name='test table', min_player=2, max_player=4,
-                      matcher=RandomMatcher(number_teams=2))
+        table = Table(
+            name="test table",
+            min_player=2,
+            max_player=4,
+            matcher=RandomMatcher(number_teams=2),
+        )
         table.join(self.player)
         table.player_ready(self.player)
         self.assertFalse(table.ready)
@@ -88,7 +106,7 @@ class TableTestCase(BaseTestCase):
 
     def test_join_full_team(self):
         self.table.team_size = 1
-        player = Player(user_id=2, username='hank', rating=1)
+        player = Player(username="hank", rating=1)
         self.table.join(self.player)
         self.table.join_team(self.player, 1)
         with self.assertRaises(TeamFullError):
@@ -96,7 +114,7 @@ class TableTestCase(BaseTestCase):
 
     def test_join_full_table(self):
         self.table.max_player = 1
-        player = Player(user_id=2, username='hank', rating=1)
+        player = Player(username="hank", rating=1)
         self.table.join(self.player)
         self.table.join_team(self.player, 1)
         with self.assertRaises(TableFullError):
@@ -117,8 +135,12 @@ class TableTestCase(BaseTestCase):
         self.assertTrue(isinstance(self.table.matcher, RandomMatcher))
 
     def test_start_robin(self):
-        self.table = Table(name='test table', min_player=1, max_player=4,
-                           matcher=RoundRobinMatcher(number_teams=2, team_size=2))
+        self.table = Table(
+            name="test table",
+            min_player=1,
+            max_player=4,
+            matcher=RoundRobinMatcher(number_teams=2, team_size=2),
+        )
         self._ready_four_players()
         self.table.start()
         self.assertTrue(self.table.started)
@@ -144,7 +166,7 @@ class TableTestCase(BaseTestCase):
     def test_next_rubber(self):
         self._ready_four_players()
         self.table.start()
-        with patch('whist_core.game.rubber.Rubber.done', return_value=True):
+        with patch("whist_core.game.rubber.Rubber.done", return_value=True):
             self.table.next_rubber()
         self.assertEqual(2, len(self.table.rubbers))
 
@@ -162,9 +184,9 @@ class TableTestCase(BaseTestCase):
         self.assertEqual(0, len(self.table.rubbers))
 
     def _ready_four_players(self):
-        second_player = Player(username='miles', rating=3000)
-        third_player = Player(username='nico', rating=300)
-        forth_player = Player(username='abc', rating=200)
+        second_player = Player(username="miles", rating=3000)
+        third_player = Player(username="nico", rating=300)
+        forth_player = Player(username="abc", rating=200)
         self.table.join(self.player)
         self.table.join(second_player)
         self.table.join(third_player)

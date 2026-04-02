@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from whist_core.cards.card import Suit, Rank, Card
+from whist_core.cards.card import Card, Rank, Suit
 
 
 class CardTestCase(unittest.TestCase):
@@ -13,25 +13,27 @@ class CardTestCase(unittest.TestCase):
         self.assertEqual(card, self.card)
 
     def test_short_name(self):
-        self.assertEqual('♥A', self.card.short_name)
+        self.assertEqual("♥A", self.card.short_name)
 
     def test_name(self):
-        self.assertEqual('ace of hearts', self.card.name)
+        self.assertEqual("ace of hearts", self.card.name)
 
     def test_str(self):
-        self.assertEqual('ace of hearts', str(self.card))
+        self.assertEqual("ace of hearts", str(self.card))
 
     def test_dict(self):
-        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, self.card.dict())
+        self.assertEqual({"suit": "hearts", "rank": "ace"}, self.card.dict())
 
     def test_dump(self):
-        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, self.card.model_dump())
+        self.assertEqual({"suit": "hearts", "rank": "ace"}, self.card.model_dump())
 
     def test_json(self):
-        self.assertEqual({'suit': 'hearts', 'rank': 'ace'}, json.loads(self.card.model_dump_json()))
+        self.assertEqual(
+            {"suit": "hearts", "rank": "ace"}, json.loads(self.card.model_dump_json())
+        )
 
     def test_constructor_with_enum_as_str(self):
-        self.assertEqual(self.card, Card(suit='hearts', rank='ace'))
+        self.assertEqual(self.card, Card(suit="hearts", rank="ace"))
 
     def test_hashable(self):
         d = {self.card: 42}

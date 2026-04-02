@@ -1,0 +1,127 @@
+"""Hand of whist"""
+
+import builtins
+from typing import Any, Callable, Literal, Optional
+
+import deprecation
+from pydantic import BaseModel
+from pydantic.main import IncEx
+
+from whist_core.cards.card import Card, Suit
+from whist_core.cards.card_container import OrderedCardContainer, UnorderedCardContainer
+from whist_core.game.errors import HandDoneError
+from whist_core.game.play_order import PlayOrder
+from whist_core.game.player_at_table import PlayerAtTable
+from whist_core.game.trick import Trick
+from whist_core.game.warnings import TrickNotDoneWarning
+from whist_core.util import enforce_str_on_dict
+
+
+class Hand(BaseModel):
+    """
+    Hand of whist.
+    """
+
+    tricks: list[Trick] = []
+    trump: Suit
+
+    def done(self) -> bool:
+        """
+        Check if the hand is done.
+        :return: True if the hand is done, else False
+        :rtype: bool
+        """
+        return len(self.tricks) == 13 and self.tricks[-1]
+
+    @property
+    def current_trick(self):
+        """
+        Returns the current trick.
+        """
+        return self.tricks[-1]
+
+    @staticmethod
+    def deal(play_order: PlayOrder) -> "Hand":
+        """
+        Deals the hand and starts the first trick.
+        :return: the first trick
+        :rtype: Trick
+        """
+        deck = UnorderedCardContainer.full()
+        card: Optional[Card] = None
+        while deck:
+            player = play_order.get_next_player()
+            card = deck.pop_random()
+            player.hand.add(card)
+        trump = card.suit
+
+        first_trick = Trick(
+            play_order=list(play_order), stack=OrderedCardContainer.empty(), trump=trump
+        )
+        hand = Hand(tricks=[first_trick], trump=trump)
+        return hand
+
+    def next_trick(self, play_order: PlayOrder) -> Trick:
+        """
+        Starts the next trick.
+        :return: the next trick
+        :rtype: Trick
+        """
+        if self.done():
+            raise HandDoneError()
+        if len(self.tricks) == 0:
+            next_trick_order = play_order
+        elif self.tricks[-1].done:
+            next_trick_order = self._winner_plays_first_card(play_order)
+        else:
+            raise TrickNotDoneWarning()
+        next_trick = Trick(play_order=list(next_trick_order), trump=self.trump)
+        self.tricks.append(next_trick)
+        return next_trick
+
+    @deprecation.deprecated("Use 'model_dump()' instead")
+    def dict(self, *args, **kwargs):
+        """Returns as dictionary."""
+        super_dict = super().dict(*args, **kwargs)
+        return enforce_str_on_dict(super_dict, ["trump"])
+
+    # fix trump to be returned as string
+    # pylint: disable=too-many-arguments, duplicate-code
+    def model_dump(
+        self,
+        *,
+        mode: Literal["json", "python"] | str = "python",
+        include: IncEx | None = None,
+        exclude: IncEx | None = None,
+        context: Any | None = None,
+        by_alias: bool | None = None,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        exclude_computed_fields: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal["none", "warn", "error"] = True,
+        fallback: Callable[[Any], Any] | None = None,
+        serialize_as_any: bool = False,
+    ) -> builtins.dict[str, Any]:
+        """Returns as dictionary."""
+        model = super().model_dump(
+            mode=mode,
+            include=include,
+            exclude=exclude,
+            context=context,
+            by_alias=by_alias,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            exclude_computed_fields=exclude_computed_fields,
+            round_trip=round_trip,
+            warnings=warnings,
+            fallback=fallback,
+            serialize_as_any=serialize_as_any,
+        )
+        return enforce_str_on_dict(model, ["trump"])
+
+    def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
+        winner: PlayerAtTable = self.tricks[-1].winner
+        return play_order.rotate(winner)

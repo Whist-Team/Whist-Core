@@ -1,7 +1,7 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from tests.whist_core.player_table_base_test_case import PlayerAtTableBaseTestCase
-from whist_core.cards.card import Card, Suit, Rank
+from whist_core.cards.card import Card, Rank, Suit
 from whist_core.cards.card_container import UnorderedCardContainer
 from whist_core.game.errors import HandDoneError
 from whist_core.game.hand import Hand
@@ -22,7 +22,9 @@ class HandTestCase(PlayerAtTableBaseTestCase):
     def test_done_trick(self):
         first_trick = self.hand.current_trick
         # deliberately ignore illegal moves
-        with patch('whist_core.game.legal_checker.LegalChecker.check_legal', return_value=True):
+        with patch(
+            "whist_core.game.legal_checker.LegalChecker.check_legal", return_value=True
+        ):
             while not first_trick.done:
                 player = self.play_order.get_next_player()
                 card = list(player.hand)[0]
@@ -59,7 +61,7 @@ class HandTestCase(PlayerAtTableBaseTestCase):
 
     def test_trump_is_string(self):
         model_dump = self.hand.model_dump()
-        self.assertIsInstance(model_dump['trump'], str)
+        self.assertIsInstance(model_dump["trump"], str)
 
     def _enforce_card_in_hand(self, card, player):
         # Enforce card is in player's hand

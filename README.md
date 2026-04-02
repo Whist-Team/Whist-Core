@@ -14,10 +14,10 @@ Whist rules implementation
 ## Development
 
 ### Setup
-You need [Poetry](https://python-poetry.org/) for development.
+You need [uv](https://docs.astral.sh/uv/) for development.
 ```bash
 # Create venv and install deps
-poetry install
+uv sync
 ```
 The Python virtual environment will be created in the `.venv` directory.
 
@@ -26,20 +26,18 @@ The Python virtual environment will be created in the `.venv` directory.
 # Run tests (in venv)
 python -m pytest # or pylint...
 # OR
-poetry run python -m pytest
+uv run -m pytest
 ```
 
 ### Build
 Generates `sdist` and `bdist_wheel`.
 ```bash
-poetry build
+uv build
 ```
 
 ### Publish
-You need the environment variable `POETRY_PYPI_TOKEN_PYPI` filled with a PyPI token.
+You need the environment variable `UV_PUBLISH_TOKEN` filled with a PyPI token.
 ```bash
-poetry build
-poetry publish
-# OR
-poetry publish --build
+uv build
+uv publish
 ```

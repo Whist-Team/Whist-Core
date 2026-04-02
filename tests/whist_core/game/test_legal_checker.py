@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from whist_core.cards.card import Card, Suit, Rank
+from whist_core.cards.card import Card, Rank, Suit
 from whist_core.cards.card_container import UnorderedCardContainer
 from whist_core.game.legal_checker import LegalChecker
 

@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from tests.whist_core.team_base_test_case import TeamBaseTestCase
 from whist_core.error.table_error import PlayerNotJoinedError
@@ -14,7 +14,9 @@ from whist_core.user.player import Player
 class GameTestCase(TeamBaseTestCase):
     def setUp(self):
         super().setUp()
-        self.game = Game(play_order=PlayOrder.from_team_list([self.team_a, self.team_b]))
+        self.game = Game(
+            play_order=PlayOrder.from_team_list([self.team_a, self.team_b])
+        )
 
     def test_first_hand(self):
         current_hand = self.game.next_hand()
@@ -26,8 +28,10 @@ class GameTestCase(TeamBaseTestCase):
             self.game.next_hand()
 
     def test_done(self):
-        with patch('whist_core.scoring.score_card.ScoreCard.max',
-                   new_callable=MagicMock(return_value=4)):
+        with patch(
+            "whist_core.scoring.score_card.ScoreCard.max",
+            new_callable=MagicMock(return_value=4),
+        ):
             self.assertTrue(self.game.done)
 
     def test_not_done(self):
@@ -38,7 +42,7 @@ class GameTestCase(TeamBaseTestCase):
         self.assertEqual(self.player_a, player_at_table.player)
 
     def test_player_not_joined(self):
-        not_join_player = Player(user_id=6, username='not joined', rating=1700)
+        not_join_player = Player(username="not joined", rating=1700)
         with self.assertRaises(PlayerNotJoinedError):
             self.game.get_player(not_join_player)
 
