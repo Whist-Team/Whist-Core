@@ -95,12 +95,12 @@ class OrderedCardContainerTestCase(TestCase):
 
     def test_add_none(self):
         cc = OrderedCardContainer.empty()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.add(None)
 
     def test_add_wrong_type(self):
         cc = OrderedCardContainer.empty()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.add("ace of spades")
 
     def test_remove(self):
@@ -115,12 +115,12 @@ class OrderedCardContainerTestCase(TestCase):
 
     def test_remove_none(self):
         cc = OrderedCardContainer.full()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.remove(None)
 
     def test_remove_wrong_type(self):
         cc = OrderedCardContainer.full()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.remove("ace of spades")
 
     def test_iter(self):
@@ -251,12 +251,12 @@ class UnorderedCardContainerTestCase(TestCase):
 
     def test_add_none(self):
         cc = UnorderedCardContainer.empty()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.add(None)
 
     def test_add_wrong_type(self):
         cc = UnorderedCardContainer.empty()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.add("ace of spades")
 
     def test_remove(self):
@@ -271,12 +271,12 @@ class UnorderedCardContainerTestCase(TestCase):
 
     def test_remove_none(self):
         cc = UnorderedCardContainer.full()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.remove(None)
 
     def test_remove_wrong_type(self):
         cc = UnorderedCardContainer.full()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             cc.remove("ace of spades")
 
     def test_iter(self):
