@@ -15,7 +15,7 @@ author = "Whist Team"
 
 extensions = ["sphinx.ext.autodoc", "autoapi.extension", "sphinx_rtd_theme"]
 autodoc_typehints = "description"
-autoapi_dirs = ["../../whist_core"]
+autoapi_dirs = ["../../src/whist_core"]
 
 templates_path = ["_templates"]
 exclude_patterns = []
