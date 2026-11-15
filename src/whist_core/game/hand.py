@@ -87,7 +87,7 @@ class Hand(BaseModel):
 
     # fix trump to be returned as string
     # pylint: disable=too-many-arguments, duplicate-code
-    def odel_dump(self, *args: Any, **kwargs: Any) -> builtins.dict[str, Any]:
+    def model_dump(self, *args: Any, **kwargs: Any) -> builtins.dict[str, Any]:
         """Returns as dictionary."""
         model = super().model_dump(*args, **kwargs)
         return enforce_str_on_dict(model, ["trump"])
