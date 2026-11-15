@@ -1,7 +1,7 @@
 """Hand of whist"""
 
 import builtins
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import deprecation
 from pydantic import BaseModel
