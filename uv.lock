@@ -891,7 +891,6 @@ source = { editable = "." }
 dependencies = [
     { name = "deprecation" },
     { name = "pydantic" },
-    { name = "typing-extensions" },
 ]
 
 [package.dev-dependencies]
@@ -913,7 +912,6 @@ docs = [
 requires-dist = [
     { name = "deprecation", specifier = ">=2.1.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
-    { name = "typing-extensions", specifier = ">=4.15.0" },
 ]
 
 [package.metadata.requires-dev]
