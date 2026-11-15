@@ -1,6 +1,7 @@
 """Hand of whist"""
 
-from typing import Any, Dict, TYPE_CHECKING
+import builtins
+from typing import Any, TYPE_CHECKING
 
 import deprecation
 from pydantic import BaseModel
@@ -86,13 +87,11 @@ class Hand(BaseModel):
 
     # fix trump to be returned as string
     # pylint: disable=too-many-arguments, duplicate-code
-    # ruff: disable[PLR0913, PYI051]
-    def odel_dump(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
+    def odel_dump(self, *args: Any, **kwargs: Any) -> builtins.dict[str, Any]:
         """Returns as dictionary."""
         model = super().model_dump(*args, **kwargs)
         return enforce_str_on_dict(model, ["trump"])
 
-    # ruff: enable[PLR0913, PYI051]
 
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner

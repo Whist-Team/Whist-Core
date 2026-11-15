@@ -1,6 +1,6 @@
 """DAO of session."""
 
-from typing import Any, Dict
+from typing import Any
 
 from pydantic import model_validator
 
@@ -50,8 +50,7 @@ class Table(Session):
 
     # override base method to fix matcher dump
     # pylint: disable=too-many-arguments, duplicate-code
-    # ruff: disable[PLR0913, PYI051]
-    def model_dump(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
+    def model_dump(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
         """
         Overrides model_dump to ensure matcher is correctly dumped.
         """
@@ -59,7 +58,6 @@ class Table(Session):
         model["matcher"] = self.matcher.model_dump()
         return model
 
-    # ruff: enable[PLR0913, PYI051]
 
     # pylint: disable=no-self-argument
     @model_validator(mode="before")
