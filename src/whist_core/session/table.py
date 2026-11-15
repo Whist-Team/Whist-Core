@@ -58,7 +58,6 @@ class Table(Session):
         model["matcher"] = self.matcher.model_dump()
         return model
 
-
     # pylint: disable=no-self-argument
     @model_validator(mode="before")
     @classmethod

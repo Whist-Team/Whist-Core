@@ -92,7 +92,6 @@ class Hand(BaseModel):
         model = super().model_dump(*args, **kwargs)
         return enforce_str_on_dict(model, ["trump"])
 
-
     def _winner_plays_first_card(self, play_order: PlayOrder) -> PlayOrder:
         winner: PlayerAtTable = self.tricks[-1].winner
         return play_order.rotate(winner)
