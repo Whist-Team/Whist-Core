@@ -1,12 +1,9 @@
 """Hand of whist"""
 
-import builtins
-from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, Literal
+from typing import Any, Dict, TYPE_CHECKING
 
 import deprecation
 from pydantic import BaseModel
-from pydantic.main import IncEx
 
 from whist_core.cards.card import Card, Suit
 from whist_core.cards.card_container import OrderedCardContainer, UnorderedCardContainer
@@ -90,39 +87,9 @@ class Hand(BaseModel):
     # fix trump to be returned as string
     # pylint: disable=too-many-arguments, duplicate-code
     # ruff: disable[PLR0913, PYI051]
-    def model_dump(
-        self,
-        *,
-        mode: Literal["json", "python"] | str = "python",
-        include: IncEx | None = None,
-        exclude: IncEx | None = None,
-        context: Any | None = None,
-        by_alias: bool | None = None,
-        exclude_unset: bool = False,
-        exclude_defaults: bool = False,
-        exclude_none: bool = False,
-        exclude_computed_fields: bool = False,
-        round_trip: bool = False,
-        warnings: bool | Literal["none", "warn", "error"] = True,
-        fallback: Callable[[Any], Any] | None = None,
-        serialize_as_any: bool = False,
-    ) -> builtins.dict[str, Any]:
+    def odel_dump(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         """Returns as dictionary."""
-        model = super().model_dump(
-            mode=mode,
-            include=include,
-            exclude=exclude,
-            context=context,
-            by_alias=by_alias,
-            exclude_unset=exclude_unset,
-            exclude_defaults=exclude_defaults,
-            exclude_none=exclude_none,
-            exclude_computed_fields=exclude_computed_fields,
-            round_trip=round_trip,
-            warnings=warnings,
-            fallback=fallback,
-            serialize_as_any=serialize_as_any,
-        )
+        model = super().model_dump(*args, **kwargs)
         return enforce_str_on_dict(model, ["trump"])
 
     # ruff: enable[PLR0913, PYI051]
