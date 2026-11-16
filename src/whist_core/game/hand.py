@@ -2,8 +2,8 @@
 
 import builtins
 from typing import TYPE_CHECKING, Any
+from warnings import deprecated
 
-import deprecation
 from pydantic import BaseModel
 
 from whist_core.cards.card import Card, Suit
@@ -79,7 +79,7 @@ class Hand(BaseModel):
         self.tricks.append(next_trick)
         return next_trick
 
-    @deprecation.deprecated("Use 'model_dump()' instead")
+    @deprecated("Use 'model_dump()' instead")
     def dict(self, *args, **kwargs):
         """Returns as dictionary."""
         super_dict = super().dict(*args, **kwargs)

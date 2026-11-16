@@ -12,8 +12,7 @@ classifiers = [
 ]
 requires-python = ">=3.13"
 dependencies = [
-    "deprecation>=2.1.0",
-    "pydantic>=2.12.5",
+    "pydantic>=2.14.3",
 ]
 
 [project.urls]
@@ -24,16 +23,16 @@ issues = "https://github.com/Whist-Team/Whist-Core/issues"
 
 [dependency-groups]
 dev = [
-    "pylint>=4.0.5",
+    "pylint>=4.1.4",
     "pylint-pydantic>=0.4.1",
-    "pytest>=9.0.2",
-    "pytest-asyncio>=1.3.0",
-    "ruff>=0.15.8",
-    "ty>=0.0.27",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.5.0",
+    "ruff>=0.17.5",
+    "ty>=0.0.104",
 ]
 docs = [
-    "sphinx>=8.1.3", # keeping this on an older version so we can install this with our older minimum python requirement
-    "sphinx-autoapi>=3.8.0",
+    "sphinx>=9.2.0", # keeping this on an older version so we can install this with our older minimum python requirement
+    "sphinx-autoapi>=3.9.0",
     "sphinx-rtd-theme>=3.1.0",
 ]
 

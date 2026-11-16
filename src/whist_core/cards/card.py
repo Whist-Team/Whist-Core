@@ -4,8 +4,8 @@ from collections.abc import Iterator
 from enum import Enum
 from functools import total_ordering
 from typing import Any, Optional, Self
+from warnings import deprecated
 
-import deprecation
 from pydantic import BaseModel
 
 from whist_core.util import enforce_str_on_dict
@@ -135,7 +135,7 @@ class Card(BaseModel, frozen=True):
         """
         return f"{self.rank} of {self.suit}"
 
-    @deprecation.deprecated("Use model_dump instead. Will be removed in V1.")
+    @deprecated("Use model_dump instead. Will be removed in V1.")
     def dict(self, *args, **kwargs):
         """
         Returns the dictionary. See BaseModel for details.
