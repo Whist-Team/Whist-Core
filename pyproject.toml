@@ -44,7 +44,7 @@ build-backend = "uv_build"
 [tool.pylint]
 ignore-paths = [".venv", "docs", "tests"]
 load-plugins = "pylint_pydantic"
-py-version = "3.15"
+py-version = "3.13"
 max-line-length = 120
 
 [tool.ruff]
