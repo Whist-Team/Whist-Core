@@ -3,11 +3,10 @@
 from collections.abc import Iterator
 from enum import Enum
 from functools import total_ordering
-from typing import Any, Optional
+from typing import Any, Optional, Self
+from warnings import deprecated
 
-import deprecation
 from pydantic import BaseModel
-from typing_extensions import Self
 
 from whist_core.util import enforce_str_on_dict
 
@@ -18,7 +17,7 @@ class _CardEnum(Enum):
         obj = object.__new__(cls)
         obj._value_ = args[0]
         # pylint: disable=protected-access, unused-private-member
-        obj.__ordinal = len(cls.__members__)  # noqa: SLF001
+        obj.__ordinal = len(cls.__members__)
         return obj
 
     def __init__(self, _: str, short_name: str | None = None):
@@ -136,7 +135,7 @@ class Card(BaseModel, frozen=True):
         """
         return f"{self.rank} of {self.suit}"
 
-    @deprecation.deprecated("Use model_dump instead. Will be removed in V1.")
+    @deprecated("Use model_dump instead. Will be removed in V1.")
     def dict(self, *args, **kwargs):
         """
         Returns the dictionary. See BaseModel for details.
